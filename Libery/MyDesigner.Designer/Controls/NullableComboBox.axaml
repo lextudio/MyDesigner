@@ -1,0 +1,109 @@
+<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:MyDesigner.Designer.Converters"
+    xmlns:local="clr-namespace:MyDesigner.Designer.Controls">
+
+    <converters:CollapsedWhenFalse x:Key="TrueVisibleConverter" />
+
+    <ControlTheme x:Key="ClearSelectionButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="#FF3C688D" />
+        <Setter Property="BorderBrush" Value="#FF617584" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Width" Value="15" />
+        <Setter Property="Height" Value="15" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid Background="Transparent">
+                    <Border
+                        x:Name="MouseOverElement"
+                        Background="#FFC8E4ED"
+                        BorderBrush="#FF3F6A8E"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        IsVisible="False" />
+                    <ContentPresenter
+                        x:Name="contentPresenter"
+                        Margin="{TemplateBinding Padding}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Content="{TemplateBinding Content}"
+                        ContentTemplate="{TemplateBinding ContentTemplate}" />
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:pointerover /template/ Border#MouseOverElement">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+        <Style Selector="^:pressed /template/ Border#MouseOverElement">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+    </ControlTheme>
+
+    <ControlTheme x:Key="{x:Type local:NullableComboBox}" TargetType="local:NullableComboBox">
+        <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+        <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="4,3" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid x:Name="MainGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <Border
+                        Grid.ColumnSpan="2"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="3" />
+                    
+                    <ContentPresenter
+                        Grid.Column="0"
+                        Margin="3,3,18,3"
+                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                        Content="{TemplateBinding SelectionBoxItem}"
+                        ContentTemplate="{TemplateBinding ItemTemplate}" />
+                    
+                    <Button
+                        x:Name="PART_ClearButton"
+                        Grid.Column="1"
+                        Margin="0,0,3,0"
+                        HorizontalAlignment="Right"
+                        Theme="{StaticResource ClearSelectionButtonStyle}"
+                        IsVisible="{Binding IsNullable, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource TrueVisibleConverter}}">
+                        <Path
+                            Width="7"
+                            Height="5"
+                            Data="M0,0 L1.6,0 L3,1.56 L4.4,0 L6,0 L3.8,2.5 L6,5 L4.4,5 L3,3.49 L1.59,5 L-4.2E-09,5 L2.18,2.5 z"
+                            Fill="#CC111111"
+                            Stretch="Fill" />
+                    </Button>
+                    
+                    <Popup
+                        x:Name="PART_Popup"
+                        Grid.ColumnSpan="2"
+                        IsOpen="{TemplateBinding IsDropDownOpen, Mode=TwoWay}"
+                        PlacementTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                        Placement="Bottom">
+                        <Border
+                            Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
+                            BorderBrush="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                            BorderThickness="1"
+                            CornerRadius="3">
+                            <ScrollViewer>
+                                <ItemsPresenter />
+                            </ScrollViewer>
+                        </Border>
+                    </Popup>
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+
+</ResourceDictionary>

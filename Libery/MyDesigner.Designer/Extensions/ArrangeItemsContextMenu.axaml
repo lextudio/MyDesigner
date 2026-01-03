@@ -1,0 +1,36 @@
+<ContextMenu
+    x:Class="MyDesigner.Designer.Extensions.ArrangeItemsContextMenu"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:Translation="clr-namespace:MyDesigner.Designer"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <MenuItem Click="Click_ArrangeLeft" Header="{Binding ArrangeLeft, Source={x:Static Translation:Translations.Instance}}">
+        <MenuItem.Icon>
+            <Image Source="/Images/layers-alignment-left.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem Click="Click_ArrangeHorizontalCentered" Header="{Binding ArrangeHorizontalMiddle, Source={x:Static Translation:Translations.Instance}}">
+        <MenuItem.Icon>
+            <Image Source="/Images/layers-alignment-center.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem Click="Click_ArrangeRight" Header="{Binding ArrangeRight, Source={x:Static Translation:Translations.Instance}}">
+        <MenuItem.Icon>
+            <Image Source="/Images/layers-alignment-right.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem Click="Click_ArrangeTop" Header="{Binding ArrangeTop, Source={x:Static Translation:Translations.Instance}}">
+        <MenuItem.Icon>
+            <Image Source="/Images/layers-alignment.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem Click="Click_ArrangeVerticalCentered" Header="{Binding ArrangeVerticalMiddle, Source={x:Static Translation:Translations.Instance}}">
+        <MenuItem.Icon>
+            <Image Source="/Images/layers-alignment-middle.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem Click="Click_ArrangeBottom" Header="{Binding ArrangeBottom, Source={x:Static Translation:Translations.Instance}}">
+        <MenuItem.Icon>
+            <Image Source="/Images/layers-alignment-bottom.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+</ContextMenu>

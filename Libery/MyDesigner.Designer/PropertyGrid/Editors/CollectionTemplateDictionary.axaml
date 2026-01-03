@@ -1,0 +1,20 @@
+<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:wpfDesign="clr-namespace:MyDesigner.Design;assembly=MyDesigner.Design"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DataTemplate DataType="{x:Type wpfDesign:DesignItem}" x:Key="PointTemplate">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Point (" />
+            <TextBlock Text="{Binding Component.X}" />
+            <TextBlock Text=" / " />
+            <TextBlock Text="{Binding Component.Y}" />
+            <TextBlock Text=")" />
+        </StackPanel>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type wpfDesign:DesignItem}" x:Key="StringTemplate">
+        <TextBlock Text="{Binding Component}" />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type wpfDesign:DesignItem}" x:Key="DefaultTemplate">
+        <TextBlock Text="{Binding Component}" />
+    </DataTemplate>
+</ResourceDictionary>

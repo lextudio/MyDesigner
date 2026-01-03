@@ -1,0 +1,68 @@
+<UserControl
+    x:Class="MyDesigner.Designer.PropertyGrid.Editors.TimeSpanEditor"
+    x:Name="root"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:widgets="clr-namespace:MyDesigner.Designer.Controls"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Styles>
+        <Style Selector="CheckBox.negativeCheckbox">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Grid Background="Transparent" x:Name="templateRoot">
+                        <Grid x:Name="markGrid">
+                            <TextBlock
+                                FontWeight="Bold"
+                                Margin="0,-2,0,0"
+                                Text="-"
+                                x:Name="optionMark" />
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="CheckBox.negativeCheckbox /template/ TextBlock#optionMark">
+            <Setter Property="Opacity" Value="0" />
+        </Style>
+        <Style Selector="CheckBox.negativeCheckbox:checked /template/ TextBlock#optionMark">
+            <Setter Property="Opacity" Value="1" />
+        </Style>
+    </UserControl.Styles>
+    
+    <StackPanel DataContext="{Binding ElementName=root}" Orientation="Horizontal">
+        <CheckBox
+            IsChecked="{Binding Negative}"
+            Margin="2,0,2,0"
+            Classes="negativeCheckbox"
+            VerticalAlignment="Center" />
+        <widgets:NumericUpDown
+            Maximum="10675199"
+            MinWidth="40"
+            Minimum="-1"
+            Value="{Binding Days}" />
+        <TextBlock Text="d " />
+        <widgets:NumericUpDown
+            Maximum="25"
+            MinWidth="36"
+            Minimum="-1"
+            Value="{Binding Hours}" />
+        <TextBlock Text="h " />
+        <widgets:NumericUpDown
+            Maximum="60"
+            MinWidth="36"
+            Minimum="-1"
+            Value="{Binding Minutes}" />
+        <TextBlock Text="m " />
+        <widgets:NumericUpDown
+            Maximum="60"
+            MinWidth="36"
+            Minimum="-1"
+            Value="{Binding Seconds}" />
+        <TextBlock Text="s " />
+        <widgets:NumericUpDown
+            Maximum="1000"
+            MinWidth="44"
+            Minimum="-1"
+            Value="{Binding Milliseconds}" />
+        <TextBlock Text="ms" />
+    </StackPanel>
+</UserControl>

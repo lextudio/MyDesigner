@@ -1,0 +1,31 @@
+<UserControl
+    x:Class="MyDesigner.Designer.PropertyGrid.Editors.EventEditor"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <TextBox
+            Grid.Column="0"
+            Height="22"
+            Padding="2"
+            Text="{Binding Value, Mode=TwoWay}"
+            VerticalContentAlignment="Center"
+            x:Name="txtEventHandler" />
+
+        <Button
+            Click="NavigateToHandler_Click"
+            Content="→"
+            FontWeight="Bold"
+            Grid.Column="1"
+            Height="22"
+            Padding="5,0"
+            ToolTip.Tip="Navigate to event handler"
+            Width="30"
+            x:Name="btnNavigate" />
+    </Grid>
+</UserControl>

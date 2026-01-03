@@ -1,0 +1,26 @@
+<ContextMenu
+    x:Class="MyDesigner.Designer.Extensions.RightClickContextMenu"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:Translation="clr-namespace:MyDesigner.Designer"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <MenuItem Click="Click_BringToFront" Header="{Binding SendToFrontText, Source={x:Static Translation:Translations.Instance}}">
+        <MenuItem.Icon>
+            <Image Source="/Images/layers-stack-arrange.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem Click="Click_Forward" Header="{Binding SendForward, Source={x:Static Translation:Translations.Instance}}">
+        <MenuItem.Icon>
+            <Image Source="/Images/layers-arrange.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem Click="Click_Backward" Header="{Binding SendBackward, Source={x:Static Translation:Translations.Instance}}">
+        <MenuItem.Icon>
+            <Image Source="/Images/layers-arrange-back.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem Click="Click_SendToBack" Header="{Binding SendToBack, Source={x:Static Translation:Translations.Instance}}">
+        <MenuItem.Icon>
+            <Image Source="/Images/layers-stack-arrange-back.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+</ContextMenu>

@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <OutputType>Library</OutputType>
+        <LangVersion>default</LangVersion>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
+        <EnableAvaloniaXamlCompiler>false</EnableAvaloniaXamlCompiler>
+        <SkipAvaloniaXamlCompilation>true</SkipAvaloniaXamlCompilation>
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <WarningsAsErrors />
+        <WarningsNotAsErrors />
+        <NoWarn>AVLN2000;AVLN2100;AVLN2205;AVLN3000</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+		<PackageReference Include="Avalonia.Labs.CommandManager" Version="11.3.1" />
+        <PackageReference Include="Avalonia" Version="11.3.10" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.10" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.10" />
+        <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.3.10" />
+        <PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.3.10" />
+        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="10.0.1" />
+		<PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="11.3.10" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+		<PackageReference Include="DialogHost.Avalonia" Version="0.10.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\MyDesigner.Design\MyDesigner.Design.csproj" />
+        <ProjectReference Include="..\MyDesigner.XamlDom\MyDesigner.XamlDom.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <AvaloniaResource Include="Images\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+    
+      <AvaloniaXaml Remove="Extensions\TagComplexContextMenu.axaml" />
+    
+      <AvaloniaXaml Remove="PropertyGrid\Editors\BrushEditor\GradientBrushEditor.axaml" />
+    
+      <AvaloniaXaml Remove="PropertyGrid\Editors\BrushEditor\GradientSlider.axaml" />
+     
+    </ItemGroup>
+
+    <ItemGroup>
+    
+      <Compile Remove="Extensions\LinkableControlDesignExtension.cs" />
+    
+      <Compile Remove="Extensions\TagComplexContextMenu.axaml.cs" />
+      <Compile Remove="Extensions\TagComplexContextMenuExtension.cs" />
+     
+    </ItemGroup>
+
+</Project>

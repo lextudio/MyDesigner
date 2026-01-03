@@ -1,0 +1,11 @@
+<ContextMenu
+    x:Class="MyDesigner.Designer.Extensions.EditStyleContextMenu"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:Translation="clr-namespace:MyDesigner.Designer"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <MenuItem Click="Click_EditStyle" Header="{Binding EditStyle, Source={x:Static Translation:Translations.Instance}}">
+        <MenuItem.Icon>
+            <Image Source="/Images/edit.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+</ContextMenu>

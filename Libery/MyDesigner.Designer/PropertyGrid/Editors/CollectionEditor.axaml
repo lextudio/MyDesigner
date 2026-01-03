@@ -1,0 +1,57 @@
+<Window
+    x:Class="MyDesigner.Designer.PropertyGrid.Editors.CollectionEditor"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:OutlineView="clr-namespace:MyDesigner.Designer.OutlineView"
+    xmlns:PropertyGrid="clr-namespace:MyDesigner.Designer.PropertyGrid"
+    Title="Edit Items"
+    Width="750"
+    Height="438"
+    WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="4*" />
+        </Grid.ColumnDefinitions>
+        <Border
+            Margin="10"
+            BorderBrush="Black"
+            BorderThickness="0.75">
+            <OutlineView:Outline x:Name="Outline" />
+        </Border>
+        <StackPanel Grid.Column="1" Margin="12,12,0,0" Spacing="8">
+            <Button
+                Name="AddItem"
+                Width="75"
+                Height="23"
+                Click="OnAddItemClicked"
+                Content="Add" />
+            <Button
+                Name="RemoveItem"
+                Width="75"
+                Height="23"
+                Click="OnRemoveItemClicked"
+                Content="Remove" />
+            <Button
+                Name="MoveUpItem"
+                Width="75"
+                Height="23"
+                Click="OnMoveItemUpClicked"
+                Content="Move Up" />
+            <Button
+                Name="MoveDownItem"
+                Width="75"
+                Height="23"
+                Click="OnMoveItemDownClicked"
+                Content="Move Down" />
+        </StackPanel>
+        <Border
+            Grid.Column="2"
+            Margin="10"
+            BorderBrush="Black"
+            BorderThickness="0.75">
+            <PropertyGrid:PropertyGridView x:Name="PropertyGridView" Margin="0.5" />
+        </Border>
+    </Grid>
+</Window>

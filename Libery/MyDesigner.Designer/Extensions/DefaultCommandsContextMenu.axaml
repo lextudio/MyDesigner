@@ -1,0 +1,37 @@
+<ContextMenu
+    x:Class="MyDesigner.Designer.Extensions.DefaultCommandsContextMenu"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <MenuItem Header="Cut" HotKey="Ctrl+X">
+        <MenuItem.Icon>
+            <Image Source="/Images/Icons.16x16.CutIcon.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem Header="Copy" HotKey="Ctrl+C">
+        <MenuItem.Icon>
+            <Image Source="/Images/Icons.16x16.CopyIcon.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem Header="Paste" HotKey="Ctrl+V">
+        <MenuItem.Icon>
+            <Image Source="/Images/Icons.16x16.PasteIcon.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <Separator />
+    <MenuItem Header="Delete" HotKey="Delete">
+        <MenuItem.Icon>
+            <Image Source="/Images/Icons.16x16.DeleteIcon.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <Separator />
+    <MenuItem Header="Undo" HotKey="Ctrl+Z">
+        <MenuItem.Icon>
+            <Image Source="/Images/Icons.16x16.UndoIcon.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem Header="Redo" HotKey="Ctrl+Y">
+        <MenuItem.Icon>
+            <Image Source="/Images/Icons.16x16.RedoIcon.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+</ContextMenu>

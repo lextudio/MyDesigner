@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<UserControl
+    Background="Transparent"
+    HorizontalContentAlignment="Left"
+    Padding="6"
+    VerticalContentAlignment="Top"
+    x:Class="MyDesigner.Designer.Controls.GridUnitSelector"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Styles>
+        <Style Selector="RadioButton">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <ToggleButton
+                        Content="{Binding $parent[RadioButton].Content}"
+                        IsChecked="{Binding $parent[RadioButton].IsChecked, Mode=TwoWay}"
+                        Name="toggleButton"
+                        Padding="{Binding $parent[RadioButton].Padding}" />
+                </ControlTemplate>
+            </Setter>
+        </Style>
+    </UserControl.Styles>
+    <Border
+        Background="LightBlue"
+        BorderBrush="CornflowerBlue"
+        BorderThickness="1"
+        CornerRadius="3">
+        <StackPanel Orientation="{Binding Orientation, RelativeSource={RelativeSource AncestorType=UserControl}}">
+            <RadioButton
+                Content="Fixed"
+                FontSize="8"
+                GroupName="group"
+                Margin="1"
+                ToolTip.Tip="Fixed - Column size is fixed width"
+                x:Name="fixedRadio" />
+            <RadioButton
+                FontSize="16"
+                GroupName="group"
+                Margin="1"
+                ToolTip.Tip="Star - Column size is weighted proportion"
+                x:Name="starRadio">
+                <TextBlock Margin="3,-4,3,-8" Text="*" />
+            </RadioButton>
+            <RadioButton
+                Content="Auto"
+                FontSize="8"
+                GroupName="group"
+                Margin="1"
+                ToolTip.Tip="Auto - Column size is determined by the Content(s)"
+                x:Name="autoRadio" />
+        </StackPanel>
+    </Border>
+</UserControl>

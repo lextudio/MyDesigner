@@ -1,0 +1,22 @@
+<UserControl
+    x:Class="MyDesigner.Designer.OutlineView.Outline"
+    x:Name="root"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:Controls="clr-namespace:MyDesigner.Designer.Controls"
+    xmlns:Default="clr-namespace:MyDesigner.Designer.OutlineView"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DockPanel LastChildFill="True">
+        <Controls:ClearableTextBox
+            DockPanel.Dock="Top"
+            Height="20"
+            Text="{Binding Filter, ElementName=OutlineTreeView}" />
+        <Default:OutlineTreeView Root="{Binding Root, ElementName=root}" x:Name="OutlineTreeView">
+            <ItemsControl.ItemContainerTheme>
+                <ControlTheme TargetType="{x:Type Default:DragTreeViewItem}">
+                    <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                </ControlTheme>
+            </ItemsControl.ItemContainerTheme>
+        </Default:OutlineTreeView>
+    </DockPanel>
+</UserControl>

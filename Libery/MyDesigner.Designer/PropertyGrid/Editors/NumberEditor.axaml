@@ -1,0 +1,10 @@
+<widgets:NumericUpDown
+    Background="{x:Null}"
+    BorderThickness="0"
+    Value="{Binding DesignerValue, Converter={x:Static Converters:DummyConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.InvariantCulture}}"
+    x:Class="MyDesigner.Designer.PropertyGrid.Editors.NumberEditor"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:Converters="clr-namespace:MyDesigner.Designer.Converters"
+    xmlns:globalization="clr-namespace:System.Globalization;assembly=System.Runtime"
+    xmlns:widgets="clr-namespace:MyDesigner.Designer.Controls"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" />

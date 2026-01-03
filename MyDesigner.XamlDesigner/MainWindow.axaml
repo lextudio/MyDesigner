@@ -1,0 +1,64 @@
+<Window
+    Title="MyDesigner.XamlDesigner"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d"
+    x:Name="root"
+    x:Class="MyDesigner.XamlDesigner.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:designer="clr-namespace:MyDesigner.Designer;assembly=MyDesigner.Designer"
+    xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+    xmlns:local="clr-namespace:MyDesigner.XamlDesigner"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:propertyGrid="clr-namespace:MyDesigner.Designer.PropertyGrid;assembly=MyDesigner.Designer"
+    xmlns:sd="http://sharpdevelop.net"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- إضافة DialogHost كحاوي رئيسي -->
+    <dialogHost:DialogHost Identifier="BrushEditorDialog">
+        <DockPanel x:DataType="local:MainWindow">
+              <sd:EnumBar x:Name="enumBar"
+			
+			DockPanel.Dock="Bottom"/>
+        <Grid ColumnDefinitions="100, *,10, 250">
+
+            <ListBox
+                HorizontalAlignment="Left" 
+               Grid.Column="0"
+                PointerPressed="lstControls_PointerPressed"
+                SelectionChanged="lstControls_SelectionChanged"
+                Width="100"
+                x:Name="lstControls">
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="local:ToolBoxItem">
+                        <Viewbox
+                            Height="20"
+                            Stretch="Uniform"
+                            Width="90">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Text="{Binding Name}"
+                                TextAlignment="Center"
+                                VerticalAlignment="Bottom" />
+                        </Viewbox>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <designer:DesignSurface
+                Grid.Column="1"
+                Margin="0,0,6,0"
+                x:Name="designSurface" />
+          
+          <GridSplitter Grid.Column="2" Background="Green" Width="10"></GridSplitter>
+            <propertyGrid:PropertyGridView Grid.Column="3" SelectedItems="{Binding DesignContext.Services.Selection.SelectedItems, ElementName=designSurface}" />
+
+        </Grid>
+            </DockPanel>
+    </dialogHost:DialogHost>
+</Window>
+
+
+
+

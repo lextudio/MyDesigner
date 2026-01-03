@@ -1,0 +1,27 @@
+<ContextMenu
+    x:Class="MyDesigner.Designer.PropertyGrid.PropertyContextMenu"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <MenuItem
+        Click="Click_Reset"
+        Header="Reset"
+        IsEnabled="{Binding IsSet}" />
+    <MenuItem Click="Click_Binding" Header="Binding" />
+    <!--
+    <MenuItem Header="TODO:"
+              IsEnabled="False" />
+    <MenuItem x:Name="uxStaticResource"
+              Header="Static Resource">
+        <MenuItem Header="Resource1" />
+        <MenuItem Header="Resource2" />
+        <MenuItem Header="Resource3" />
+    </MenuItem>
+    <MenuItem Header="Custom Expression..."
+              Click="Click_CustomExpression"/>
+    <MenuItem Header="Convert To Local Value"
+              Click="Click_ConvertToLocalValue"/>
+    <MenuItem Header="Save As Resource..."
+              Click="Click_SaveAsResource"/>-->
+
+</ContextMenu>

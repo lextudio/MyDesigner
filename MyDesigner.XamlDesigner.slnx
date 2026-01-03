@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Libery/MyDesigner.Design/MyDesigner.Design.csproj" />
+  <Project Path="Libery/MyDesigner.Designer/MyDesigner.Designer.csproj" />
+  <Project Path="Libery/MyDesigner.XamlDom/MyDesigner.XamlDom.csproj" />
+  <Project Path="MyDesigner.XamlDesigner/MyDesigner.XamlDesigner.csproj" />
+</Solution>

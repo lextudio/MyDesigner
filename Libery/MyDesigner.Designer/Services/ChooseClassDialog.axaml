@@ -1,0 +1,76 @@
+<Window
+    Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
+    Height="438"
+    CanResize="True"
+    Title="Choose Class"
+    Width="488"
+    WindowStartupLocation="CenterScreen"
+    x:Class="MyDesigner.Designer.Services.ChooseClassDialog"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:Services="clr-namespace:MyDesigner.Designer.Services"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid>
+        <TextBlock
+            Height="13"
+            HorizontalAlignment="Left"
+            Margin="12,12,0,0"
+            Text="Starts with:"
+            VerticalAlignment="Top"
+            Width="55" />
+        <TextBox
+            Height="23"
+            Margin="12,31,12,0"
+            Text="{Binding Filter}"
+            VerticalAlignment="Top"
+            x:Name="uxFilter" />
+
+        <Services:ClassListBox
+            ItemsSource="{Binding Classes}"
+            Margin="12,60,12,78"
+            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+            x:Name="uxList">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image
+                            Height="16"
+                            Source="../Images/Class.png"
+                            Width="16" />
+                        <TextBlock
+                            Margin="5,0,0,0"
+                            Text="{Binding Converter={x:Static Services:ClassNameConverter.Instance}}"
+                            VerticalAlignment="Center" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </Services:ClassListBox>
+
+        <CheckBox
+            Content="Show System Classes"
+            Height="16"
+            HorizontalAlignment="Left"
+            IsChecked="{Binding ShowSystemClasses}"
+            Margin="12,0,0,56"
+            VerticalAlignment="Bottom"
+            Width="120" />
+        <Button
+            Content="OK"
+            Height="23"
+            HorizontalAlignment="Right"
+            IsDefault="True"
+            IsEnabled="{Binding SelectedItem, ElementName=uxList, Converter={x:Static Services:NullToBoolConverter.Instance}}"
+            Margin="0,0,93,12"
+            VerticalAlignment="Bottom"
+            Width="75"
+            x:Name="uxOk" />
+        <Button
+            Content="Cancel"
+            Height="23"
+            HorizontalAlignment="Right"
+            Margin="0,0,12,12"
+            VerticalAlignment="Bottom"
+            Width="75"
+            x:Name="uxCancel" />
+    </Grid>
+</Window>

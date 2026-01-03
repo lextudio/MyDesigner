@@ -1,0 +1,245 @@
+<UserControl
+    Padding="5"
+    Width="373"
+    x:Class="MyDesigner.Designer.Controls.ColorPicker"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:widgets="clr-namespace:MyDesigner.Designer.Controls"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:CompileBindings="False">
+
+    <UserControl.Resources>
+
+        <DrawingBrush
+            TileMode="Tile"
+            DestinationRect="0 0 9 9"
+            x:Key="ChessBrush">
+            <DrawingBrush.Drawing>
+                <DrawingGroup>
+                    <GeometryDrawing Brush="White">
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="0 0 2 2" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="Gray">
+                        <GeometryDrawing.Geometry>
+                            <GeometryGroup>
+                                <RectangleGeometry Rect="0 0 1 1" />
+                                <RectangleGeometry Rect="1 1 1 1" />
+                            </GeometryGroup>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+
+    </UserControl.Resources>
+
+    <DockPanel>
+
+        <StackPanel
+            DockPanel.Dock="Right"
+            Margin="10,0,0,0"
+            VerticalAlignment="Top">
+
+            <Border
+                Background="{StaticResource ChessBrush}"
+                BorderBrush="Black"
+                BorderThickness="1"
+                Height="50"
+                HorizontalAlignment="Right"
+                Width="70">
+                <Rectangle>
+                    <Rectangle.Fill>
+                        <SolidColorBrush Color="{Binding Color, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Border>
+
+            <DockPanel Margin="0,3,0,0">
+                <widgets:HexTextBox
+                    DockPanel.Dock="Right"
+                    Margin="5,0,0,0"
+                    Text="{Binding Hex, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Width="70" />
+                <TextBlock
+                    HorizontalAlignment="Right"
+                    Text="#"
+                    VerticalAlignment="Center" />
+            </DockPanel>
+
+            <DockPanel Margin="0,3,0,0">
+                <widgets:NumericUpDown
+                    DockPanel.Dock="Right"
+                    Margin="5,0,0,0"
+                    Maximum="360"
+                    Value="{Binding H, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Width="70" />
+                <TextBlock
+                    HorizontalAlignment="Right"
+                    Text="H"
+                    VerticalAlignment="Center" />
+            </DockPanel>
+
+            <DockPanel Margin="0,3,0,0">
+                <widgets:NumericUpDown
+                    DockPanel.Dock="Right"
+                    Margin="5,0,0,0"
+                    Value="{Binding S, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Width="70" />
+                <TextBlock
+                    HorizontalAlignment="Right"
+                    Text="S"
+                    VerticalAlignment="Center" />
+            </DockPanel>
+
+            <DockPanel Margin="0,3,0,0">
+                <widgets:NumericUpDown
+                    DockPanel.Dock="Right"
+                    Margin="5,0,0,0"
+                    Value="{Binding V, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Width="70" />
+                <TextBlock
+                    HorizontalAlignment="Right"
+                    Text="V"
+                    VerticalAlignment="Center" />
+            </DockPanel>
+
+            <DockPanel Margin="0,3,0,0">
+                <widgets:NumericUpDown
+                    DockPanel.Dock="Right"
+                    Margin="5,0,0,0"
+                    Maximum="255"
+                    Value="{Binding R, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Width="70" />
+                <TextBlock
+                    HorizontalAlignment="Right"
+                    Text="R"
+                    VerticalAlignment="Center" />
+            </DockPanel>
+
+            <DockPanel Margin="0,3,0,0">
+                <widgets:NumericUpDown
+                    DockPanel.Dock="Right"
+                    Margin="5,0,0,0"
+                    Maximum="255"
+                    Value="{Binding G, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Width="70" />
+                <TextBlock
+                    HorizontalAlignment="Right"
+                    Text="G"
+                    VerticalAlignment="Center" />
+            </DockPanel>
+
+            <DockPanel Margin="0,3,0,0">
+                <widgets:NumericUpDown
+                    DockPanel.Dock="Right"
+                    Margin="5,0,0,0"
+                    Maximum="255"
+                    Value="{Binding B, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Width="70" />
+                <TextBlock
+                    HorizontalAlignment="Right"
+                    Text="B"
+                    VerticalAlignment="Center" />
+            </DockPanel>
+
+            <DockPanel Margin="0,3,0,0">
+                <widgets:NumericUpDown
+                    DockPanel.Dock="Right"
+                    Margin="5,0,0,0"
+                    Maximum="255"
+                    Value="{Binding A, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Width="70" />
+                <TextBlock
+                    HorizontalAlignment="Right"
+                    Text="A"
+                    VerticalAlignment="Center" />
+            </DockPanel>
+
+        </StackPanel>
+
+        <Border DockPanel.Dock="Right" Margin="10,0,0,0">
+            <widgets:Picker
+                Marker="{Binding ElementName=arrowMarkers}"
+                Maximum="0"
+                Minimum="360"
+                Orientation="Vertical"
+                Value="{Binding H, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                Width="20">
+                <Border Margin="0,-1">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="0,1">
+                            <GradientStop Color="#F00" Offset="0" />
+                            <GradientStop Color="#F0F" Offset="0.16" />
+                            <GradientStop Color="#00F" Offset="0.33" />
+                            <GradientStop Color="#0FF" Offset="0.5" />
+                            <GradientStop Color="#0F0" Offset="0.76" />
+                            <GradientStop Color="#FF0" Offset="0.85" />
+                            <GradientStop Color="#F00" Offset="1" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                </Border>
+                <Grid
+                    IsHitTestVisible="False"
+                    Margin="-5"
+                    VerticalAlignment="Top"
+                    x:Name="arrowMarkers">
+                    <Path
+                        Data="M 0 0 L 5 5 L 0 10 Z"
+                        Fill="Black"
+                        HorizontalAlignment="Left" />
+                    <Path
+                        Data="M 0 0 L -5 5 L 0 10 Z"
+                        Fill="Black"
+                        HorizontalAlignment="Right" />
+                </Grid>
+            </widgets:Picker>
+        </Border>
+
+        <Border BorderBrush="Black" BorderThickness="1">
+            <widgets:Picker
+                ClipToBounds="True"
+                Marker="{Binding ElementName=pointMarker}"
+                Value="{Binding S, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                <widgets:Picker
+                    Marker="{Binding ElementName=pointMarker}"
+                    Maximum="0"
+                    Minimum="100"
+                    Orientation="Vertical"
+                    Value="{Binding V, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                    <Rectangle>
+                        <Rectangle.Fill>
+                            <LinearGradientBrush EndPoint="1,0">
+                                <GradientStop Color="White" Offset="0" />
+                                <GradientStop Color="{Binding HueColor, RelativeSource={RelativeSource AncestorType=UserControl}}" Offset="1" />
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Rectangle>
+                        <Rectangle.Fill>
+                            <LinearGradientBrush EndPoint="0,1">
+                                <GradientStop Color="#0000" Offset="0" />
+                                <GradientStop Color="#F000" Offset="1" />
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Grid
+                        Height="12"
+                        HorizontalAlignment="Left"
+                        Margin="-6,-6,0,0"
+                        VerticalAlignment="Top"
+                        Width="12"
+                        x:Name="pointMarker">
+                        <Ellipse IsHitTestVisible="False" Stroke="Black" />
+                        <Ellipse
+                            IsHitTestVisible="False"
+                            Margin="1"
+                            Stroke="White" />
+                    </Grid>
+                </widgets:Picker>
+            </widgets:Picker>
+        </Border>
+
+    </DockPanel>
+
+</UserControl>

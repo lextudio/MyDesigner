@@ -1,0 +1,126 @@
+<Window
+    x:Class="MyDesigner.Designer.Windows.GridSettingsWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="إعدادات الشبكة - Grid Settings"
+    Width="400"
+    Height="384"
+    Background="#FFF5F5F5"
+    CanResize="False"
+    WindowStartupLocation="CenterOwner">
+
+    <Window.Resources>
+        <ControlTheme x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Background" Value="#FF007ACC" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="15,8" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="MinWidth" Value="100" />
+        </ControlTheme>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!--  العنوان  -->
+        <TextBlock
+            Grid.Row="0"
+            Margin="0,0,0,20"
+            FontSize="18"
+            FontWeight="Bold"
+            Foreground="#FF2D2D30"
+            Text="إعدادات الشبكة" />
+
+        <!--  تفعيل/إيقاف الشبكة  -->
+        <CheckBox
+            x:Name="ShowGridCheckBox"
+            Grid.Row="1"
+            Margin="0,0,0,15"
+            Content="إظهار الشبكة (Show Grid)"
+            FontSize="14"
+            IsChecked="True" />
+
+        <!--  حجم الشبكة  -->
+        <StackPanel Grid.Row="2" Margin="0,0,0,15">
+            <TextBlock
+                Margin="0,0,0,8"
+                FontSize="13"
+                Foreground="#FF2D2D30"
+                Text="حجم الشبكة (Grid Size):" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Slider
+                    x:Name="GridSizeSlider"
+                    Grid.Column="0"
+                    Margin="0,0,10,0"
+                    VerticalAlignment="Center"
+                    IsSnapToTickEnabled="True"
+                    Maximum="50"
+                    Minimum="1"
+                    TickFrequency="1"
+                    Value="5" />
+
+                <TextBlock
+                    Grid.Column="1"
+                    MinWidth="60"
+                    VerticalAlignment="Center"
+                    FontSize="14"
+                    FontWeight="Bold"
+                    Foreground="#FF007ACC"
+                    Text="{Binding Value, ElementName=GridSizeSlider, StringFormat={}{0:F0} px}"
+                    TextAlignment="Right" />
+            </Grid>
+        </StackPanel>
+
+        <!--  معاينة  -->
+        <Border
+            Grid.Row="3"
+            Margin="0,0,0,15"
+            Padding="10"
+            BorderBrush="#FFCCCCCC"
+            BorderThickness="1">
+            <StackPanel>
+                <TextBlock
+                    Margin="0,0,0,5"
+                    FontSize="12"
+                    Foreground="#FF666666"
+                    Text="معاينة (Preview):" />
+                <Border
+                    x:Name="PreviewBorder"
+                    Height="80"
+                    BorderBrush="#FF007ACC"
+                    BorderThickness="1" />
+            </StackPanel>
+        </Border>
+
+        <!--  الأزرار  -->
+        <StackPanel
+            Grid.Row="5"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <Button
+                Click="Apply_Click"
+                Content="تطبيق (Apply)"
+                Theme="{StaticResource ModernButton}" />
+            <Button
+                Background="#FF6C757D"
+                Click="Cancel_Click"
+                Content="إلغاء (Cancel)"
+                Theme="{StaticResource ModernButton}" />
+        </StackPanel>
+    </Grid>
+</Window>

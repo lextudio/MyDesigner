@@ -1,0 +1,98 @@
+<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:Controls="clr-namespace:MyDesigner.Designer.Controls"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="ButtonNormal">#DADFEA</SolidColorBrush>
+    <SolidColorBrush x:Key="ButtonHover">#E6EBEF</SolidColorBrush>
+    <SolidColorBrush x:Key="ButtonPressed">#B6BDD3</SolidColorBrush>
+    <SolidColorBrush x:Key="BorderBrush">#7F9DB9</SolidColorBrush>
+    <SolidColorBrush x:Key="ArrowBrush">Black</SolidColorBrush>
+    <SolidColorBrush x:Key="ArrowsBorderBrush">#B6BDD3</SolidColorBrush>
+
+    
+
+    <Style Selector="RepeatButton.UpButton" x:Key="UpButton">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Template">
+            <ControlTemplate TargetType="Controls:DragRepeatButton">
+                <Border
+                    Background="{StaticResource ButtonNormal}"
+                    CornerRadius="2 2 0 0"
+                    x:Name="bg">
+                    <Path
+                        Data="M 0 3 L 3.5 0 L 7 3"
+                        Fill="{StaticResource ArrowBrush}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center" />
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="RepeatButton.DownButton" x:Key="DownButton">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Template">
+            <ControlTemplate TargetType="Controls:DragRepeatButton">
+                <Border
+                    Background="{StaticResource ButtonNormal}"
+                    CornerRadius="0 0 2 2"
+                    x:Name="bg">
+                    <Path
+                        Data="M 0 0 L 3.5 3 L 7 0"
+                        Fill="{StaticResource ArrowBrush}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center" />
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <ControlTheme TargetType="Controls:NumericUpDown" x:Key="{x:Type Controls:NumericUpDown}">
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Template">
+            <ControlTemplate TargetType="Controls:NumericUpDown">
+                <Border
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    Padding="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="15" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox
+                            Background="{x:Null}"
+                            BorderThickness="0"
+                            Foreground="{TemplateBinding Foreground}"
+                            Grid.RowSpan="2"
+                            x:Name="PART_TextBox" />
+                        <Controls:DragRepeatButton
+                            Classes="UpButton"
+                            Grid.Column="1"
+                            x:Name="PART_UpButton" />
+                        <Controls:DragRepeatButton
+                            Classes="DownButton"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            x:Name="PART_DownButton" />
+                        <Border
+                            BorderBrush="{StaticResource ArrowsBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="2"
+                            Grid.Column="1"
+                            Grid.RowSpan="2" />
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+</ResourceDictionary>

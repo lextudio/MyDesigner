@@ -1,0 +1,16 @@
+<ContextMenu
+    x:Class="MyDesigner.Designer.Extensions.WrapItemsContextMenu"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:Translation="clr-namespace:MyDesigner.Designer"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <MenuItem Click="Click_WrapInCanvas" Header="{Binding WrapInCanvas, Source={x:Static Translation:Translations.Instance}}">
+        <MenuItem.Icon>
+            <Image Source="/Images/canvas.png" Width="16" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem Click="Click_WrapInGrid" Header="{Binding WrapInGrid, Source={x:Static Translation:Translations.Instance}}">
+        <MenuItem.Icon>
+            <Image Source="/Images/grid.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+</ContextMenu>

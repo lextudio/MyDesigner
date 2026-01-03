@@ -1,0 +1,97 @@
+<UserControl
+    MinHeight="350"
+    Width="395"
+    x:Class="MyDesigner.Designer.PropertyGrid.Editors.BrushEditor.BrushEditorView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:BrushEditor="clr-namespace:MyDesigner.Designer.PropertyGrid.Editors.BrushEditor"
+    xmlns:Converters="clr-namespace:MyDesigner.Designer.Converters"
+    xmlns:Designer="clr-namespace:MyDesigner.Designer"
+    xmlns:widgets="clr-namespace:MyDesigner.Designer.Controls"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <UserControl.Resources>
+
+        <DataTemplate DataType="{x:Type BrushEditor:BrushItem}" x:Key="BrushItemTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Border
+                    Background="{Binding Brush}"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    Height="15"
+                    Margin="2"
+                    Width="30" />
+                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+            </StackPanel>
+        </DataTemplate>
+
+    </UserControl.Resources>
+
+    <DockPanel>
+        <!-- أزرار OK و Cancel -->
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
+            <Button Name="OkButton" Content="OK" Width="75" Height="25" Margin="5,0" />
+            <Button Name="CancelButton" Content="Cancel" Width="75" Height="25" Margin="5,0" />
+        </StackPanel>
+
+        <!-- محرر الألوان -->
+        <TabControl SelectedIndex="{Binding CurrentKind, Converter={x:Static Converters:IntFromEnumConverter.Instance}}" x:Name="tabControl">
+            <TabItem Header="None">
+                <Border
+                    Background="White"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    <Line
+                        Stroke="Red"
+                        StrokeThickness="1"
+                        StartPoint="0,40"
+                        EndPoint="70,0" />
+                </Border>
+            </TabItem>
+            <TabItem Header="Solid">
+                <BrushEditor:SolidBrushEditor Color="{Binding Color}" />
+            </TabItem>
+            <TabItem Header="Linear">
+                <DockPanel>
+                    <StackPanel
+                        DockPanel.Dock="Top"
+                        Margin="5"
+                        Orientation="Horizontal">
+                        <TextBlock Text="Angle" VerticalAlignment="Center" />
+                        <widgets:NumericUpDown
+                            Margin="5,0,0,0"
+                            Maximum="360"
+                            Minimum="-360"
+                            Value="{Binding GradientAngle}"
+                            Width="50" />
+                        <Button
+                            Command="{Designer:Call MakeGradientHorizontal}"
+                            Content="H"
+                            Margin="5,0,0,0"
+                            Width="30" />
+                        <Button
+                            Command="{Designer:Call MakeGradientVertical}"
+                            Content="V"
+                            Margin="5,0,0,0"
+                            Width="30" />
+                    </StackPanel>
+                    <!-- GradientBrushEditor not available in Avalonia version -->
+                    <TextBlock Text="Gradient editor not implemented" />
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Radial">
+                <!-- GradientBrushEditor not available in Avalonia version -->
+                <TextBlock Text="Radial gradient editor not implemented" />
+            </TabItem>
+            <TabItem Header="Avalonia Brushes">
+                <ListBox
+                    ItemsSource="{Binding AvailableAvaloniaBrushes}"
+                    ItemTemplate="{StaticResource BrushItemTemplate}"
+                    MaxHeight="320"
+                    SelectedValue="{Binding Color}" />
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+
+</UserControl>

@@ -1,0 +1,8 @@
+<controls:ClearableTextBox
+    Background="{x:Null}"
+    BorderThickness="0"
+    Text="{Binding ValueString}"
+    x:Class="MyDesigner.Designer.PropertyGrid.Editors.TextBoxEditor"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:controls="clr-namespace:MyDesigner.Designer.Controls"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" />

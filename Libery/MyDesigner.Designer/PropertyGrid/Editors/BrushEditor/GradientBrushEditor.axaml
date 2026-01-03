@@ -1,0 +1,13 @@
+<UserControl
+    x:Class="MyDesigner.Designer.PropertyGrid.Editors.BrushEditor.GradientBrushEditor"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:BrushEditor="clr-namespace:MyDesigner.Designer.PropertyGrid.Editors.BrushEditor"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DockPanel>
+        <BrushEditor:GradientSlider
+            Brush="{Binding Brush}"
+            DockPanel.Dock="Top"
+            x:Name="slider" />
+        <BrushEditor:SolidBrushEditor Color="{Binding #slider.SelectedStop.Color}" />
+    </DockPanel>
+</UserControl>

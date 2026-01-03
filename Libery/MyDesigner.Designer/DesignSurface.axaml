@@ -1,0 +1,59 @@
+<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:Controls="clr-namespace:MyDesigner.Designer.Controls"
+    xmlns:Designer="clr-namespace:MyDesigner.Designer"
+    xmlns:Widgets="clr-namespace:MyDesigner.Designer.Controls"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ControlTheme x:Key="{x:Type Designer:DesignSurface}" TargetType="Designer:DesignSurface">
+        <Setter Property="Template">
+            <ControlTemplate TargetType="Designer:DesignSurface">
+                    <Controls:ZoomControl
+                        AlwaysShowZoomButtons="True"
+                        Background="#888"
+                        EnableHorizontalWheelSupport="True"
+                        HorizontalScrollBarVisibility="Visible"
+                        MinimumZoom="0.025"
+                        Name="PART_Zoom"
+                        VerticalScrollBarVisibility="Visible">
+                        <Controls:ZoomControl.AdditionalControls>
+                            <StackPanel Margin="0" Orientation="Horizontal">
+                                <Controls:EnumButton
+                                    BorderThickness="0"
+                                    DataContext="{Binding #PART_DesignContent}"
+                                    Height="16"
+                                    IsChecked="{Binding #PART_DesignContent.Content.UseRasterPlacement, Mode=TwoWay}"
+                                    Margin="0"
+                                    ToolTip.Tip="Use Raster Placement"
+                                    Width="16">
+                                    <Controls:EnumButton.ContextMenu>
+                                        <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="RasterWidth:" />
+                                                <Widgets:NumericUpDown
+                                                    Margin="5,0,0,0"
+                                                    Value="{Binding Content.RasterWidth, Mode=TwoWay}"
+                                                    Width="40" />
+                                            </StackPanel>
+                                        </ContextMenu>
+                                    </Controls:EnumButton.ContextMenu>
+                                    <Image Source="avares://MyDesigner.Designer/Images/Icons.16x16.GridSnap.png" Stretch="Uniform" />
+                                </Controls:EnumButton>
+                                <Controls:EnumButton
+                                    BorderThickness="0"
+                                    Height="16"
+                                    IsChecked="{Binding #PART_DesignContent.Content.UseSnaplinePlacement, Mode=TwoWay}"
+                                    Margin="0"
+                                    ToolTip.Tip="Use Snapline Placement"
+                                    Width="16">
+                                    <Image Source="avares://MyDesigner.Designer/Images/Icons.16x16.GuideSnap.png" Stretch="Uniform" />
+                                </Controls:EnumButton>
+                            </StackPanel>
+                        </Controls:ZoomControl.AdditionalControls>
+
+                        <ContentControl Name="PART_DesignContent" />
+                    </Controls:ZoomControl>
+                </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+</ResourceDictionary>

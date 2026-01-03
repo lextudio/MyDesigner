@@ -1,0 +1,24 @@
+<Styles
+    x:CompileBindings="True"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:v="clr-namespace:MyDesigner.Designer.themes"
+     xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://MyDesigner.Designer/Controls/CollapsiblePanel.axaml" />
+                <ResourceInclude Source="avares://MyDesigner.Designer/Controls/ZoomScrollViewer.axaml" />
+                <ResourceInclude Source="avares://MyDesigner.Designer/Controls/ControlStyles.axaml" />
+                <ResourceInclude Source="avares://MyDesigner.Designer/Controls/NullableComboBox.axaml" />
+                <ResourceInclude Source="avares://MyDesigner.Designer/OutlineView/OutlineView.axaml" />
+                <ResourceInclude Source="avares://MyDesigner.Designer/DesignSurface.axaml" />
+                <ResourceInclude Source="avares://MyDesigner.Designer/PropertyGrid/PropertyGridView.axaml" />
+                <ResourceInclude Source="avares://MyDesigner.Designer/ThumbnailView/ThumbnailView.axaml" />
+                <ResourceInclude Source="avares://MyDesigner.Designer/Controls/NumericUpDown.axaml" />
+                <dialogHostAvalonia:DialogHostStyles />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
+</Styles>

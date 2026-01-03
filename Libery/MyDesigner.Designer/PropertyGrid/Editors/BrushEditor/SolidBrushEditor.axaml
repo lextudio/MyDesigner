@@ -1,0 +1,44 @@
+<UserControl
+    Height="320"
+    x:Class="MyDesigner.Designer.PropertyGrid.Editors.BrushEditor.SolidBrushEditor"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:local="clr-namespace:MyDesigner.Designer.PropertyGrid.Editors.BrushEditor"
+    xmlns:widgets="clr-namespace:MyDesigner.Designer.Controls"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:CompileBindings="False">
+
+    <UserControl.Resources>
+
+        <DataTemplate DataType="{x:Type local:BrushItem}" x:Key="BrushItemTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Border
+                    Background="{Binding Brush}"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    Height="15"
+                    Margin="2"
+                    Width="30" />
+                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+            </StackPanel>
+        </DataTemplate>
+
+    </UserControl.Resources>
+
+    <TabControl>
+        <TabItem Header="Color Picker">
+            <widgets:ColorPicker Color="{Binding Color, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+        </TabItem>
+        <TabItem Header="Avalonia Colors">
+            <ListBox
+                ItemsSource="{x:Static local:BrushEditor.AvaloniaColors}"
+                ItemTemplate="{StaticResource BrushItemTemplate}"
+                SelectedValue="{Binding Color, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+        </TabItem>
+        <TabItem Header="Avalonia Brushes">
+            <ListBox
+                ItemsSource="{x:Static local:BrushEditor.AvaloniaBrushes}"
+                ItemTemplate="{StaticResource BrushItemTemplate}"
+                SelectedValue="{Binding Color, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+        </TabItem>
+    </TabControl>
+</UserControl>

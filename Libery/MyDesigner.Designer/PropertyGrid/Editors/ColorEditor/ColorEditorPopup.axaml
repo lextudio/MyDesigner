@@ -1,0 +1,8 @@
+<Popup
+    Placement="Bottom"
+    x:Class="MyDesigner.Designer.PropertyGrid.Editors.ColorEditor.ColorEditorPopup"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:BrushEditor="clr-namespace:MyDesigner.Designer.PropertyGrid.Editors.BrushEditor"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <BrushEditor:SolidBrushEditor x:Name="solidBrushEditor" />
+</Popup>

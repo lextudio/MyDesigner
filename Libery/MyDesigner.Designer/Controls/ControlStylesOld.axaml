@@ -1,0 +1,433 @@
+<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:ControlConvertors="clr-namespace:MyDesigner.Designer.Controls.Converters"
+    xmlns:Controls="clr-namespace:MyDesigner.Designer.Controls"
+    xmlns:Converters="clr-namespace:MyDesigner.Designer.Converters"
+    xmlns:Widgets="clr-namespace:MyDesigner.Designer.Controls"
+    xmlns:formatedTextEditor="clr-namespace:MyDesigner.Designer.PropertyGrid.Editors.FormatedTextEditor"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--
+        This file contains the default styles used by the Controls in NetStudio.Designer.Controls
+    -->
+    <Converters:LevelConverter x:Key="FormatDoubleConverter" />
+    <ControlConvertors:HandleLengthWithOffset x:Key="HandleLengthWithOffset" />
+    <SolidColorBrush Color="#FF474747" x:Key="HandleBrush" />
+
+    <ControlTheme TargetType="Controls:PanelMoveAdorner" x:Key="{x:Type Controls:PanelMoveAdorner}">
+        <Setter Property="Template">
+            <ControlTemplate TargetType="{x:Type Controls:PanelMoveAdorner}">
+                <Border
+                    BorderBrush="Transparent"
+                    BorderThickness="4"
+                    Cursor="SizeAll"
+                    Margin="-2" />
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+
+    <ControlTheme
+        BasedOn="{StaticResource {x:Type ToggleButton}}"
+        TargetType="Controls:EnumButton"
+        x:Key="{x:Type Controls:EnumButton}">
+        <Setter Property="Margin" Value="3,3,0,3" />
+        <Setter Property="Foreground" Value="#FF000000" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="Template">
+            <ControlTemplate TargetType="ToggleButton">
+                <Grid>
+                    <Border
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        x:Name="Background">
+                        <Grid Background="{TemplateBinding Background}">
+                            <Border
+                                Background="#FF448DCA"
+                                Opacity="0"
+                                x:Name="BackgroundAnimation" />
+                        </Grid>
+                    </Border>
+                    <ContentPresenter
+                        Content="{TemplateBinding Content}"
+                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        Margin="{TemplateBinding Padding}"
+                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                        x:Name="contentPresenter" />
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:checked">
+            <Setter Property="Background" Value="SkyBlue" />
+        </Style>
+    </ControlTheme>
+
+    <!--  SelectionFrame Template removed - not supported in Avalonia version  -->
+
+    <ControlTheme TargetType="Controls:SelectionFrame" x:Key="{x:Type Controls:SelectionFrame}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Controls:SelectionFrame}">
+                    <Rectangle
+                        Fill="#519ABFE5"
+                        Stroke="#FF7A8787"
+                        StrokeThickness="1" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </ControlTheme>
+
+    <ControlTheme TargetType="Controls:ContainerDragHandle" x:Key="{x:Type Controls:ContainerDragHandle}">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Canvas
+                    Height="13"
+                    Width="13"
+                    x:Name="Canvas">
+                    <Rectangle
+                        Fill="#889ABFE5"
+                        Height="13"
+                        RadiusX="2"
+                        RadiusY="2"
+                        Stroke="#FF7A8FB5"
+                        StrokeThickness="1"
+                        Width="13"
+                        x:Name="BorderRectangle" />
+                    <Path
+                        Canvas.Left="1"
+                        Canvas.Top="1"
+                        Data="M5.5,0L3,3L8,3 M11,5.5L8,3L8,8 M5.5,11L3,8L8,8 M0,5.5L3,3L3,8 M3,5 L8,5 M5,3 L5,8 M5,5 L5,5"
+                        Fill="#FF748EAA" />
+                </Canvas>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+
+    <ControlTheme TargetType="Controls:ErrorBalloon" x:Key="{x:Type Controls:ErrorBalloon}">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid x:Name="LayoutRoot">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Rectangle
+                        Fill="#41626262"
+                        Margin="12,36,4,4"
+                        RadiusX="10"
+                        RadiusY="10" />
+                    <Border
+                        Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
+                        BorderBrush="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                        BorderThickness="1,1,1,1"
+                        CornerRadius="10,10,10,10"
+                        Margin="8,32,8,8"
+                        Padding="10,10,10,10">
+                        <Border
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" />
+                        </Border>
+                    </Border>
+                    <Path
+                        Data="M34.75,33.75 L40.5,9.25 50,33.5 z"
+                        Fill="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
+                        Height="24.5"
+                        HorizontalAlignment="Left"
+                        Margin="34.75,9.25,0,0"
+                        Stretch="Fill"
+                        VerticalAlignment="Top"
+                        Width="15.25" />
+                    <Path
+                        Data="M35,32.75 L40.5,9.25 50,32.75"
+                        Height="24"
+                        HorizontalAlignment="Left"
+                        Margin="34.5,9.25,0,0"
+                        Stretch="Fill"
+                        Stroke="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                        VerticalAlignment="Top"
+                        Width="16" />
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+
+    <ControlTheme TargetType="Button" x:Key="ClearButtonStyle">
+        <Setter Property="Background" Value="#FFaaaaaa" />
+        <Setter Property="BorderBrush" Value="#FFaaaaaa" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid Height="14" Width="14">
+                    <Ellipse
+                        Fill="{TemplateBinding Background}"
+                        Stroke="{TemplateBinding BorderBrush}"
+                        x:Name="ellipse" />
+                    <Ellipse
+                        Fill="#FFBD7777"
+                        Opacity="0"
+                        Stroke="Red"
+                        x:Name="ellipseHighlight" />
+                    <Path
+                        Data="M0.5,0.5 L8.5,8.5 M8.5000095,0.50000072 L0.50000954,8.500001"
+                        HorizontalAlignment="Center"
+                        Margin="4.5"
+                        Stretch="Fill"
+                        Stroke="{TemplateBinding Foreground}"
+                        VerticalAlignment="Center"
+                        x:Name="path" />
+                    <Path
+                        Data="M0.5,0.5 L8.5,8.5 M8.5000095,0.50000072 L0.50000954,8.500001"
+                        HorizontalAlignment="Center"
+                        Margin="4.5"
+                        Opacity="0"
+                        Stretch="Fill"
+                        Stroke="Red"
+                        VerticalAlignment="Center"
+                        x:Name="pathHighlight" />
+                    <ContentPresenter
+                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        IsVisible="False"
+                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                        x:Name="contentPresenter" />
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:pointerover /template/ Ellipse#ellipseHighlight">
+            <Setter Property="Opacity" Value="1" />
+        </Style>
+        <Style Selector="^:pressed /template/ Ellipse#ellipseHighlight">
+            <Setter Property="Opacity" Value="1" />
+        </Style>
+        <Style Selector="^:pressed /template/ Path#pathHighlight">
+            <Setter Property="Opacity" Value="1" />
+        </Style>
+    </ControlTheme>
+
+    <ControlTheme TargetType="Controls:ClearableTextBox" x:Key="{x:Type Controls:ClearableTextBox}">
+        <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+        <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}" />
+        <Setter Property="BorderBrush" Value="#888" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="1,0,0,0" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <ControlTemplate TargetType="Controls:ClearableTextBox">
+                <Grid>
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="1"
+                        x:Name="Border" />
+                    <TextPresenter
+                        CaretBrush="{TemplateBinding CaretBrush}"
+                        Margin="0,0,18,0"
+                        Text="{TemplateBinding Text}"
+                        VerticalAlignment="Center"
+                        x:Name="PART_TextPresenter" />
+                    <ScrollViewer
+                        Margin="0,0,18,0"
+                        VerticalAlignment="Center"
+                        x:Name="PART_ContentHost" />
+                    <Button
+                        Height="14"
+                        HorizontalAlignment="Right"
+                        IsTabStop="False"
+                        Margin="0,0,3,0"
+                        Theme="{StaticResource ClearButtonStyle}"
+                        VerticalAlignment="Stretch"
+                        Width="14"
+                        x:Name="TextRemover" />
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+    <!--  DesignerThumb  -->
+    <ControlTheme TargetType="Controls:DesignerThumb" x:Key="{x:Type Controls:DesignerThumb}">
+        <Setter Property="Template">
+            <ControlTemplate TargetType="{x:Type Controls:DesignerThumb}">
+                <Grid>
+                    <Rectangle
+                        Fill="White"
+                        RadiusX="1.414"
+                        RadiusY="1.414"
+                        Stroke="Black"
+                        x:Name="thumbRectangle" />
+                    <Menu
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Height="15"
+                        HorizontalAlignment="Left"
+                        IsVisible="{Binding Path=OperationMenu, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static Converters:CollapsedWhenNull.Instance}}"
+                        Margin="0,-19,-19,0"
+                        VerticalAlignment="Top"
+                        Width="15">
+                        <MenuItem
+                            Background="Transparent"
+                            BorderThickness="1"
+                            Height="15"
+                            ItemsSource="{TemplateBinding OperationMenu}"
+                            Padding="0"
+                            Width="15">
+                            <MenuItem.Header>
+                                <Path
+                                    Data="M3.5,5.5 L11.5,5.5 L7.5,11 z"
+                                    Fill="Black"
+                                    Stroke="Gray"
+                                    StrokeThickness="1" />
+                            </MenuItem.Header>
+                        </MenuItem>
+                    </Menu>
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^[IsPrimarySelection=False] /template/ Rectangle#thumbRectangle">
+            <Setter Property="Stroke" Value="White" />
+            <Setter Property="Fill" Value="Black" />
+        </Style>
+        <Style Selector="^:disabled /template/ Rectangle#thumbRectangle">
+            <Setter Property="Fill" Value="Gray" />
+        </Style>
+        <Style Selector="^[ThumbVisible=False] /template/ Rectangle#thumbRectangle">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+    </ControlTheme>
+    <ControlTheme TargetType="Controls:PointThumb" x:Key="{x:Type Controls:PointThumb}">
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Controls:PointThumb}">
+                    <Grid
+                        HorizontalAlignment="Left"
+                        Margin="-3.5,-3.5,0,0"
+                        VerticalAlignment="Top">
+                        <Grid.Resources>
+                            <Converters:DoubleOffsetConverter Offset="3.5" x:Key="PointOffset" />
+                        </Grid.Resources>
+                        <Line
+                            HorizontalAlignment="Left"
+                            IsVisible="{Binding Path=RelativeToPoint, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static Converters:CollapsedWhenNull.Instance}}"
+                            Stroke="{TemplateBinding Foreground}"
+                            StrokeDashArray="2"
+                            StrokeThickness="1"
+                            VerticalAlignment="Top" />
+                        <!--  X1="3.5"  -->
+                        <!--  X2="{Binding RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource PointOffset}, Path=RelativeToPoint.X}"  -->
+                        <!--  Y1="3.5"  -->
+                        <!--  Y2="{Binding RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource PointOffset}, Path=RelativeToPoint.Y}" />  -->
+
+                        <Grid
+                            Height="7"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Width="7">
+                            <Grid.Styles>
+                                <Style Selector="MenuItem">
+                                    <Setter Property="HorizontalAlignment" Value="Left" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </Grid.Styles>
+                            <Rectangle
+                                Fill="White"
+                                Height="7"
+                                HorizontalAlignment="Left"
+                                RadiusX="1.414"
+                                RadiusY="1.414"
+                                Stroke="{TemplateBinding Foreground}"
+                                VerticalAlignment="Top"
+                                Width="7"
+                                x:Name="thumbRectangle" />
+                            <Ellipse
+                                Fill="White"
+                                Height="7"
+                                HorizontalAlignment="Left"
+                                IsVisible="False"
+                                Stroke="{TemplateBinding Foreground}"
+                                VerticalAlignment="Top"
+                                Width="7"
+                                x:Name="thumbElipse" />
+                            <Menu
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Foreground="Black"
+                                Height="15"
+                                HorizontalAlignment="Left"
+                                IsVisible="{Binding Path=OperationMenu, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static Converters:CollapsedWhenNull.Instance}}"
+                                Margin="0,-19,-19,0"
+                                VerticalAlignment="Top"
+                                Width="15">
+                                <MenuItem
+                                    Background="Transparent"
+                                    BorderThickness="1"
+                                    Height="15"
+                                    ItemsSource="{TemplateBinding OperationMenu}"
+                                    Padding="0"
+                                    RenderTransform="{TemplateBinding InnerRenderTransform}"
+                                    Width="15">
+                                    <MenuItem.Header>
+                                        <Path
+                                            Data="M3.5,5.5 L11.5,5.5 L7.5,11 z"
+                                            Fill="Black"
+                                            Stroke="Gray"
+                                            StrokeThickness="1" />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                            </Menu>
+                        </Grid>
+                    </Grid>
+
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style Selector="^[IsPrimarySelection=False] /template/ Rectangle#thumbRectangle">
+            <Setter Property="Stroke" Value="White" />
+            <Setter Property="Fill" Value="Black" />
+        </Style>
+        <Style Selector="^[IsPrimarySelection=False] /template/ Ellipse#thumbElipse">
+            <Setter Property="Fill" Value="Black" />
+        </Style>
+        <Style Selector="^:disabled /template/ Rectangle#thumbRectangle">
+            <Setter Property="Fill" Value="Gray" />
+        </Style>
+        <Style Selector="^[ThumbVisible=False] /template/ Rectangle#thumbRectangle">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+        <Style Selector="^[ThumbVisible=False] /template/ Ellipse#thumbElipse">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+        <Style Selector="^[IsEllipse=True] /template/ Rectangle#thumbRectangle">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+        <Style Selector="^[IsEllipse=True] /template/ Ellipse#thumbElipse">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+    </ControlTheme>
+    <ControlTheme TargetType="Controls:RotateThumb" x:Key="{x:Type Controls:RotateThumb}">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid>
+                    <Rectangle
+                        Fill="Black"
+                        Height="30"
+                        Margin="0,0,0,0"
+                        VerticalAlignment="Top"
+                        Width="2" />
+                    <Ellipse
+                        Fill="Black"
+                        Height="7"
+                        Stroke="Black"
+                        StrokeThickness="1"
+                        VerticalAlignment="Top"
+                        Width="7"
+                        x:Name="thumbRectangle" />
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+    <!--  DesignerThumb  -->
+
+
+</ResourceDictionary>

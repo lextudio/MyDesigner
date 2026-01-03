@@ -1,0 +1,19 @@
+<UserControl
+    x:Class="MyDesigner.Designer.PropertyGrid.Editors.OpenCollectionEditor"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <TextBlock
+            Margin="0,0,20,0"
+            Text="{Binding DesignerValue}"
+            VerticalAlignment="Center" />
+        <Button
+            Click="open_Click"
+            Content="..."
+            Focusable="False"
+            HorizontalAlignment="Right"
+            Margin="0,0,1,0"
+            VerticalAlignment="Stretch"
+            Width="15" />
+    </Grid>
+</UserControl>

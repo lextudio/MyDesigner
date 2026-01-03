@@ -1,0 +1,11 @@
+<local:NullableComboBox
+    Background="Transparent"
+    BorderThickness="0"
+    Focusable="False"
+    IsNullable="False"
+    SelectedValue="{Binding DesignerValue}"
+    x:Class="MyDesigner.Designer.PropertyGrid.Editors.ComboBoxEditor"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:local="clr-namespace:MyDesigner.Designer.Controls"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+</local:NullableComboBox>

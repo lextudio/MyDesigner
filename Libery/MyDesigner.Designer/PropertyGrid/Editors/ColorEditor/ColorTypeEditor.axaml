@@ -1,0 +1,19 @@
+<UserControl
+    x:Class="MyDesigner.Designer.PropertyGrid.Editors.ColorEditor.ColorTypeEditor"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Border
+        Background="Transparent"
+        BorderBrush="Black"
+        BorderThickness="1"
+        Cursor="Hand"
+        Height="16"
+        HorizontalAlignment="Left"
+        Width="30">
+        <Border>
+            <Border.Background>
+                <SolidColorBrush Color="{Binding DesignerValue}" />
+            </Border.Background>
+        </Border>
+    </Border>
+</UserControl>

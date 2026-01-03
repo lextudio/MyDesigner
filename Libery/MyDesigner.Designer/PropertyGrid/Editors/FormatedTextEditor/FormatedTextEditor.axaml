@@ -1,0 +1,36 @@
+<UserControl
+    x:Class="MyDesigner.Designer.PropertyGrid.Editors.FormatedTextEditor.FormatedTextEditor"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <!-- Simplified Toolbar -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5" Spacing="5">
+            <ComboBox x:Name="FontFamilyCombo" Width="120" ToolTip.Tip="Font Family" />
+            <ComboBox x:Name="FontSizeCombo" Width="60" ToolTip.Tip="Font Size" />
+            <ToggleButton x:Name="BoldButton" Content="B" FontWeight="Bold" ToolTip.Tip="Bold" />
+            <ToggleButton x:Name="ItalicButton" Content="I" FontStyle="Italic" ToolTip.Tip="Italic" />
+            <ToggleButton x:Name="UnderlineButton" Content="U" ToolTip.Tip="Underline" />
+        </StackPanel>
+        
+        <!-- Text Editor (simplified) -->
+        <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" Margin="5">
+            <TextBox x:Name="TextEditor" 
+                     AcceptsReturn="True" 
+                     TextWrapping="Wrap"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     ScrollViewer.HorizontalScrollBarVisibility="Auto" />
+        </Border>
+        
+        <!-- Buttons -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5" Spacing="5">
+            <Button x:Name="OkButton" Content="OK" Width="75" Click="Ok_Click" />
+            <Button x:Name="CancelButton" Content="Cancel" Width="75" Click="Cancel_Click" />
+        </StackPanel>
+    </Grid>
+</UserControl>
