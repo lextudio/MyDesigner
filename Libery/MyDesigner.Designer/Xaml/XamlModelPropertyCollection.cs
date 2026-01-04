@@ -16,6 +16,8 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Linq;
+
 namespace MyDesigner.Designer.Xaml;
 
 internal sealed class XamlModelPropertyCollection : DesignItemPropertyCollection
@@ -33,11 +35,12 @@ internal sealed class XamlModelPropertyCollection : DesignItemPropertyCollection
         XamlModelProperty property;
         if (propertiesDictionary.TryGetValue(name, out property))
             return property;
+
         property = new XamlModelProperty(_item, _item.XamlObject.FindOrCreateProperty(name));
         propertiesDictionary.Add(name, property);
         return property;
     }
-
+    
     public override DesignItemProperty GetAttachedProperty(Type ownerType, string name)
     {
         return new XamlModelProperty(_item, _item.XamlObject.FindOrCreateAttachedProperty(ownerType, name));

@@ -101,7 +101,7 @@ public class PropertyGridView : TemplatedControl
 
         var contextMenu = new PropertyContextMenu();
         contextMenu.DataContext = node;
-        contextMenu.PlacementMode = PlacementMode.Bottom;
+        //contextMenu.Placement = PlacementMode.Bottom;
         contextMenu.HorizontalOffset = -30;
         contextMenu.PlacementTarget = row;
         contextMenu.Open(row);

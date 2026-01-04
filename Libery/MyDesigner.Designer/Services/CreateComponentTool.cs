@@ -257,6 +257,7 @@ public class CreateComponentTool : ITool
         var item = context.Services.Component.RegisterComponentForDesigner(newInstance);
         context.Services.Component.SetDefaultPropertyValues(item);
         context.Services.ExtensionManager.ApplyDefaultInitializers(item);
+        
         return item;
     }
 

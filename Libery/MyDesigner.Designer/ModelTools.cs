@@ -186,7 +186,8 @@ public static class ModelTools
         var v = element.Width;
         if (double.IsNaN(v))
             return element.Bounds.Width;
-        return v;
+        else
+            return v;
     }
 
     public static double GetHeight(Control element)
@@ -194,7 +195,8 @@ public static class ModelTools
         var v = element.Height;
         if (double.IsNaN(v))
             return element.Bounds.Height;
-        return v;
+        else
+            return v;
     }
 
     public static void Resize(DesignItem item, double newWidth, double newHeight)
@@ -215,7 +217,7 @@ public static class ModelTools
                 item.Properties.GetProperty(Layoutable.HeightProperty).SetValue(newHeight);
         }
     }
-
+    
     private static ItemPos GetItemPos(PlacementOperation operation, DesignItem designItem)
     {
         var itemPos = new ItemPos { DesignItem = designItem };

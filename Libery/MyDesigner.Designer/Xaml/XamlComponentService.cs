@@ -17,6 +17,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System.Runtime.CompilerServices;
+using System.Linq;
 using Avalonia.Markup.Xaml.MarkupExtensions;
 using MyDesigner.XamlDom;
 
@@ -67,7 +68,7 @@ public sealed class XamlComponentService : IComponentService
             foreach (var value in values)
                 designItem.Properties[value.Key].SetValue(value.Value);
     }
-
+    
     public DesignItem RegisterComponentForDesigner(object component)
     {
         return RegisterComponentForDesigner(null, component);

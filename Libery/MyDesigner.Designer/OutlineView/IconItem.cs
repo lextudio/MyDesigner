@@ -22,14 +22,14 @@ using Avalonia.Media;
 
 namespace MyDesigner.Designer.OutlineView;
 
-public class IconItem : Control
+public class IconItem : TemplatedControl
 {
     public static readonly StyledProperty<IImage> IconProperty =
         AvaloniaProperty.Register<IconItem, IImage>(nameof(Icon));
 
     public static readonly StyledProperty<string> TextProperty =
         AvaloniaProperty.Register<IconItem, string>(nameof(Text));
-
+    protected override Type StyleKeyOverride => typeof(IconItem);
     public IImage Icon
     {
         get => GetValue(IconProperty);

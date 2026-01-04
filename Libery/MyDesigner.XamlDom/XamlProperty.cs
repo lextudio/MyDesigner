@@ -20,6 +20,7 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using System.Xml;
@@ -377,7 +378,7 @@ public sealed class XamlProperty
             }
         }
     }
-
+    
     /// <summary>
     ///     Resets the properties value.
     /// </summary>

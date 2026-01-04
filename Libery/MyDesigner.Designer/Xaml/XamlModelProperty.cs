@@ -197,9 +197,43 @@ internal sealed class XamlModelProperty : DesignItemProperty, IEquatable<XamlMod
             _property.IsSetChanged -= value;
         }
     }
-
-    public override void SetValue(object value)
+    private bool ShouldPreventExtremeValue(dynamic value)
     {
+        try
+        {
+            switch (Name)
+            {
+                case "MaxWidth":
+                case "MaxHeight":
+                    if (value is double doubleValue)
+                    {
+                        return double.IsInfinity(doubleValue) || doubleValue >= double.MaxValue || doubleValue > 100000;
+                    }
+                    break;
+
+                case "TabIndex":
+                    if (value == int.MaxValue)
+                    {
+                        return value == int.MaxValue || value == 2147483647;
+                    }
+                    break;
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error checking extreme value for {Name}: {ex.Message}");
+        }
+
+        return false;
+    }
+    public override void SetValue(object value)
+    { 
+        // „‰⁄  ⁄ÌÌ‰ ﬁÌ„ „ ÿ—›… ·Œ’«∆’ „⁄Ì‰…
+        if (ShouldPreventExtremeValue(value))
+        {
+            System.Diagnostics.Debug.WriteLine($"Preventing extreme value {value} for property {Name}");
+            return;
+        }
         XamlPropertyValue newValue;
         if (value == null)
         {
@@ -231,7 +265,7 @@ internal sealed class XamlModelProperty : DesignItemProperty, IEquatable<XamlMod
         else
             SetValueInternal(newValue);
     }
-
+    
     private void SetValueInternal(XamlPropertyValue newValue)
     {
         var oldValue = _property.PropertyValue;

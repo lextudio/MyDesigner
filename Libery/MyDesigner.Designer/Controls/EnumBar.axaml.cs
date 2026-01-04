@@ -16,19 +16,20 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MyDesigner.Designer.Controls;
 
 public partial class EnumBar : UserControl
 {
     public static readonly StyledProperty<object> ValueProperty =
-        AvaloniaProperty.Register<EnumBar, object>(nameof(Value),null);
+        AvaloniaProperty.Register<EnumBar, object>(nameof(Value), defaultBindingMode: BindingMode.TwoWay);
 
     public static readonly StyledProperty<Panel> ContainerProperty =
         AvaloniaProperty.Register<EnumBar, Panel>(nameof(Container));
@@ -38,18 +39,17 @@ public partial class EnumBar : UserControl
 
     private Type currentEnumType;
 
- 
+   
 
     public EnumBar()
     {
         InitializeComponent();
         ValueProperty.Changed.AddClassHandler<EnumBar>((x, e) => x.OnValueChanged(e));
         ContainerProperty.Changed.AddClassHandler<EnumBar>((x, e) => x.OnContainerChanged(e));
-
         uxPanel = this.FindControl<StackPanel>("uxPanel");
     }
 
-     [SuppressMessage("Microsoft.Naming", "CA1721:PropertyNamesShouldNotMatchGetMethods")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1721:PropertyNamesShouldNotMatchGetMethods")]
     public object Value
     {
         get => GetValue(ValueProperty);
@@ -68,7 +68,7 @@ public partial class EnumBar : UserControl
         set => SetValue(ButtonThemeProperty, value);
     }
 
- 
+  
    
 
     private void OnValueChanged(AvaloniaPropertyChangedEventArgs e)
@@ -86,8 +86,8 @@ public partial class EnumBar : UserControl
                     var b = new EnumButton();
                     b.Value = v;
                     b.Content = Enum.GetName(type, v);
-                    b.Bind(TemplatedControl.ThemeProperty, new Binding("ButtonTheme") { Source = this });
-                    b.PointerPressed += button_PointerPressed;
+                    b.Bind(ButtonThemeProperty, new Binding("ButtonTheme") { Source = this });
+                    b.Click += B_Click;
                     uxPanel.Children.Add(b);
                 }
             }
@@ -95,6 +95,17 @@ public partial class EnumBar : UserControl
             UpdateButtons();
             UpdateContainer();
         }
+    }
+
+    private void B_Click(object sender, RoutedEventArgs e)
+    {
+        Value = (sender as EnumButton).Value;
+        e.Handled = true;
+    }
+
+    private void B_IsCheckedChanged(object sender, RoutedEventArgs e)
+    {
+       
     }
 
     private void OnContainerChanged(AvaloniaPropertyChangedEventArgs e)

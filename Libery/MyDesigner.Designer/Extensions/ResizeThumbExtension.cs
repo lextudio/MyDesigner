@@ -131,6 +131,7 @@ public sealed class ResizeThumbExtension : SelectionAdornerProvider
         drag.Transform = ExtendedItem.GetCompleteAppliedTransformationToView();
 
         oldSize = new Size(ModelTools.GetWidth(ExtendedItem.View), ModelTools.GetHeight(ExtendedItem.View));
+        
         if (resizeBehavior != null)
             operation = PlacementOperation.Start(extendedItemArray, PlacementType.Resize);
         else
@@ -165,7 +166,7 @@ public sealed class ResizeThumbExtension : SelectionAdornerProvider
         var newWidth = Math.Max(0, oldSize.Width + dx);
         var newHeight = Math.Max(0, oldSize.Height + dy);
 
-        if (operation.CurrentContainerBehavior is GridPlacementSupport)
+        if (operation != null && operation.CurrentContainerBehavior is GridPlacementSupport)
         {
             var hor = ExtendedItem.Properties[Control.HorizontalAlignmentProperty]
                 .GetConvertedValueOnInstance<HorizontalAlignment>();

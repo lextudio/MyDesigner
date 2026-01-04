@@ -60,6 +60,11 @@ public class DragListener
                     matrix = matrix.Invert();
                     return matrix.Transform(CurrentPoint - StartPoint);
                 }
+                else
+                {
+                    // إذا لم يكن للمصفوفة معكوس، استخدم الدلتا المباشرة
+                    return CurrentPoint - StartPoint;
+                }
             }
 
             return CurrentPoint - StartPoint;
@@ -119,13 +124,9 @@ public class DragListener
     {
         if (IsDown)
         {
-            var currentPoint = e.GetCurrentPoint(Target as Visual);
-            if (currentPoint != null)
-            {
-                var newPoint = currentPoint.Position;
-                DeltaDelta = newPoint - CurrentPoint;
-                CurrentPoint = newPoint;
-            }
+            var newPoint = e.GetCurrentPoint(null).Position;  // استخدام null للحصول على الموضع المطلق
+            DeltaDelta = newPoint - CurrentPoint;
+            CurrentPoint += DeltaDelta;
 
             if (!IsActive)
             {

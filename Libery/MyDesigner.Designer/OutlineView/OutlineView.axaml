@@ -5,8 +5,17 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Converters:LevelConverter x:Key="LevelConverter" />
 
-    <!-- IconItem Template removed - not supported in Avalonia version -->
-
+    <!-- IconItem Template -->
+    <ControlTheme x:Key="{x:Type Default:IconItem}" TargetType="Default:IconItem">
+        <Setter Property="Template">
+            <ControlTemplate TargetType="Default:IconItem">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{TemplateBinding Icon}" Stretch="None" />
+                    <TextBlock Text="{TemplateBinding Text}" VerticalAlignment="Center" Margin="5,0,0,0" />
+                </StackPanel>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
     <ControlTheme x:Key="ExpandButtonStyle" TargetType="ToggleButton">
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Template">

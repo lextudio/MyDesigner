@@ -25,7 +25,7 @@ public class EnumButton : ToggleButton
 {
     protected override Type StyleKeyOverride => typeof(EnumButton);
     public static readonly StyledProperty<object> ValueProperty =
-        AvaloniaProperty.Register<EnumButton, object>(nameof(Value),false);
+        AvaloniaProperty.Register<EnumButton, object>(nameof(Value));
 
     public object Value
     {

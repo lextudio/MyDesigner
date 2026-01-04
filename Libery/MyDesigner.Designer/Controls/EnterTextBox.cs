@@ -24,32 +24,27 @@ namespace MyDesigner.Designer.Controls;
 
 public class EnterTextBox : TextBox
 {
+
+    protected override Type StyleKeyOverride => typeof(TextBox);
+
     protected override void OnKeyDown(KeyEventArgs e)
     {
         if (e.Key == Key.Enter)
         {
-            // In Avalonia, we need to handle binding updates differently
-            var binding = this.GetBindingObservable(TextProperty);
-            if (binding != null)
+            var b = BindingOperations.GetBindingExpressionBase(this, TextProperty);
+            if (b != null)
             {
-                // Force update the binding source
-                var currentText = Text;
-                Text = "";
-                Text = currentText;
+                b.UpdateSource();
             }
             SelectAll();
         }
         else if (e.Key == Key.Escape)
         {
-            // In Avalonia, we need to handle binding updates differently
-            var binding = this.GetBindingObservable(TextProperty);
-            if (binding != null)
+            var b = BindingOperations.GetBindingExpressionBase(this, TextProperty);
+            if (b != null)
             {
-                // Reset to original value - this is simplified
-                // In a real implementation, you'd need to track the original value
+                b.UpdateTarget();
             }
         }
-        
-        base.OnKeyDown(e);
     }
 }

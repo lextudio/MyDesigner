@@ -142,11 +142,16 @@ public sealed class GrayOutDesignerExceptActiveArea : Control
             var designPanel = grayOut.designPanel;
             var adornerPanelToRemove = grayOut.adornerPanel;
             
-            var timer = DispatcherTimer.Run(() =>
+            // Immediately remove the adorner panel instead of using a timer
+            // This prevents the timer from keeping the application alive
+            try
             {
-                designPanel.Adorners.Remove(adornerPanelToRemove);
-                return false; // Don't repeat
-            }, animationTime);
+                designPanel?.Adorners?.Remove(adornerPanelToRemove);
+            }
+            catch
+            {
+                // Ignore any exceptions during cleanup
+            }
             
             grayOut = null;
         }
