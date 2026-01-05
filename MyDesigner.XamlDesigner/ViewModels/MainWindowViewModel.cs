@@ -1,0 +1,215 @@
+using System;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Dock.Model.Core;
+
+namespace MyDesigner.XamlDesigner.ViewModels
+{
+    public partial class MainViewModel : ViewModelBase
+    {
+        [ObservableProperty]
+        private string _greeting = "Welcome to Avalonia!";
+    }
+    public partial class MainWindowViewModel : ViewModelBase
+    {
+        [ObservableProperty]
+        public string title;
+
+        [ObservableProperty]
+        private ObservableCollection<Document> documents;
+
+        [ObservableProperty]
+        private ObservableCollection<string> recentFiles;
+
+        [ObservableProperty]
+        private Document currentDocument;
+
+        [ObservableProperty]
+        private IDock? layout;
+
+        private DockFactory? _dockFactory;
+
+        public MainWindowViewModel()
+        {
+            // Initialize from Shell
+            Documents = Shell.Instance.Documents;
+            RecentFiles = Shell.Instance.RecentFiles;
+            Title = Shell.Instance.Title;
+
+            // Create dock factory and layout
+            _dockFactory = new DockFactory(this);
+            Layout = _dockFactory.CreateLayout();
+            _dockFactory.InitLayout(Layout);
+
+            // Navigate to Home view like DockMvvmSample
+            if (Layout is { } root)
+            {
+                root.Navigate.Execute("Home");
+            }
+
+            // Subscribe to Shell property changes
+            Shell.Instance.PropertyChanged += Shell_PropertyChanged;
+
+            // Subscribe to Documents collection changes
+            Documents.CollectionChanged += Documents_CollectionChanged;
+
+            // Add existing documents to dock
+            foreach (var document in Documents)
+            {
+                _dockFactory.AddDocument(document);
+            }
+
+            // Initialize commands
+            InitializeCommands();
+        }
+
+        private void Shell_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(Shell.Title):
+                    Title = Shell.Instance.Title;
+                    break;
+                case nameof(Shell.CurrentDocument):
+                    CurrentDocument = Shell.Instance.CurrentDocument;
+                    break;
+            }
+        }
+
+        private void InitializeCommands()
+        {
+            // File Commands
+            NewCommand = new RelayCommand(Shell.Instance.New);
+            OpenCommand = new RelayCommand(Shell.Instance.Open);
+            SaveCommand = new RelayCommand(Shell.Instance.SaveCurrentDocument, () => Shell.Instance.CurrentDocument != null);
+            SaveAsCommand = new RelayCommand(Shell.Instance.SaveCurrentDocumentAs, () => Shell.Instance.CurrentDocument != null);
+            SaveAllCommand = new RelayCommand(() => Shell.Instance.SaveAll(), () => Shell.Instance.CurrentDocument != null);
+            CloseCommand = new RelayCommand(Shell.Instance.CloseCurrentDocument, () => Shell.Instance.CurrentDocument != null);
+            CloseAllCommand = new RelayCommand(() => Shell.Instance.CloseAll(), () => Shell.Instance.CurrentDocument != null);
+            ExitCommand = new RelayCommand(Shell.Instance.Exit);
+
+            // Edit Commands
+            UndoCommand = new RelayCommand(Shell.Instance.Undo, () => Shell.Instance.CurrentDocument != null);
+            RedoCommand = new RelayCommand(Shell.Instance.Redo, () => Shell.Instance.CurrentDocument != null);
+            CutCommand = new RelayCommand(Shell.Instance.Cut, () => Shell.Instance.CurrentDocument != null);
+            CopyCommand = new RelayCommand(Shell.Instance.Copy, () => Shell.Instance.CurrentDocument != null);
+            PasteCommand = new RelayCommand(Shell.Instance.Paste, () => Shell.Instance.CurrentDocument != null);
+            DeleteCommand = new RelayCommand(Shell.Instance.Delete, () => Shell.Instance.CurrentDocument != null);
+            SelectAllCommand = new RelayCommand(Shell.Instance.SelectAll, () => Shell.Instance.CurrentDocument != null);
+            FindCommand = new RelayCommand(Shell.Instance.Find, () => Shell.Instance.CurrentDocument != null);
+            RefreshCommand = new RelayCommand(Shell.Instance.Refresh, () => Shell.Instance.CanRefresh());
+
+            // Test Commands
+            RunCommand = new RelayCommand(Shell.Instance.Run, () => Shell.Instance.CurrentDocument != null);
+            RenderToBitmapCommand = new RelayCommand(Shell.Instance.RenderToBitmap, () => Shell.Instance.CurrentDocument != null);
+        }
+
+        // File Commands
+        public RelayCommand NewCommand { get; private set; }
+        public RelayCommand OpenCommand { get; private set; }
+        public RelayCommand SaveCommand { get; private set; }
+        public RelayCommand SaveAsCommand { get; private set; }
+        public RelayCommand SaveAllCommand { get; private set; }
+        public RelayCommand CloseCommand { get; private set; }
+        public RelayCommand CloseAllCommand { get; private set; }
+        public RelayCommand ExitCommand { get; private set; }
+
+        // Edit Commands
+        public RelayCommand UndoCommand { get; private set; }
+        public RelayCommand RedoCommand { get; private set; }
+        public RelayCommand CutCommand { get; private set; }
+        public RelayCommand CopyCommand { get; private set; }
+        public RelayCommand PasteCommand { get; private set; }
+        public RelayCommand DeleteCommand { get; private set; }
+        public RelayCommand SelectAllCommand { get; private set; }
+        public RelayCommand FindCommand { get; private set; }
+        public RelayCommand RefreshCommand { get; private set; }
+
+        // Test Commands
+        public RelayCommand RunCommand { get; private set; }
+        public RelayCommand RenderToBitmapCommand { get; private set; }
+
+        [RelayCommand]
+        private void OpenRecentFile(string filePath)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(filePath))
+                {
+                    Shell.Instance.Open(filePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                Shell.ReportException(ex);
+            }
+        }
+
+        partial void OnCurrentDocumentChanged(Document value)
+        {
+            // Update Shell's current document
+            if (Shell.Instance.CurrentDocument != value)
+            {
+                Shell.Instance.CurrentDocument = value;
+            }
+
+            // Refresh command states
+            RefreshCommandStates();
+        }
+
+        private void Documents_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (_dockFactory == null) 
+            {
+                System.Diagnostics.Debug.WriteLine("DockFactory is null in Documents_CollectionChanged");
+                return;
+            }
+
+            if (e.Action == NotifyCollectionChangedAction.Add && e.NewItems != null)
+            {
+                foreach (Document document in e.NewItems)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Adding document to dock: {document.Name}");
+                    _dockFactory.AddDocument(document);
+                }
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Remove && e.OldItems != null)
+            {
+                foreach (Document document in e.OldItems)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Removing document from dock: {document.Name}");
+                    _dockFactory.RemoveDocument(document);
+                }
+            }
+            
+            // Refresh command states after document changes
+            RefreshCommandStates();
+        }
+
+        private void RefreshCommandStates()
+        {
+            // Trigger CanExecuteChanged for all commands
+            if (SaveCommand is RelayCommand saveCmd) saveCmd.NotifyCanExecuteChanged();
+            if (SaveAsCommand is RelayCommand saveAsCmd) saveAsCmd.NotifyCanExecuteChanged();
+            if (SaveAllCommand is RelayCommand saveAllCmd) saveAllCmd.NotifyCanExecuteChanged();
+            if (CloseCommand is RelayCommand closeCmd) closeCmd.NotifyCanExecuteChanged();
+            if (CloseAllCommand is RelayCommand closeAllCmd) closeAllCmd.NotifyCanExecuteChanged();
+            
+            if (UndoCommand is RelayCommand undoCmd) undoCmd.NotifyCanExecuteChanged();
+            if (RedoCommand is RelayCommand redoCmd) redoCmd.NotifyCanExecuteChanged();
+            if (CutCommand is RelayCommand cutCmd) cutCmd.NotifyCanExecuteChanged();
+            if (CopyCommand is RelayCommand copyCmd) copyCmd.NotifyCanExecuteChanged();
+            if (PasteCommand is RelayCommand pasteCmd) pasteCmd.NotifyCanExecuteChanged();
+            if (DeleteCommand is RelayCommand deleteCmd) deleteCmd.NotifyCanExecuteChanged();
+            if (SelectAllCommand is RelayCommand selectAllCmd) selectAllCmd.NotifyCanExecuteChanged();
+            if (FindCommand is RelayCommand findCmd) findCmd.NotifyCanExecuteChanged();
+            if (RefreshCommand is RelayCommand refreshCmd) refreshCmd.NotifyCanExecuteChanged();
+            
+            if (RunCommand is RelayCommand runCmd) runCmd.NotifyCanExecuteChanged();
+            if (RenderToBitmapCommand is RelayCommand renderCmd) renderCmd.NotifyCanExecuteChanged();
+        }
+    }
+}

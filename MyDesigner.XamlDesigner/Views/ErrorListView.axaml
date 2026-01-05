@@ -1,0 +1,35 @@
+<ListBox
+    ItemsSource="{Binding Errors}"
+    mc:Ignorable="d"
+    x:Class="MyDesigner.XamlDesigner.Views.FromErrorListView"
+    x:DataType="vm:ErrorListViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:MyDesigner.XamlDesigner"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tools="clr-namespace:MyDesigner.XamlDesigner.Tools"
+    xmlns:vm="clr-namespace:MyDesigner.XamlDesigner.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+     <ListBox.DataContext>
+		<vm:ErrorListViewModel/>
+    </ListBox.DataContext>
+    <ListBox.ItemTemplate>
+        <DataTemplate DataType="tools:XamlError">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Text="{Binding Line}"
+                    TextAlignment="Right"
+                    VerticalAlignment="Center"
+                    Width="25" />
+                <TextBlock Text=" / " VerticalAlignment="Center" />
+                <TextBlock
+                    Text="{Binding Column}"
+                    VerticalAlignment="Center"
+                    Width="25" />
+                <TextBlock Text=" - " />
+                <TextBlock Text="{Binding Message}" VerticalAlignment="Center" />
+            </StackPanel>
+        </DataTemplate>
+    </ListBox.ItemTemplate>
+
+</ListBox>

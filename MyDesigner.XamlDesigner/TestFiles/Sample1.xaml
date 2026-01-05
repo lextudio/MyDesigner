@@ -1,0 +1,12 @@
+<UserControl xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns="https://github.com/avaloniaui">
+  <StackPanel Margin="10">
+    <TextBlock FontSize="16"
+               FontWeight="Bold"
+               Text="Hello Avalonia!" />
+    <Button Content="Click Me" Width="0" Height="0" Margin="0,10,0,0" />
+    <TextBox Height="0"
+             Margin="0,10,0,0"
+             Watermark="Enter text here..." />
+  </StackPanel>
+</UserControl>

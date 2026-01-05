@@ -1,0 +1,11 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:outline="clr-namespace:MyDesigner.Designer.OutlineView;assembly=MyDesigner.Designer"
+             xmlns:local="clr-namespace:MyDesigner.XamlDesigner"
+             x:Class="MyDesigner.XamlDesigner.Views.Tools.BoundOutlineView"
+             x:DataType="local:Shell">
+    
+    <!-- Exact same binding as original: Root="{Binding CurrentDocument.OutlineRoot}" -->
+    <outline:Outline Root="{Binding CurrentDocument.OutlineRoot}" />
+    
+</UserControl>

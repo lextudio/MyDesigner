@@ -5,7 +5,7 @@
     xmlns:Controls="clr-namespace:MyDesigner.Designer.Controls"
     xmlns:Default="clr-namespace:MyDesigner.Designer.OutlineView"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <DockPanel LastChildFill="True">
+    <DockPanel LastChildFill="True" x:DataType="Default:DragTreeViewItem">
         <Controls:ClearableTextBox
             DockPanel.Dock="Top"
             Height="20"

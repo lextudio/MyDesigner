@@ -1,0 +1,10 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:thumb="clr-namespace:MyDesigner.Designer.ThumbnailView;assembly=MyDesigner.Designer"
+             xmlns:vm="clr-namespace:MyDesigner.XamlDesigner.ViewModels.Tools"
+             x:Class="MyDesigner.XamlDesigner.Views.Tools.ThumbnailToolView"
+             x:DataType="vm:ThumbnailToolViewModel">
+    
+    <thumb:ThumbnailView DesignSurface="{Binding DesignSurface}" />
+    
+</UserControl>

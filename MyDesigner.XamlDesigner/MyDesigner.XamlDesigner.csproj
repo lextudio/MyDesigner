@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.3.10" />
+    <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.3.0" />
     <PackageReference Include="Avalonia.Desktop" Version="11.3.10" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.10" />
     <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.10" />
@@ -18,13 +19,21 @@
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageReference Include="CSharpEditor" Version="1.1.6" />
+   
     <PackageReference Include="DialogHost.Avalonia" Version="0.10.3" />
     <PackageReference Include="Dock.Avalonia" Version="11.3.8" />
+    <PackageReference Include="Dock.Avalonia.Themes.Fluent" Version="11.3.8" />
     <PackageReference Include="Dock.Model" Version="11.3.8" />
+    <PackageReference Include="Dock.Model.Mvvm" Version="11.3.8" />
+    <PackageReference Include="Dock.Serializer.Newtonsoft" Version="11.3.8" />
+    <PackageReference Include="StaticViewLocator" Version="0.1.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Libery\CSharpEditor\CSharpEditor.csproj" />
     <ProjectReference Include="..\Libery\MyDesigner.Designer\MyDesigner.Designer.csproj" />
     <ProjectReference Include="..\Libery\MyDesigner.Design\MyDesigner.Design.csproj" />
     <ProjectReference Include="..\Libery\MyDesigner.XamlDom\MyDesigner.XamlDom.csproj" />
@@ -35,5 +44,24 @@
       <Generator></Generator>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Images\**" />
+    <AvaloniaResource Include="Themes\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Commands\" />
+    <Folder Include="Configuration\" />
+    <Folder Include="Converters\" />
+    <Folder Include="EventHandlers\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\FromToolbox.axaml.cs">
+      <DependentUpon>FromToolbox.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

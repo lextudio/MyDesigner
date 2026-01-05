@@ -1,0 +1,10 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:outline="clr-namespace:MyDesigner.Designer.OutlineView;assembly=MyDesigner.Designer"
+             xmlns:vm="clr-namespace:MyDesigner.XamlDesigner.ViewModels.Tools"
+             x:Class="MyDesigner.XamlDesigner.Views.Tools.OutlineToolView"
+             x:DataType="vm:OutlineToolViewModel">
+    
+    <outline:Outline x:Name="uxOutline" />
+    
+</UserControl>

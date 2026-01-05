@@ -1,0 +1,29 @@
+<Button
+    Focusable="False"
+    x:Class="MyDesigner.XamlDesigner.Tools.BitmapButton"
+    x:DataType="tools:BitmapButton"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:local="using:MyDesigner.XamlDesigner"
+    xmlns:tools="clr-namespace:MyDesigner.XamlDesigner.Tools"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Button.Template>
+        <ControlTemplate TargetType="Button">
+            <Image
+                Source="{Binding ImageNormal}"
+                Stretch="None"
+                x:Name="image1" />
+        </ControlTemplate>
+    </Button.Template>
+
+    <Button.Styles>
+        <Style Selector="Button:pointerover /template/ Image#image1">
+            <Setter Property="Source" Value="{Binding ImageHover}" />
+        </Style>
+        <Style Selector="Button:pressed /template/ Image#image1">
+            <Setter Property="Source" Value="{Binding ImagePressed}" />
+        </Style>
+        <Style Selector="Button:disabled /template/ Image#image1">
+            <Setter Property="Source" Value="{Binding ImageDisabled}" />
+        </Style>
+    </Button.Styles>
+</Button>

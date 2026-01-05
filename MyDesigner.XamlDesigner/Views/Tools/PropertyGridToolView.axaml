@@ -1,0 +1,10 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:pg="clr-namespace:MyDesigner.Designer.PropertyGrid;assembly=MyDesigner.Designer"
+             xmlns:vm="clr-namespace:MyDesigner.XamlDesigner.ViewModels.Tools"
+             x:Class="MyDesigner.XamlDesigner.Views.Tools.PropertyGridToolView"
+             x:DataType="vm:PropertyGridToolViewModel">
+    
+    <pg:PropertyGridView x:Name="uxPropertyGridView" />
+    
+</UserControl>

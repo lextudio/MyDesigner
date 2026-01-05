@@ -35,7 +35,7 @@ public class DragTreeViewItem : TreeViewItem
 
     public static readonly StyledProperty<int> LevelProperty =
         AvaloniaProperty.Register<DragTreeViewItem, int>(nameof(Level));
-
+    protected override Type StyleKeyOverride => typeof(DragTreeViewItem);
     private ContentPresenter part_header;
 
     public DragTreeViewItem()

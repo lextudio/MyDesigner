@@ -1,187 +1,335 @@
 using Avalonia.Controls;
-using Avalonia.Controls.Shapes;
-using Avalonia.Input;
-using Avalonia.Layout;
-using MyDesigner.Design;
-using MyDesigner.Designer;
-using MyDesigner.Designer.Services;
-using MyDesigner.Designer.Xaml;
-using MyDesigner.XamlDom;
+using Avalonia.Interactivity;
+using Avalonia.Markup.Xaml;
+using Avalonia.Platform.Storage;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Xml;
+using MyDesigner.Designer.PropertyGrid;
+using MyDesigner.Designer;
+using Avalonia.Input;
+using MyDesigner.XamlDesigner.Configuration;
+using MyDesigner.XamlDesigner.ViewModels;
 
-namespace MyDesigner.XamlDesigner
+namespace MyDesigner.XamlDesigner;
+
+public partial class MainWindow : Window
 {
-    public enum DocumentMode
+    public static MainWindow Instance { get; private set; }
+    public MainWindowViewModel ViewModel { get; }
+
+    public MainWindow()
     {
-        Xaml, Design
+        Instance = this;
+        InitializeShell();
+        
+        // Initialize ViewModel
+        ViewModel = new MainWindowViewModel();
+        DataContext = ViewModel;
+        
+        // Initialize designer metadata
+        BasicMetadata.Register();
+        
+        InitializeComponent();
+        
+        // Setup keyboard shortcuts
+        SetupKeyboardShortcuts();
+        
+        LoadSettings();
     }
-    public partial class MainWindow : Window, INotifyPropertyChanged
+
+    private void SetupKeyboardShortcuts()
     {
-        #region INotifyPropertyChanged Members
+        // Handle global keyboard shortcuts
+        this.KeyDown += MainWindow_KeyDown;
+    }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        void RaisePropertyChanged(string name)
+    private void MainWindow_KeyDown(object? sender, KeyEventArgs e)
+    {
+        // Try to execute keyboard shortcuts
+        if (Commands.KeyGestureHelper.TryExecuteCommand(e, Shell.Instance))
         {
-            if (PropertyChanged != null)
+            e.Handled = true;
+        }
+    }
+
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    private void InitializeShell()
+    {
+        // Setup control references like the original project
+        SetupControlReferences();
+        
+        // Create a new document by default
+            Shell.Instance.New();
+        
+    }
+
+    private void SetupControlReferences()
+    {
+        // This will be called after the dock layout is created
+        // We need to find the PropertyGridView and connect it to Shell
+        Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+        {
+            // Try to find PropertyGridView in the dock layout
+            // Since we're using ViewModels now, the connection is automatic through data binding
+            System.Diagnostics.Debug.WriteLine("Setting up control references...");
+            
+            // The PropertyGrid connection is now handled through ViewModels
+            // PropertyGridViewModel automatically binds to Shell.Instance.CurrentDocument.SelectionService.SelectedItems
+        }, Avalonia.Threading.DispatcherPriority.Loaded);
+    }
+
+    private void LoadSettings()
+    {
+        try
+        {
+            var settings = Settings.Default;
+            
+            WindowState = settings.MainWindowState;
+            
+            if (settings.MainWindowRect.Width > 0 && settings.MainWindowRect.Height > 0)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
+                Position = new Avalonia.PixelPoint((int)settings.MainWindowRect.X, (int)settings.MainWindowRect.Y);
+                Width = settings.MainWindowRect.Width;
+                Height = settings.MainWindowRect.Height;
             }
         }
-
-        #endregion
-        // ����� ������� ������ (Property)
-        public List<ToolBoxItem> ToolBoxItems { get; set; }
-        private void lstControls_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+        catch (Exception ex)
         {
-            var item = lstControls.SelectedItem as ToolBoxItem;
-            if (item != null)
+            Shell.ReportException(ex);
+        }
+    }
+
+    private void SaveSettings()
+    {
+        try
+        {
+            var settings = Settings.Default;
+            
+            settings.MainWindowState = WindowState;
+            
+            if (WindowState == WindowState.Normal)
             {
-                var tool = new CreateComponentTool(item.Type);
-                designSurface.DesignPanel.Context.Services.Tool.CurrentTool = tool;
+                settings.MainWindowRect = new Avalonia.Rect(Position.X, Position.Y, Width, Height);
+            }
+
+            settings.Save();
+        }
+        catch (Exception ex)
+        {
+            Shell.ReportException(ex);
+        }
+    }
+
+    protected override void OnClosing(WindowClosingEventArgs e)
+    {
+        try
+        {
+            if (!Shell.Instance.PrepareExit())
+            {
+                e.Cancel = true;
+                return;
+            }
+            
+            SaveSettings();
+            Shell.Instance.SaveSettings();
+            
+            // Ensure all background processes are stopped
+            CleanupResources();
+        }
+        catch (Exception ex)
+        {
+            Shell.ReportException(ex);
+        }
+        
+        base.OnClosing(e);
+    }
+
+    private void CleanupResources()
+    {
+        try
+        {
+            // Close all documents and their associated resources
+            Shell.Instance.CloseAll();
+            
+            // Stop any running timers or background operations
+            StopAllBackgroundOperations();
+            
+            // Clear any static references
+            Instance = null;
+            
+            // Force garbage collection to clean up any remaining resources
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+            
+            // Force application exit after a short delay
+            Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+            {
+                Environment.Exit(0);
+            }, Avalonia.Threading.DispatcherPriority.Background);
+        }
+        catch (Exception ex)
+        {
+            Shell.ReportException(ex);
+            // Force exit even if cleanup fails
+            Environment.Exit(1);
+        }
+    }
+
+    private void StopAllBackgroundOperations()
+    {
+        try
+        {
+            // Stop any dispatcher timers or background operations
+            // This is a safety measure to ensure all background work is stopped
+            
+            // Clear any pending dispatcher operations
+            Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() => { }, Avalonia.Threading.DispatcherPriority.Background);
+        }
+        catch
+        {
+            // Ignore cleanup errors
+        }
+    }
+
+    public async System.Threading.Tasks.Task<string> AskOpenFileName()
+    {
+        try
+        {
+            var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            {
+                Title = "Open XAML File",
+                AllowMultiple = false,
+                FileTypeFilter = new[]
+                {
+                    new FilePickerFileType("XAML Files")
+                    {
+                        Patterns = new[] { "*.xaml" }
+                    },
+                    new FilePickerFileType("All Files")
+                    {
+                        Patterns = new[] { "*.*" }
+                    }
+                }
+            });
+
+            return files?.FirstOrDefault()?.Path.LocalPath;
+        }
+        catch (Exception ex)
+        {
+            Shell.ReportException(ex);
+            return null;
+        }
+    }
+
+    public async System.Threading.Tasks.Task<string> AskSaveFileName(string initName)
+    {
+        try
+        {
+            var file = await StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+            {
+                Title = "Save XAML File",
+                SuggestedFileName = initName,
+                FileTypeChoices = new[]
+                {
+                    new FilePickerFileType("XAML Files")
+                    {
+                        Patterns = new[] { "*.xaml" }
+                    }
+                }
+            });
+
+            return file?.Path.LocalPath;
+        }
+        catch (Exception ex)
+        {
+            Shell.ReportException(ex);
+            return null;
+        }
+    }
+
+    // Drag and drop support
+    private void OnDragEnter(object sender, DragEventArgs e)
+    {
+        ProcessDrag(e);
+    }
+
+    private void OnDragOver(object sender, DragEventArgs e)
+    {
+        ProcessDrag(e);
+    }
+
+    private void OnDrop(object sender, DragEventArgs e)
+    {
+        if (e.Data.Contains(DataFormats.Files))
+        {
+            var files = e.Data.GetFiles();
+            if (files != null)
+            {
+                ProcessPaths(files.Select(f => f.Path.LocalPath));
             }
         }
+    }
 
-        private void lstControls_PointerPressed(object? sender, Avalonia.Input.PointerPressedEventArgs e)
+    private void ProcessDrag(DragEventArgs e)
+    {
+        e.DragEffects = DragDropEffects.None;
+
+        if (e.Data.Contains(DataFormats.Files))
         {
-            var item = lstControls.SelectedItem as ToolBoxItem;
-            if (item != null)
+            var files = e.Data.GetFiles();
+            if (files != null)
             {
-                var tool = new CreateComponentTool(item.Type);
-                designSurface.DesignPanel.Context.Services.Tool.CurrentTool = tool;
+                foreach (var file in files)
+                {
+                    var path = file.Path.LocalPath;
+                    if (path.EndsWith(".dll", StringComparison.InvariantCultureIgnoreCase) ||
+                        path.EndsWith(".exe", StringComparison.InvariantCultureIgnoreCase) ||
+                        path.EndsWith(".xaml", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        e.DragEffects = DragDropEffects.Copy;
+                        break;
+                    }
+                }
             }
         }
+    }
 
-
-        private static string xaml = @"<Grid 
-xmlns=""https://github.com/avaloniaui""
-xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml""
-xmlns:d=""http://schemas.microsoft.com/expression/blend/2008""
-xmlns:mc=""http://schemas.openxmlformats.org/markup-compatibility/2006""
-mc:Ignorable=""d""
-x:Name=""rootElement""  Background=""White""></Grid>";
-
-        public MainWindow()
+    private void ProcessPaths(System.Collections.Generic.IEnumerable<string> paths)
+    {
+        foreach (var path in paths)
         {
-            InitializeComponent();
-
-
-            // ��� ������� ��������
-            ToolBoxItems = new List<ToolBoxItem>
+            if (path.EndsWith(".dll", StringComparison.InvariantCultureIgnoreCase) ||
+                path.EndsWith(".exe", StringComparison.InvariantCultureIgnoreCase))
             {
-                new ToolBoxItem { Type = typeof(Button) },
-                new ToolBoxItem { Type = typeof(TextBlock) },
-                new ToolBoxItem { Type = typeof(TextBox) },
-                new ToolBoxItem { Type = typeof(Grid) },
-                new ToolBoxItem { Type = typeof(Canvas) },
-                new ToolBoxItem { Type = typeof(ComboBox) },
-                new ToolBoxItem { Type = typeof(ListBox) },
-                new ToolBoxItem { Type = typeof(Avalonia.Controls.Shapes.Path) },
-                new ToolBoxItem { Type = typeof(Line) },
-                new ToolBoxItem { Type = typeof(Rectangle) },
-                new ToolBoxItem { Type = typeof(Border) },
-                new ToolBoxItem { Type = typeof(CheckBox) }
-            };
-
-            // ��� ������� ���� ListBox ������� �� ��� XAML
-            lstControls = this.FindControl<ListBox>("lstControls");
-            if (lstControls != null)
-            {
-                lstControls.ItemsSource = ToolBoxItems;
+                // Add assembly to toolbox
+                Toolbox.Instance.AddAssembly(path);
             }
-
-
-
-
-            BasicMetadata.Register();
-
-            var loadSettings = new XamlLoadSettings();
-            loadSettings.DesignerAssemblies.Add(this.GetType().Assembly);
-
-            DragFileToDesignPanelHelper.Install(designSurface, CreateItemsOnDragCallback);
-            using (var xmlReader = XmlReader.Create(new StringReader(File.ReadAllText("NewFileTemplate.xaml"))))
+            else if (path.EndsWith(".xaml", StringComparison.InvariantCultureIgnoreCase))
             {
-                designSurface.LoadDesigner(xmlReader, loadSettings);
+                Shell.Instance.Open(path);
             }
-            Mode = DocumentMode.Design;
-
-            enumBar.Value= Mode;
         }
+    }
 
-        // ������: ������� ���� ���� DesignItem ����� (Wrapper) ��� �� WPF Designer
-        private DesignItem[] CreateItemsOnDragCallback(DesignContext context, DragEventArgs e)
+    // Event handlers for menu items
+    private void RecentFiles_Click(object sender, RoutedEventArgs e)
+    {
+        try
         {
-            // 1. �� ������� 11+ ������ GetFiles() ����� �� FileDrop
-            var storageItems = e.Data.GetFiles();
-
-            if (storageItems == null || !storageItems.Any())
-                return null;
-
-            // 2. ����� ���� ������ (Control)
-            var textBlock = new TextBlock();
-
-            // 3. ����� ������ �� ���� ������ ����� ��
-            // ������: RegisterComponentForDesigner �� ����� ����� �� ������ ��������
-            var item = context.Services.Component.RegisterComponentForDesigner(textBlock);
-
-            // 4. ����� ������� �������� ���� ������� (AvaloniaProperty)
-            // ������ SetValue ������ ��� ��� DesignItem ��� ��� ���� ��� �� ��� ��� Control
-            item.Properties.GetProperty(Layoutable.WidthProperty).SetValue(300.0);
-            item.Properties.GetProperty(Layoutable.HeightProperty).SetValue(30.0);
-
-            // 5. ������� �������� �������� ���
-            var fileList = storageItems
-                .Select(f => f.Path.LocalPath)
-                .Where(path => !string.IsNullOrEmpty(path))
-                .ToArray();
-
-            string content = string.Join(Environment.NewLine, fileList);
-
-            // ����� �� ��� TextBlock
-            item.Properties.GetProperty(TextBlock.TextProperty).SetValue(content);
-
-            return new[] { item };
-        }
-
-        private async void StartDrag(PointerPressedEventArgs e, ToolBoxItem item)
-        {
-            // ����� ������ �����
-            var dragData = new DataObject();
-            dragData.Set("ObjectControl", item.Type);
-
-            // ��� ����� ����� (������ �� ������� ������� �������)
-            var result = await DragDrop.DoDragDrop(e, dragData, DragDropEffects.Copy);
-        }
-
-        private void Export()
-        {
-            var sb = new StringBuilder();
-            using (var xmlWriter = new XamlXmlWriter(sb))
+            if (e.Source is MenuItem menuItem && menuItem.Header is string path)
             {
-                designSurface.SaveDesigner(xmlWriter);
+                ViewModel.OpenRecentFileCommand.Execute(path);
             }
-            var xamlCode = sb.ToString();
         }
-
-        DocumentMode mode;
-
-        public DocumentMode Mode
+        catch (Exception ex)
         {
-            get
-            {
-                return mode;
-            }
-            set
-            {
-                mode = value;
-                RaisePropertyChanged("Mode");
-            }
+            Shell.ReportException(ex);
         }
     }
 }
