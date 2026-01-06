@@ -58,7 +58,15 @@ namespace MyDesigner.XamlDesigner
                         
                         MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[IntegrationCallback] Shell ready after {waitCount} waits, calling Shell.Instance.OpenWithAssemblies()");
                         MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[IntegrationCallback] Before OpenWithAssemblies: CurrentDocument = {Shell.Instance.CurrentDocument?.FilePath}");
-                        Shell.Instance.OpenWithAssemblies(filePath, assemblyPaths, projectAssemblyName);
+                        
+                        // Marshal the file opening to the UI thread since Document creation involves Avalonia objects
+                        await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
+                        {
+                            MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[IntegrationCallback] [UIThread] Executing OpenWithAssemblies on UI thread");
+                            Shell.Instance.OpenWithAssemblies(filePath, assemblyPaths, projectAssemblyName);
+                            MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[IntegrationCallback] [UIThread] OpenWithAssemblies completed");
+                        });
+                        
                         MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[IntegrationCallback] After OpenWithAssemblies: CurrentDocument = {Shell.Instance.CurrentDocument?.FilePath}");
                         MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[IntegrationCallback] Documents in Shell: {Shell.Instance.Documents.Count}");
                         foreach (var doc in Shell.Instance.Documents)
