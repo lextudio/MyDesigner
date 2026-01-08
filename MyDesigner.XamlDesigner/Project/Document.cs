@@ -98,7 +98,7 @@ namespace MyDesigner.XamlDesigner
                 {
                     UpdateDesign();
                 }
-                else
+                else if (InXamlMode)
                 {
                     UpdateXaml();
 
@@ -112,6 +112,7 @@ namespace MyDesigner.XamlDesigner
                 OnPropertyChanged(nameof(Mode));
                 OnPropertyChanged(nameof(InXamlMode));
                 OnPropertyChanged(nameof(InDesignMode));
+                OnPropertyChanged(nameof(InCodeMode));
             }
         }
 
@@ -247,7 +248,17 @@ namespace MyDesigner.XamlDesigner
             }
         }
 
-        public bool InCodeMode { get; internal set; }
+        public bool InCodeMode 
+        { 
+            get => Mode == DocumentMode.Code;
+            set
+            {
+                if (value && Mode != DocumentMode.Code)
+                {
+                    Mode = DocumentMode.Code;
+                }
+            }
+        }
 
         partial void OnXamlTextChanged(string value)
         {
@@ -271,9 +282,21 @@ namespace MyDesigner.XamlDesigner
                     Text = File.ReadAllText(FilePath);
                     MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Document.ReloadFile] File content loaded ({Text.Length} characters)");
                     MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Document.ReloadFile] First 100 chars: {Text.Substring(0, Math.Min(100, Text.Length)).Replace('\n', ' ').Replace('\r', ' ')}");
-                    MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Document.ReloadFile] Calling UpdateDesign()...");
-                    UpdateDesign();
-                    MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Document.ReloadFile] UpdateDesign() completed");
+                    
+                    // تحديد نوع الملف وتفعيل الوضع المناسب
+                    if (FilePath.EndsWith(".cs", StringComparison.OrdinalIgnoreCase))
+                    {
+                        MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Document.ReloadFile] C# file detected, setting Code mode");
+                        Mode = DocumentMode.Code;
+                    }
+                    else if (FilePath.EndsWith(".xaml", StringComparison.OrdinalIgnoreCase) || 
+                             FilePath.EndsWith(".axaml", StringComparison.OrdinalIgnoreCase))
+                    {
+                        MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Document.ReloadFile] XAML file detected, calling UpdateDesign()...");
+                        UpdateDesign();
+                        MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Document.ReloadFile] UpdateDesign() completed");
+                    }
+                    
                     IsDirty = false;
                 }
                 else

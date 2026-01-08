@@ -139,7 +139,7 @@ public static class FileIconHelper
     
     public static string GetPackageIcon()
     {
-        return $"{AssetBase}/Reference.png";
+        return $"{AssetBase}/nuget_icon.png";
     }
 
     /// <summary>

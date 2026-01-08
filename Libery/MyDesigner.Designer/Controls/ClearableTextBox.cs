@@ -26,7 +26,7 @@ namespace MyDesigner.Designer.Controls;
 
 public class ClearableTextBox : EnterTextBox
 {
-    protected override Type StyleKeyOverride => typeof(ClearableTextBox);
+    protected override Type StyleKeyOverride => typeof(TextBox);
     
     private Button textRemoverButton;
 

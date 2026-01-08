@@ -9,6 +9,7 @@ using MyDesigner.XamlDesigner.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace MyDesigner.XamlDesigner.ViewModels
@@ -72,9 +73,13 @@ namespace MyDesigner.XamlDesigner.ViewModels
             // Initialize commands
             InitializeCommands();
         }
-        private void ProjectExplorer_FileOpenRequested(object? sender, string e)
+        private void ProjectExplorer_FileOpenRequested(object? sender, string filePath)
         {
-
+            if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath))
+            {
+                // فتح الملف باستخدام Shell
+                Shell.Instance.Open(filePath);
+            }
         }
 
    

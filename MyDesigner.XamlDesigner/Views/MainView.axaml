@@ -766,9 +766,9 @@
                                             x:Name="btnRestart">
                                             <StackPanel HorizontalAlignment="Center">
                                                 <Image
-                                                    Height="32"
+                                                    Height="16"
                                                     Source="avares://MyDesigner.XamlDesigner/Assets/Refresh_16x.png"
-                                                    Width="32" />
+                                                    Width="16" />
                                                 <TextBlock
                                                     FontSize="10"
                                                     HorizontalAlignment="Center"

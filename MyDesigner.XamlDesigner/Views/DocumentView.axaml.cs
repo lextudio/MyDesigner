@@ -61,22 +61,55 @@ namespace MyDesigner.XamlDesigner.Views
         {
             if (Document == null) return;
 
-
-            // Initial source code
-            string sourceText = "";
-            using (Stream stream = this.GetType().Assembly.GetManifestResourceStream("MyDesigner.XamlDesigner.HelloWorld.cs"))
-            using (StreamReader reader = new StreamReader(stream))
+            // تحديد نوع الملف وتفعيل الوضع المناسب
+            if (!string.IsNullOrEmpty(Document.FilePath))
             {
-                sourceText = reader.ReadToEnd();
+                if (Document.FilePath.EndsWith(".cs", StringComparison.OrdinalIgnoreCase))
+                {
+                    // تفعيل وضع الكود لملفات C#
+                    Document.Mode = DocumentMode.Code;
+                    await SetupCodeEditor();
+                    return;
+                }
+                else if (Document.FilePath.EndsWith(".xaml", StringComparison.OrdinalIgnoreCase) ||
+                         Document.FilePath.EndsWith(".axaml", StringComparison.OrdinalIgnoreCase))
+                {
+                    // تفعيل وضع التصميم لملفات XAML
+                    Document.Mode = DocumentMode.Design;
+                }
             }
 
-            // Minimal set of references for a console application - double check these with your target framework version - sometimes they change.
+            await SetupXamlEditor();
+        }
+
+        private async Task SetupCodeEditor()
+        {
+            // قراءة محتوى ملف C#
+            string sourceText = "";
+            if (!string.IsNullOrEmpty(Document.FilePath) && File.Exists(Document.FilePath))
+            {
+                sourceText = await File.ReadAllTextAsync(Document.FilePath);
+                // تحديث نص المستند
+                Document.Text = sourceText;
+            }
+            else
+            {
+                // استخدام الملف الافتراضي إذا لم يكن هناك ملف
+                using (Stream stream = this.GetType().Assembly.GetManifestResourceStream("MyDesigner.XamlDesigner.HelloWorld.cs"))
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    sourceText = reader.ReadToEnd();
+                    Document.Text = sourceText;
+                }
+            }
+
+            // إعداد المراجع الأساسية
             string systemRuntime = Path.Combine(Path.GetDirectoryName(typeof(object).Assembly.Location), "System.Runtime.dll");
             CSharpEditor.CachedMetadataReference[] minimalReferences = new CSharpEditor.CachedMetadataReference[]
             {
-                    CSharpEditor.CachedMetadataReference.CreateFromFile(systemRuntime),                                           // System.Runtime.dll
-                    CSharpEditor.CachedMetadataReference.CreateFromFile(typeof(object).Assembly.Location),                        // System.Private.CoreLib.dll
-                    CSharpEditor.CachedMetadataReference.CreateFromFile(typeof(System.Console).Assembly.Location)                 // System.Console.dll
+                CSharpEditor.CachedMetadataReference.CreateFromFile(systemRuntime),
+                CSharpEditor.CachedMetadataReference.CreateFromFile(typeof(object).Assembly.Location),
+                CSharpEditor.CachedMetadataReference.CreateFromFile(typeof(System.Console).Assembly.Location)
             };
 
             Editor = await CSharpEditor.Editor.Create(sourceText, references: minimalReferences, compilationOptions: new CSharpCompilationOptions(OutputKind.ConsoleApplication));
@@ -84,15 +117,13 @@ namespace MyDesigner.XamlDesigner.Views
             Grid.SetRow(Editor, 1);
             this.FindControl<Grid>("MainGrid").Children.Add(Editor);
 
-
+            // إعداد زر التشغيل
             this.FindControl<Button>("RunButton").Click += async (s, e) =>
             {
                 Assembly assembly = (await Editor.Compile(Editor.SynchronousBreak, Editor.AsynchronousBreak)).Assembly;
 
                 if (assembly != null)
                 {
-                    // Run on a separate thread, in order to enable breakpoints in synchronous functions.
-                    // No need to use a separate thread if the entry point is async.
                     new Thread(() =>
                     {
                         assembly.EntryPoint.Invoke(null, new object[assembly.EntryPoint.GetParameters().Length]);
@@ -100,6 +131,18 @@ namespace MyDesigner.XamlDesigner.Views
                 }
             };
 
+            // ربط تغييرات النص مع المستند
+            Editor.TextChanged += (s, e) =>
+            {
+                if (Document != null)
+                {
+                    Document.Text = Editor.Text;
+                }
+            };
+        }
+
+        private async Task SetupXamlEditor()
+        {
             Document.PropertyChanged += Document_PropertyChanged;
             
             // Find controls
@@ -135,10 +178,20 @@ namespace MyDesigner.XamlDesigner.Views
 
         void Document_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (_textEditor == null || Document == null) return;
+            if (Document == null) return;
 
-            if (e.PropertyName == "Text" && Document.Text != _textEditor.Text)
+            // معالجة تغييرات النص لمحرر XAML
+            if (_textEditor != null && e.PropertyName == "Text" && Document.Text != _textEditor.Text)
+            {
                 _textEditor.Text = Document.Text ?? string.Empty;
+            }
+
+            // معالجة تغييرات النص لمحرر C#
+            if (Editor != null && e.PropertyName == "Text" && Document.Text != Editor.Text)
+            {
+              //  Editor.Text = Document.Text ?? string.Empty;
+            }
+
             if (e.PropertyName == "XamlElementLineInfo")
             {
                 try
@@ -148,19 +201,19 @@ namespace MyDesigner.XamlDesigner.Views
                     {
                         try
                         {
-                            if (Document.XamlElementLineInfo != null)
+                            if (Document.XamlElementLineInfo != null && _textEditor != null)
                             {
                                 _textEditor.SelectionLength = 0;
                                 _textEditor.SelectionStart = Document.XamlElementLineInfo.Position;
                                 _textEditor.SelectionLength = Document.XamlElementLineInfo.Length;
                             }
-                            else
+                            else if (_textEditor != null)
                             {
                                 _textEditor.SelectionStart = 0;
                                 _textEditor.SelectionLength = 0;
                             }
 
-                            _textEditor.Focus();
+                            _textEditor?.Focus();
                         }
                         catch (Exception)
                         {

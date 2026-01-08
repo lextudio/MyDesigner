@@ -122,6 +122,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
                        
                         InDesignMode = true;
                         InXamlMode = false;
+                        InCodeMode = false;
                     }
                     break;
                 case DocumentMode.Xaml:
@@ -130,14 +131,16 @@ namespace MyDesigner.XamlDesigner.ViewModels
                          
                         InDesignMode = false;
                         InXamlMode = true;
+                        InCodeMode = false;
                     }
                     break;
                 case DocumentMode.Code:
-                    if (InDesignMode || InXamlMode)
+                    if (!InCodeMode)
                     {
                         
                         InDesignMode = false;
                         InXamlMode = false;
+                        InCodeMode = true;
                     }
                     break;
             }
@@ -164,6 +167,14 @@ namespace MyDesigner.XamlDesigner.ViewModels
             if (value && Mode != DocumentMode.Xaml)
             {
                 Mode = DocumentMode.Xaml;
+            }
+        }
+
+        partial void OnInCodeModeChanged(bool value)
+        {
+            if (value && Mode != DocumentMode.Code)
+            {
+                Mode = DocumentMode.Code;
             }
         }
 

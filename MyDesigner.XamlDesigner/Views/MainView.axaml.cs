@@ -39,9 +39,14 @@ public partial class MainView : UserControl
         PageRegistry.ProjectExplorer.FileOpenRequested += ProjectExplorer_FileOpenRequested;
     }
 
-    private void ProjectExplorer_FileOpenRequested(object? sender, string e)
+    private void ProjectExplorer_FileOpenRequested(object? sender, string filePath)
     {
-
+        if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath))
+        {
+            // فتح الملف باستخدام Shell
+            CurrentFileName = filePath;
+            Shell.Instance.Open(filePath);
+        }
     }
 
     private void ProjectExplorer_FileSelected(object? sender, string filePath)

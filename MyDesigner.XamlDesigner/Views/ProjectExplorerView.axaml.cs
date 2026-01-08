@@ -54,8 +54,9 @@ public partial class ProjectExplorerView : UserControl
             _filePath = selectedItem.FullPath;
             FileSelected?.Invoke(this, _filePath);
 
-            // open XAML
-            if (selectedItem.ItemType == FileItemType.XamlFile && File.Exists(_filePath))
+            // فتح ملفات XAML و C#
+            if ((selectedItem.ItemType == FileItemType.XamlFile || selectedItem.ItemType == FileItemType.CSharpFile) 
+                && File.Exists(_filePath))
             {
                 FileOpenRequested?.Invoke(this, _filePath);
             }
