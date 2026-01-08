@@ -9,7 +9,7 @@ namespace MyDesigner.XamlDesigner.Views;
 
 public partial class MainView : UserControl
 {  
-    // ÍŞæá ÇáãíÒÇÊ ÇáãÍÓäÉ
+    // Ã•ï¬ÃŠÂ· Â«Â·â€ÃŒâ€œÂ«Â  Â«Â·â€Ã•â€â€°â€¦
     private MyDesigner.XamlDom.XamlTypeFinder _typeFinder;
     private MyDesigner.XamlDesigner.Intellisense.XamlCompletionProvider _xamlCompletionProvider;
     private MyDesigner.Common.Controls.SimpleIntelliSenseProvider _simpleIntelliSenseProvider;
@@ -34,26 +34,26 @@ public partial class MainView : UserControl
     {
         try
         {
-            // ÊåíÆÉ ãÒæÏ IntelliSense ááÜ XAML
+            // Â Ã‚ÃŒâˆ†â€¦ â€â€œÃŠÅ“ IntelliSense Â·Â·â€¹ XAML
             var xamlCompletionProvider = new MyDesigner.XamlDesigner.Intellisense.XamlCompletionProvider(_typeFinder ?? CreateDefaultTypeFinder());
 
-            // ÊåíÆÉ ãÒæÏ IntelliSense ÇáÈÓíØ ááÜ C#
+            // Â Ã‚ÃŒâˆ†â€¦ â€â€œÃŠÅ“ IntelliSense Â«Â·Â»â€ÃŒÃ¿ Â·Â·â€¹ C#
             var simpleProvider = new MyDesigner.Common.Controls.SimpleIntelliSenseProvider();
 
-            // ÍİÙ ÇáãÑÇÌÚ ááÇÓÊÎÏÇã áÇÍŞÇğ
+            // Ã•â€ºÅ¸ Â«Â·â€â€”Â«Ãƒâ„ Â·Â·Â«â€Â Å’Å“Â«â€ Â·Â«Ã•ï¬Â«ï£¿
             _xamlCompletionProvider = xamlCompletionProvider;
             _simpleIntelliSenseProvider = simpleProvider;
 
-            System.Diagnostics.Debug.WriteLine("Êã ÊåíÆÉ IntelliSense ÈäÌÇÍ");
+            System.Diagnostics.Debug.WriteLine("Â â€ Â Ã‚ÃŒâˆ†â€¦ IntelliSense Â»â€°ÃƒÂ«Ã•");
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"ÎØÃ İí ÊåíÆÉ IntelliSense: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Å’Ã¿âˆš â€ºÃŒ Â Ã‚ÃŒâˆ†â€¦ IntelliSense: {ex.Message}");
         }
     }
     private MyDesigner.XamlDom.XamlTypeFinder CreateDefaultTypeFinder()
     {
-        // ÅäÔÇÁ TypeFinder ÇİÊÑÇÖí
+        // â‰ˆâ€°â€˜Â«Â¡ TypeFinder Â«â€ºÂ â€”Â«Ã·ÃŒ
         try
         {
             return new MyDesigner.XamlDom.XamlTypeFinder();
@@ -63,10 +63,10 @@ public partial class MainView : UserControl
             return null;
         }
     }
-    // ÏÇáÉ ãÓÇÚÏÉ ááÍÕæá Úáì ÇáäÇİĞÉ ÇáÃÕá
+    // Å“Â«Â·â€¦ â€â€Â«â„Å“â€¦ Â·Â·Ã•â€™ÃŠÂ· â„Â·Ã Â«Â·â€°Â«â€ºâ€“â€¦ Â«Â·âˆšâ€™Â·
     private Window GetParentWindow()
     {
-        // TopLevel åæ ÇáßáÇÓ ÇáÃÓÇÓí ááäæÇİĞ¡ GetTopLevel ÊÈÍË İí ÇáÔÌÑÉ ÇáãÑÆíÉ
+        // TopLevel Ã‚ÃŠ Â«Â·ï¬‚Â·Â«â€ Â«Â·âˆšâ€Â«â€ÃŒ Â·Â·â€°ÃŠÂ«â€ºâ€“Â° GetTopLevel Â Â»Ã•Ã€ â€ºÃŒ Â«Â·â€˜Ãƒâ€”â€¦ Â«Â·â€â€”âˆ†ÃŒâ€¦
         return TopLevel.GetTopLevel(this) as Window;
     }
 
@@ -84,7 +84,7 @@ public partial class MainView : UserControl
         var window = GetParentWindow();
         if (window != null)
         {
-            // ÊÈÏíá Èíä æÖÚ ÇáÊßÈíÑ (Maximized) æÇáæÖÚ ÇáØÈíÚí (Normal)
+            // Â Â»Å“ÃŒÂ· Â»ÃŒâ€° ÃŠÃ·â„ Â«Â·Â ï¬‚Â»ÃŒâ€” (Maximized) ÃŠÂ«Â·ÃŠÃ·â„ Â«Â·Ã¿Â»ÃŒâ„ÃŒ (Normal)
             if (window.WindowState == WindowState.Maximized)
             {
                 window.WindowState = WindowState.Normal;
@@ -99,8 +99,25 @@ public partial class MainView : UserControl
     private void Close_Click(object sender, RoutedEventArgs e)
     {
         var window = GetParentWindow();
-        // ÇÓÊÏÚÇÁ ÏÇáÉ ÇáÅÛáÇŞ Úáì ÇáäÇİĞÉ ÇáÃÕá
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
         window?.Close();
+    }
+
+    private void TitleBar_PointerPressed(object sender, Avalonia.Input.PointerPressedEventArgs e)
+    {
+        // Only start a window drag for left-button presses
+        if (e.GetCurrentPoint(null).Properties.IsLeftButtonPressed)
+        {
+            var window = GetParentWindow();
+            try
+            {
+                window?.BeginMoveDrag(e);
+            }
+            catch
+            {
+                // Some platforms or states may not allow BeginMoveDrag; ignore failures
+            }
+        }
     }
 
 

@@ -29,6 +29,7 @@ namespace MyDesigner.XamlDesigner
         private XamlElementLineInfo xamlElementLineInfo;
         private string[] _assemblyPaths;
         private string _projectAssemblyName;
+        private System.Timers.Timer _autosaveTimer;
 
         [ObservableProperty]
         private string name;
@@ -160,6 +161,41 @@ namespace MyDesigner.XamlDesigner
                 OnPropertyChanged(nameof(IsDirty));
                 OnPropertyChanged(nameof(Name));
                 OnPropertyChanged(nameof(Title));
+                // Trigger autosave debounce when document becomes dirty
+                try
+                {
+                    var autoSaveEnabled = MyDesigner.XamlDesigner.Services.SettingsService.GetSetting("AutoSave", true);
+                    if (autoSaveEnabled && isDirty)
+                    {
+                        if (_autosaveTimer == null)
+                        {
+                            _autosaveTimer = new System.Timers.Timer(1000); // 1s debounce
+                            _autosaveTimer.AutoReset = false;
+                            _autosaveTimer.Elapsed += (s, e) =>
+                            {
+                                try
+                                {
+                                    if (FilePath != null)
+                                    {
+                                        Save();
+                                    }
+                                }
+                                catch { }
+                            };
+                        }
+                        else
+                        {
+                            _autosaveTimer.Stop();
+                        }
+                        _autosaveTimer.Start();
+                    }
+                    else
+                    {
+                        // If autosave disabled, ensure timer is stopped
+                        _autosaveTimer?.Stop();
+                    }
+                }
+                catch { }
             }
         }
 

@@ -11,6 +11,7 @@
     xmlns:dock="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:MyDesigner.XamlDesigner.ViewModels"
+    xmlns:views="clr-namespace:MyDesigner.XamlDesigner.Views"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Design.DataContext>
         <vm:MainWindowViewModel />
@@ -43,7 +44,7 @@
             <GradientStop Color="#FFF8FAFC" Offset="1" />
         </LinearGradientBrush>
 
-
+        <views:InverseBooleanConverter x:Key="InverseBool" />
     </UserControl.Resources>
     <UserControl.Styles>
 
@@ -193,7 +194,8 @@
                     Background="{StaticResource HeaderGradientBrush}"
                     CornerRadius="12,12,0,0"
                     DockPanel.Dock="Top"
-                    Height="40">
+                    Height="40"
+                    PointerPressed="TitleBar_PointerPressed">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -261,7 +263,7 @@
                 </Border>
 
                 <!--  Hidden Menu for Context  -->
-                <Menu DockPanel.Dock="Top" IsVisible="True">
+                <Menu DockPanel.Dock="Top" IsVisible="{Binding IsServerMode, Converter={StaticResource InverseBool}}">
                     <MenuItem Header="File">
 
                         <MenuItem Command="{Binding CloseCommand}" Header="Close" />
@@ -397,7 +399,8 @@
                     BorderBrush="#FFCCCCCC"
                     BorderThickness="0,0,0,1"
                     DockPanel.Dock="Top"
-                    Height="120">
+                    Height="120"
+                    IsVisible="{Binding IsServerMode, Converter={StaticResource InverseBool}}">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                         <StackPanel Margin="8,4" Orientation="Horizontal">
 
