@@ -50,7 +50,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
                     {
                         Proportion = 0.6,
                         ActiveDockable = toolboxTool,
-                        VisibleDockables = CreateList<IDockable>(ProjectExplorerTool, toolboxTool, outlineTool),
+                        VisibleDockables = Program.IsServerMode ? CreateList<IDockable>(toolboxTool, outlineTool) : CreateList<IDockable>(ProjectExplorerTool, toolboxTool, outlineTool),
                         Alignment = Alignment.Left
                     }
                 )
@@ -88,7 +88,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
             var errorsDockPanel = new ToolDock
             {
                 ActiveDockable = errorsTool,
-                VisibleDockables = CreateList<IDockable>(errorsTool),
+                VisibleDockables = Program.IsServerMode ? CreateList<IDockable>() : CreateList<IDockable>(errorsTool),
                 Alignment = Alignment.Bottom,
                 Proportion = 0.2 // Errors take 20% height of the center column
             };

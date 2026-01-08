@@ -8,6 +8,8 @@ namespace MyDesigner.XamlDesigner
 {
     internal class Program
     {
+        public static bool IsServerMode = false;
+
         // Initialization code. Don't use any Avalonia, third-party APIs or any
         // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
         // yet and stuff might break.
@@ -26,7 +28,10 @@ namespace MyDesigner.XamlDesigner
                 }
             }
 
+            // Propagate server mode to the UI so the layout can adapt
             IntegrationServerHost? host = null;
+            // Inform Shell about server mode so UI can hide panes
+            Program.IsServerMode = serve;
             if (serve)
             {
                 try
