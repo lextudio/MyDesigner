@@ -26,17 +26,17 @@ public static class IconResourceHelper
     {
         try
         {
-            // تحقق من وجود Application.Current
+          
             if (Application.Current == null)
                 return null;
 
-            // ابحث في موارد التطبيق مباشرة
+           
             if ((bool)Application.Current.FindResource(iconKey))
             {
                 return Application.Current.FindResource(iconKey) as IImage;
             }
 
-            //// ابحث في MergedDictionaries
+           
             //foreach (var dict in Application.Current.Resources.MergedDictionaries)
             //{
             //    if (dict.Contains(iconKey))
@@ -47,12 +47,12 @@ public static class IconResourceHelper
         }
         catch
         {
-            // في حالة فشل التحميل، نعيد null بصمت
+            
         }
         return null;
     }
 
-    // أيقونات الملفات
+  
     public static IImage? CSharpFileIcon => GetIcon("CSharpFileIcon");
     public static IImage? XamlFileIcon => GetIcon("XamlFileIcon");
     public static IImage? JsonFileIcon => GetIcon("JsonFileIcon");
@@ -61,21 +61,20 @@ public static class IconResourceHelper
     public static IImage? ImageFileIcon => GetIcon("ImageFileIcon");
     public static IImage? ConfigFileIcon => GetIcon("ConfigFileIcon");
 
-    // أيقونات المجلدات والمشاريع
+   
     public static IImage? FolderIcon => GetIcon("FolderIcon");
     public static IImage? FolderOpenIcon => GetIcon("FolderOpenIcon");
     public static IImage? ProjectIcon => GetIcon("ProjectIcon");
     public static IImage? SolutionIcon => GetIcon("SolutionIcon");
 
-    // أيقونات Dependencies
-    public static IImage? DependenciesIcon => GetIcon("DependenciesIcon");
+     public static IImage? DependenciesIcon => GetIcon("DependenciesIcon");
     public static IImage? PackageIcon => GetIcon("PackageIcon");
     public static IImage? AssemblyIcon => GetIcon("AssemblyIcon");
     public static IImage? FrameworkIcon => GetIcon("FrameworkIcon");
     public static IImage? AnalyzerIcon => GetIcon("AnalyzerIcon");
     public static IImage? ReferenceIcon => GetIcon("ReferenceIcon");
 
-    // أيقونات العناصر البرمجية
+   
     public static IImage? NamespaceIcon => GetIcon("NamespaceIcon");
     public static IImage? ClassIcon => GetIcon("ClassIcon");
     public static IImage? InterfaceIcon => GetIcon("InterfaceIcon");
@@ -86,7 +85,7 @@ public static class IconResourceHelper
     public static IImage? EnumIcon => GetIcon("EnumIcon");
     public static IImage? StructIcon => GetIcon("StructIcon");
 
-    // أيقونات الحالة
+   
     public static IImage? WarningIcon => GetIcon("WarningIcon");
     public static IImage? ErrorIcon => GetIcon("ErrorIcon");
     public static IImage? InfoIcon => GetIcon("InfoIcon");

@@ -185,13 +185,13 @@ namespace MyDesigner.XamlDesigner.ViewModels
                 //if (result == true)
                 //{
 
-                //    await dialogService.ShowMessageAsync("�� ����� ����� ���� �����!", "��� - Success");
+                //   
                 //}
             }
             catch (Exception ex)
             {
                 var dialogService = new Services.DialogService();
-                await dialogService.ShowErrorAsync($"��� �� ����� ����� ����: {ex.Message}", "��� - Error");
+                await dialogService.ShowErrorAsync($"Error: {ex.Message}", " Error");
             }
         }
         [RelayCommand]
@@ -199,7 +199,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         {
             try
             {
-                // ��� ����� ������ ��� ����� �������
+             
                 var dialog = new OpenProjectDialog();
                 var result = await dialogService.ShowDialogAsync<OpenProjectDialog>(dialog);
 
@@ -213,7 +213,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
             catch (Exception ex)
             {
                 var dialogService = new Services.DialogService();
-                await dialogService.ShowErrorAsync($"��� �� ��� �������: {ex.Message}", "��� - Error");
+                await dialogService.ShowErrorAsync($"Error: {ex.Message}", " Error");
             }
         }
         partial void OnCurrentDocumentChanged(Document value)
@@ -283,7 +283,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         #region Page Actions - دوال الصفحات
 
         /// <summary>
-        /// إنشاء ملف جديد في المشروع
+        /// CreateNewFile
         /// </summary>
         [RelayCommand]
         private void CreateNewFile()
@@ -292,7 +292,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// إنشاء مجلد جديد في المشروع
+        /// CreateNewFolder
         /// </summary>
         [RelayCommand]
         private void CreateNewFolder()
@@ -301,7 +301,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// حذف العنصر المحدد
+        /// DeleteSelectedItem
         /// </summary>
         [RelayCommand]
         private void DeleteSelectedItem()
@@ -310,7 +310,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// إعادة تسمية العنصر المحدد
+        /// RenameSelectedItem
         /// </summary>
         [RelayCommand]
         private void RenameSelectedItem()
@@ -319,7 +319,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// بناء المشروع
+        /// BuildProjectFromMain
         /// </summary>
         [RelayCommand]
         private void BuildProjectFromMain()
@@ -328,7 +328,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// تشغيل المشروع
+        /// RunProjectFromMain
         /// </summary>
         [RelayCommand]
         private void RunProjectFromMain()
@@ -337,7 +337,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// فتح مشروع موجود
+        /// OpenProjectFromMain
         /// </summary>
         [RelayCommand]
         private async Task OpenProjectFromMain()
@@ -346,7 +346,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// فتح مجلد مشروع
+        /// OpenFolderFromMain
         /// </summary>
         [RelayCommand]
         private async Task OpenFolderFromMain()
@@ -355,7 +355,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// فتح ملف واحد
+        /// OpenFileFromMain
         /// </summary>
         [RelayCommand]
         private async Task OpenFileFromMain()
@@ -364,7 +364,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// معالج الخيارات المختلفة للفتح
+        /// HandleOpenChoice
         /// </summary>
         public async Task HandleOpenChoice(string choice)
         {
@@ -382,7 +382,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
                         await Core.PageActions.OpenFile();
                         break;
                     default:
-                        Console.WriteLine($"خيار غير معروف: {choice}");
+                      
                         break;
                 }
             }
@@ -393,7 +393,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// تحديث عرض المشروع
+        /// RefreshProjectView
         /// </summary>
         [RelayCommand]
         private void RefreshProjectView()
@@ -402,7 +402,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// تحميل ملفات المشروع
+        /// LoadProjectFiles
         /// </summary>
         [RelayCommand]
         private void LoadProjectFiles(string projectPath)
@@ -411,7 +411,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// إغلاق جميع المستندات
+        /// CloseAllDocuments
         /// </summary>
         [RelayCommand]
         private void CloseAllDocuments()
@@ -420,7 +420,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// تحديث شبكة الخصائص
+        /// RefreshPropertyGrid
         /// </summary>
         [RelayCommand]
         private void RefreshPropertyGrid()
@@ -429,7 +429,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// مسح شبكة الخصائص
+        /// ClearPropertyGrid
         /// </summary>
         [RelayCommand]
         private void ClearPropertyGrid()
@@ -438,7 +438,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// تحديث قائمة الأخطاء
+        /// RefreshErrorList
         /// </summary>
         [RelayCommand]
         private void RefreshErrorList()
@@ -447,7 +447,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// مسح قائمة الأخطاء
+        /// ClearErrorList
         /// </summary>
         [RelayCommand]
         private void ClearErrorList()
@@ -456,7 +456,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// تحديث صندوق الأدوات
+        /// RefreshToolbox
         /// </summary>
         [RelayCommand]
         private void RefreshToolbox()
@@ -465,7 +465,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// إضافة تجميعة إلى صندوق الأدوات
+        /// Add AssemblyToToolbox
         /// </summary>
         [RelayCommand]
         private void AddAssemblyToToolbox(string assemblyPath)
@@ -474,7 +474,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// تحديث المخطط التفصيلي
+        /// RefreshOutline
         /// </summary>
         [RelayCommand]
         private void RefreshOutline()
@@ -483,7 +483,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// توسيع جميع عقد المخطط
+        /// ExpandAllOutlineNodes
         /// </summary>
         [RelayCommand]
         private void ExpandAllOutlineNodes()
@@ -492,7 +492,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// طي جميع عقد المخطط
+        /// CollapseAllOutlineNodes
         /// </summary>
         [RelayCommand]
         private void CollapseAllOutlineNodes()
@@ -501,7 +501,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// تحديث المستند الحالي
+        /// RefreshCurrentDocument
         /// </summary>
         [RelayCommand]
         private void RefreshCurrentDocument()

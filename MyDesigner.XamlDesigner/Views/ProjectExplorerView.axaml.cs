@@ -29,8 +29,7 @@ public partial class ProjectExplorerView : UserControl
         InitializeComponent();
         FilesTreeView = this.FindControl<TreeView>("FilesTreeView");
         this.DataContext = App.ExplorerVM;
-        // تسجيل هذا الـ View في الـ Service
-        Services.ProjectService.Instance.RegisterProjectExplorer(this);
+      
     }
   
 
@@ -43,7 +42,7 @@ public partial class ProjectExplorerView : UserControl
     {
         if (DataContext is ProjectExplorerViewViewModel vm)
         {
-            // نمرر الـ StorageProvider الخاص بالنافذة الحالية للـ ViewModel
+          
             await vm.OpenFolderAsync(TopLevel.GetTopLevel(this).StorageProvider);
         }
     }

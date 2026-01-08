@@ -37,17 +37,17 @@ namespace MyDesigner.XamlDesigner.ViewModels
 
         public ProjectExplorerViewViewModel()
         {
-            //   LoadAllProjectsFromSolution("D:\\repos\\Maui\\WpfToPlatforms.sln", "D:\\repos\\Maui");
+           
         }
 
-        // ������ ������� ��� TreeView
+      
         public ObservableCollection<FileItemViewModel> SolutionItems { get; } = new();
 
         public async Task OpenFolderAsync(IStorageProvider storageProvider)
         {
             var options = new FilePickerOpenOptions
             {
-                Title = "���� ��� �������",
+                Title = "Open Project",
                 FileTypeFilter = new[] { new FilePickerFileType("C# Project") { Patterns = new[] { "*.csproj" } } }
             };
 
@@ -57,14 +57,14 @@ namespace MyDesigner.XamlDesigner.ViewModels
                 var csprojPath = result[0].Path.LocalPath;
                 var projectFolder = Path.GetDirectoryName(csprojPath);
 
-                SolutionItems.Clear(); // ���� ����� ��� UI ��������
+                SolutionItems.Clear(); 
                 LoadProject(projectFolder);
             }
         }
 
         private void LoadProject(string folderPath)
         {
-            // ���� ������ �����
+           
             var projectNode = new FileItemViewModel
             {
                 Name = "MyProject (Core)",
@@ -93,27 +93,27 @@ namespace MyDesigner.XamlDesigner.ViewModels
         private string[] xamlCsFiles;
 
         /// <summary>
-        /// تحميل جميع المشاريع من ملف .sln
+        /// LoadAllProjectsFromSolution.sln
         /// </summary>
         public void LoadAllProjectsFromSolution(string slnPath, string folderPath)
         {
             try
             {
-                // ... داخل الدالة الخاصة بك
+             
                 Dispatcher.UIThread.Post(() =>
                 {
 
-                    // مسح العناصر السابقة
+                   
                     SolutionItems.Clear();
-                    // تنبيه الواجهة بأن الخاصية تغيرت (إضافي للضمان)
+                  
                     OnPropertyChanged(nameof(SolutionItems));
-                    // قراءة محتوى ملف .sln
+                   
                     var slnContent = File.ReadAllText(slnPath);
                     var lines = slnContent.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
                     var projectPaths = new List<string>();
 
-                    // البحث عن جميع المشاريع في .sln
+                   
                     foreach (var line in lines)
                     {
                         if (line.StartsWith("Project("))
@@ -142,7 +142,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
                         return;
                     }
 
-                    // إنشاء عقدة Solution
+                 
                     var solutionName = Path.GetFileNameWithoutExtension(slnPath);
                     var solutionItem = new FileItemViewModel
                     {
@@ -156,22 +156,22 @@ namespace MyDesigner.XamlDesigner.ViewModels
 
                     };
 
-                    // تنظيم المشاريع حسب المجلدات
+                 
                     var folderDict = new Dictionary<string, FileItemViewModel>(StringComparer.OrdinalIgnoreCase);
-                    folderDict[""] = solutionItem; // المجلد الجذر هو Solution نفسه
+                    folderDict[""] = solutionItem; 
 
                     foreach (var projectPath in projectPaths)
                     {
                         var relativePath = projectPath.Substring(folderPath.Length + 1);
                         var projectFolder = Path.GetDirectoryName(relativePath)?.Replace("\\", "/").Replace("../", "") ?? "";
 
-                        // إنشاء المجلدات إذا لم تكن موجودة
+                      
                         if (!string.IsNullOrEmpty(projectFolder))
                         {
                             EnsureSolutionFolderExists(folderDict, projectFolder, folderPath, solutionItem);
                         }
 
-                        // تحميل المشروع
+                        // ProjectLoader
                         var loader = new View.ProjectLoader();
                         var projectDir = Path.GetDirectoryName(projectPath);
 
@@ -179,7 +179,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
                         {
                             var projectItem = CreateProjectTreeItem(loader, projectDir);
 
-                            // إضافة المشروع إلى المجلد المناسب
+                          
                             var parentFolder = string.IsNullOrEmpty(projectFolder) ? solutionItem : folderDict[projectFolder];
                             parentFolder.Children.Add(projectItem);
                         }
@@ -189,21 +189,20 @@ namespace MyDesigner.XamlDesigner.ViewModels
                     SolutionItems.Add(solutionItem);
 
 
-                    // تنبيه الواجهة بأن الخاصية تغيرت (إضافي للضمان)
+                   
                     OnPropertyChanged(nameof(SolutionItems));
                 });
 
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"خطأ في تحميل Solution: {ex.Message}");
-                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+              
                 LoadSingleProject(folderPath);
             }
         }
 
         /// <summary>
-        /// التأكد من وجود مجلد Solution في القاموس
+        /// EnsureSolutionFolderExists
         /// </summary>
         private void EnsureSolutionFolderExists(Dictionary<string, FileItemViewModel> folderDict, string path, string basePath, FileItemViewModel solutionItem)
         {
@@ -224,7 +223,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
                     {
 
                         Name = parts[i],
-                        Icon = "avares://MyDesigner.XamlDesigner/Assets/folder_icon.png", // أيقونة المجلد
+                        Icon = "avares://MyDesigner.XamlDesigner/Assets/Open_32x32.png", 
                         FullPath = Path.Combine(basePath, currentPath.Replace("/", "\\")),
                         ItemType = FileItemType.Folder
 
@@ -232,7 +231,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
 
                     folderDict[currentPath] = folderItem;
 
-                    // إضافة المجلد للمجلد الأب
+                  
                     var parentFolder = string.IsNullOrEmpty(parentPath) ? solutionItem : folderDict[parentPath];
                     parentFolder.Children.Add(folderItem);
                 }
@@ -240,20 +239,18 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// تحميل مشروع واحد
+        /// LoadSingleProject
         /// </summary>
         private void LoadSingleProject(string folderPath)
         {
             var loader = new View.ProjectLoader();
             if (!loader.LoadProject(folderPath))
             {
-                //System.Windows.MessageBox.Show("فشل تحميل المشروع. تأكد من وجود ملف .csproj", "خطأ",
-                //    MessageBoxButton.OK, MessageBoxImage.Error);
+                 
                 return;
             }
 
-            Console.WriteLine($"تم تحميل المشروع: {loader.ProjectName}");
-            Console.WriteLine($"نوع المشروع: {loader.ProjectType}");
+          
 
             var projectItem = CreateProjectTreeItem(loader, folderPath);
             SolutionItems.Add(projectItem);
@@ -261,7 +258,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// تحميل مشروع محدد إلى الشجرة
+        /// LoadProjectToTree
         /// </summary>
         public void LoadProjectToTree(string csprojPath)
         {
@@ -272,31 +269,31 @@ namespace MyDesigner.XamlDesigner.ViewModels
 
                 if (!loader.LoadProject(projectFolder))
                 {
-                    Console.WriteLine($"فشل تحميل المشروع: {csprojPath}");
+                   
                     return;
                 }
 
-                Console.WriteLine($"تم تحميل المشروع: {loader.ProjectName}");
+              
 
                 var projectItem = CreateProjectTreeItem(loader, projectFolder);
                 SolutionItems.Add(projectItem);
-                projectItem.IsExpanded = false; // لا نوسع المشاريع الفرعية تلقائياً
+                projectItem.IsExpanded = false; 
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"خطأ في تحميل المشروع {csprojPath}: {ex.Message}");
+                Console.WriteLine($"{csprojPath}: {ex.Message}");
             }
         }
 
         /// <summary>
-        /// إنشاء عنصر شجرة للمشروع
+        /// CreateProjectTreeItem
         /// </summary>
         private FileItemViewModel CreateProjectTreeItem(View.ProjectLoader loader, string folderPath)
         {
-            // التحقق من أن هذا هو المشروع الرئيسي
+            
             bool isStartupProject = Settings.Default.ProjectPath == folderPath;
 
-            // إضافة علامة للمشروع الرئيسي
+            
             string projectDisplayName = isStartupProject
                 ? $"▶ {loader.ProjectName} ({loader.ProjectType})"
                 : $"{loader.ProjectName} ({loader.ProjectType})";
@@ -312,18 +309,18 @@ namespace MyDesigner.XamlDesigner.ViewModels
 
             };
 
-            // تغيير لون الخط للمشروع الرئيسي
+           
             if (isStartupProject)
             {
-                // projectItem.FontWeight = Avalonia.Media.FontWeight.Bold;
+             // projectItem.FontWeight = Avalonia.Media.FontWeight.Bold;
             }
 
-            // إضافة Dependencies
-            Console.WriteLine($"[CreateProjectTreeItem] Adding Dependencies for {loader.ProjectName}");
+            // Adding Dependencies
+          
             AddDependenciesNode(projectItem, folderPath, loader.ProjectType);
-            Console.WriteLine($"[CreateProjectTreeItem] Dependencies added. Project has {projectItem.Children.Count} items");
 
-            // إضافة الملفات في المجلد الرئيسي
+
+            // AddFileToTree
             if (loader.Structure.RootFiles != null)
             {
                 foreach (var file in loader.Structure.RootFiles.OrderBy(f => f.Name))
@@ -332,7 +329,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
                 }
             }
 
-            // إضافة المجلدات
+            // AddFolderToTree
             if (loader.Structure.Folders != null)
             {
                 foreach (var folder in loader.Structure.Folders.OrderBy(f => f.Name))
@@ -341,7 +338,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
                 }
             }
 
-            // تحميل المراجع لمشاريع WPF
+            // LoadProjectReferences to WPF
             if (loader.ProjectType == "WPF")
             {
                 LoadProjectReferences(folderPath);
@@ -353,7 +350,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
 
 
         /// <summary>
-        ///     تحميل المشروع باستخدام ProjectLoader الجديد مع عرض Dependencies
+        ///    LoadFilesToSolution
         /// </summary>
         public void LoadFilesToSolution(string folderPath)
         {
@@ -361,10 +358,10 @@ namespace MyDesigner.XamlDesigner.ViewModels
             {
 
 
-                // مسح العناصر السابقة
+                
                 SolutionItems.Clear();
 
-                // البحث عن ملف .sln
+              
                 var slnFiles = Directory.GetFiles(folderPath, "*.sln", SearchOption.TopDirectoryOnly);
 
 
@@ -372,31 +369,30 @@ namespace MyDesigner.XamlDesigner.ViewModels
                 if (slnFiles.Length > 0)
                 {
 
-                    // إذا وجد ملف .sln، نحمل جميع المشاريع منه
+                  
                     LoadAllProjectsFromSolution(slnFiles[0], folderPath);
                 }
                 else
                 {
 
-                    // إذا لم يوجد .sln، نحمل المشروع الواحد
+                  
                     LoadSingleProject(folderPath);
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"خطأ في LoadFilesToTreeView3: {ex.Message}");
-                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+               
                 //System.Windows.MessageBox.Show($"خطأ في تحميل المشروع:\n{ex.Message}", "خطأ",
                 //    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         /// <summary>
-        ///     إضافة عقدة Dependencies مثل Visual Studio
+        ///  Add Dependencies
         /// </summary>
         private void AddDependenciesNode(FileItemViewModel projectItem, string projectPath, string projectType)
         {
-            Console.WriteLine($"[AddDependenciesNode] Starting for project: {projectPath}, type: {projectType}");
+            
 
             var dependenciesItem = new FileItemViewModel
             {
@@ -409,9 +405,9 @@ namespace MyDesigner.XamlDesigner.ViewModels
 
             };
 
-            Console.WriteLine("[AddDependenciesNode] Dependencies item created");
 
-            // إضافة Frameworks
+
+            // Add Frameworks
             var frameworksItem = new FileItemViewModel
             {
 
@@ -422,7 +418,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
 
             };
 
-            // تحديد Framework بناءً على نوع المشروع
+        
             string frameworkName = projectType switch
             {
                 "WPF" => "Microsoft.WindowsDesktop.App.WPF",
@@ -443,13 +439,13 @@ namespace MyDesigner.XamlDesigner.ViewModels
             frameworksItem.Children.Add(frameworkSubItem);
             dependenciesItem.Children.Add(frameworksItem);
 
-            // إضافة Analyzers
+           
             AddAnalyzersNode(dependenciesItem, projectPath);
 
-            // إضافة Assemblies (التجميعات)
+          
             AddAssembliesNode(dependenciesItem, projectPath);
 
-            // إضافة Packages (NuGet)
+           
             AddPackagesNode(dependenciesItem, projectPath);
 
             // إضافة Projects (مشاريع مرجعية)
@@ -598,21 +594,21 @@ namespace MyDesigner.XamlDesigner.ViewModels
                 var csprojFiles = Directory.GetFiles(projectPath, "*.csproj", SearchOption.TopDirectoryOnly);
                 if (csprojFiles.Length == 0)
                 {
-                    Console.WriteLine("لم يتم العثور على ملف .csproj");
+                   
                     return;
                 }
 
-                Console.WriteLine($"تحميل ملف المشروع: {csprojFiles[0]}");
+               
 
-                // استخدام XDocument للتعامل مع SDK-style projects
+            
                 var xdoc = System.Xml.Linq.XDocument.Load(csprojFiles[0]);
 
-                // البحث عن جميع عناصر PackageReference (بدون namespace)
+             
                 var packageElements = xdoc.Descendants()
                     .Where(e => e.Name.LocalName == "PackageReference")
                     .ToList();
 
-                Console.WriteLine($"عدد حزم NuGet المكتشفة: {packageElements.Count}");
+               
 
                 if (packageElements.Count == 0) return;
 
@@ -636,8 +632,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
                         var packageName = includeAttr.Value;
                         var version = versionAttr?.Value ?? "";
 
-                        // إذا لم يكن هناك Version في Attribute، ابحث في العناصر الفرعية
-                        if (string.IsNullOrEmpty(version))
+                         if (string.IsNullOrEmpty(version))
                         {
                             var versionElement = element.Elements()
                                 .FirstOrDefault(e => e.Name.LocalName == "Version");
@@ -648,8 +643,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
                         }
 
                         var displayName = string.IsNullOrEmpty(version) ? packageName : $"{packageName} ({version})";
-                        Console.WriteLine($"إضافة حزمة: {displayName}");
-
+ 
                         var packageItem = new FileItemViewModel
                         {
 
@@ -665,23 +659,20 @@ namespace MyDesigner.XamlDesigner.ViewModels
 
                 if (packagesItem.Children.Count > 0)
                 {
-                    Console.WriteLine($"تم إضافة {packagesItem.Children.Count} حزمة NuGet");
-                    dependenciesItem.Children.Add(packagesItem);
+                     dependenciesItem.Children.Add(packagesItem);
                 }
                 else
                 {
-                    Console.WriteLine("لم يتم إضافة أي حزم NuGet");
-                }
+                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"خطأ في تحميل Packages: {ex.Message}");
-                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                
             }
         }
 
         /// <summary>
-        ///     إضافة عقدة Projects (مشاريع مرجعية)
+        ///      AddProjectReferencesNode
         /// </summary>
         private void AddProjectReferencesNode(FileItemViewModel dependenciesItem, string projectPath)
         {
@@ -690,17 +681,16 @@ namespace MyDesigner.XamlDesigner.ViewModels
                 var csprojFiles = Directory.GetFiles(projectPath, "*.csproj", SearchOption.TopDirectoryOnly);
                 if (csprojFiles.Length == 0) return;
 
-                Console.WriteLine($"تحميل المشاريع المرجعية من: {csprojFiles[0]}");
-
-                // استخدام XDocument للتعامل مع SDK-style projects
+ 
+                
                 var xdoc = System.Xml.Linq.XDocument.Load(csprojFiles[0]);
 
-                // البحث عن جميع عناصر ProjectReference (بدون namespace)
+               
                 var projectElements = xdoc.Descendants()
                     .Where(e => e.Name.LocalName == "ProjectReference")
                     .ToList();
 
-                Console.WriteLine($"عدد المشاريع المرجعية المكتشفة: {projectElements.Count}");
+                
 
                 if (projectElements.Count == 0) return;
 
@@ -722,12 +712,10 @@ namespace MyDesigner.XamlDesigner.ViewModels
                         var projectName = Path.GetFileNameWithoutExtension(includeAttr.Value);
                         var referencedProjectPath = Path.Combine(projectPath, includeAttr.Value);
 
-                        // تحويل المسار النسبي إلى مسار مطلق
-                        referencedProjectPath = Path.GetFullPath(referencedProjectPath);
+                         referencedProjectPath = Path.GetFullPath(referencedProjectPath);
                         var referencedProjectDir = Path.GetDirectoryName(referencedProjectPath);
 
-                        Console.WriteLine($"إضافة مشروع مرجعي: {projectName}");
-                        Console.WriteLine($"مسار المشروع المرجعي: {referencedProjectDir}");
+                      
 
                         var projectItem = new FileItemViewModel
                         {
@@ -739,16 +727,13 @@ namespace MyDesigner.XamlDesigner.ViewModels
 
                         };
 
-                        // تحليل وإضافة Dependencies للمشروع المرجعي
-                        if (Directory.Exists(referencedProjectDir))
+                         if (Directory.Exists(referencedProjectDir))
                         {
-                            Console.WriteLine($"تحليل Dependencies للمشروع: {projectName}");
-                            AddDependenciesForReferencedProject(projectItem, referencedProjectDir);
+                             AddDependenciesForReferencedProject(projectItem, referencedProjectDir);
                         }
                         else
                         {
-                            Console.WriteLine($"تحذير: مسار المشروع المرجعي غير موجود: {referencedProjectDir}");
-                        }
+                         }
 
                         projectsItem.Children.Add(projectItem);
                     }
@@ -756,29 +741,26 @@ namespace MyDesigner.XamlDesigner.ViewModels
 
                 if (projectsItem.Children.Count > 0)
                 {
-                    Console.WriteLine($"تم إضافة {projectsItem.Children.Count} مشروع مرجعي");
-                    dependenciesItem.Children.Add(projectsItem);
+                     dependenciesItem.Children.Add(projectsItem);
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"خطأ في تحميل Project References: {ex.Message}");
-                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+               
             }
         }
 
         /// <summary>
-        ///     إضافة Dependencies للمشروع المرجعي
+        ///     AddDependenciesForReferencedProject
         /// </summary>
         private void AddDependenciesForReferencedProject(FileItemViewModel projectItem, string projectPath)
         {
             try
             {
-                Console.WriteLine($"[AddDependenciesForReferencedProject] بدء تحليل: {projectPath}");
-
-                // تحديد نوع المشروع
+ 
+                
                 var projectType = DetectProjectType(projectPath);
-                Console.WriteLine($"[AddDependenciesForReferencedProject] نوع المشروع: {projectType}");
+               
 
                 var dependenciesItem = new FileItemViewModel
                 {
@@ -821,33 +803,31 @@ namespace MyDesigner.XamlDesigner.ViewModels
                 frameworksItem.Children.Add(frameworkSubItem);
                 dependenciesItem.Children.Add(frameworksItem);
 
-                // إضافة Analyzers
+              
                 AddAnalyzersNode(dependenciesItem, projectPath);
 
-                // إضافة Assemblies
+           
                 AddAssembliesNode(dependenciesItem, projectPath);
 
-                // إضافة Packages
+              
                 AddPackagesNode(dependenciesItem, projectPath);
 
-                // إضافة Projects المرجعية (بشكل متداخل)
+               
                 AddProjectReferencesNode(dependenciesItem, projectPath);
 
                 if (dependenciesItem.Children.Count > 0)
                 {
-                    Console.WriteLine($"[AddDependenciesForReferencedProject] تم إضافة {dependenciesItem.Children.Count} عنصر Dependencies");
-                    projectItem.Children.Add(dependenciesItem);
+                     projectItem.Children.Add(dependenciesItem);
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"خطأ في إضافة Dependencies للمشروع المرجعي: {ex.Message}");
-                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+               
             }
         }
 
         /// <summary>
-        ///     تحديد نوع المشروع من ملف .csproj
+        ///    DetectProjectType
         /// </summary>
         private string DetectProjectType(string projectPath)
         {
@@ -858,7 +838,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
 
                 var xdoc = System.Xml.Linq.XDocument.Load(csprojFiles[0]);
 
-                // البحث عن PackageReference لتحديد النوع
+              
                 var packages = xdoc.Descendants()
                     .Where(e => e.Name.LocalName == "PackageReference")
                     .Select(e => e.Attribute("Include")?.Value)
@@ -870,13 +850,13 @@ namespace MyDesigner.XamlDesigner.ViewModels
                 if (packages.Any(p => p.Contains("Maui")))
                     return "Maui";
 
-                // البحث عن UseWPF
+                // UseWPF
                 var useWpf = xdoc.Descendants()
                     .FirstOrDefault(e => e.Name.LocalName == "UseWPF");
                 if (useWpf != null && useWpf.Value.Equals("true", StringComparison.OrdinalIgnoreCase))
                     return "WPF";
 
-                // البحث عن TargetFramework
+                // TargetFramework
                 var targetFramework = xdoc.Descendants()
                     .FirstOrDefault(e => e.Name.LocalName == "TargetFramework");
                 if (targetFramework != null && targetFramework.Value.Contains("windows"))
@@ -886,13 +866,13 @@ namespace MyDesigner.XamlDesigner.ViewModels
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"خطأ في تحديد نوع المشروع: {ex.Message}");
+               
                 return "Unknown";
             }
         }
 
         /// <summary>
-        ///     إضافة مجلد إلى الشجرة
+        ///    AddFolderToTree
         /// </summary>
         private void AddFolderToTree(FileItemViewModel parentItem, View.ProjectFolder folder, string projectType)
         {
@@ -906,7 +886,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
 
             };
 
-            // إضافة الملفات في المجلد
+           
             if (folder.Files != null)
             {
                 foreach (var file in folder.Files.OrderBy(f => f.Name))
@@ -915,7 +895,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
                 }
             }
 
-            // إضافة المجلدات الفرعية
+            
             if (folder.SubFolders != null)
             {
                 foreach (var subFolder in folder.SubFolders.OrderBy(f => f.Name))
@@ -928,14 +908,14 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        ///     إضافة ملف إلى الشجرة
+        ///     AddFileToTree
         /// </summary>
         private void AddFileToTree(FileItemViewModel parentItem, View.ProjectFile file, string projectType)
         {
-            // استخدام FileIconHelper للحصول على الأيقونة المناسبة
+          
             string icon = Helpers.FileIconHelper.GetIconForFile(file.Name);
 
-            // تحديد نوع العنصر بناءً على نوع الملف
+          
             FileItemType itemType = file.Type switch
             {
                 View.ProjectFileType.CSharp => FileItemType.CSharpFile,
@@ -955,7 +935,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
 
             };
 
-            // إذا كان ملف XAML/AXAML وله ملف code-behind، أضفه كعنصر فرعي
+           
             if (file.Type == View.ProjectFileType.Xaml && file.CodeBehindFile != null)
             {
                 var csItem = new FileItemViewModel
@@ -974,7 +954,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        ///     تحميل جميع المراجع والمكتبات من المشروع
+        ///   LoadProjectReferences
         /// </summary>
         private void LoadProjectReferences(string projectPath)
         {
@@ -985,7 +965,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"خطأ في تحميل المراجع: {ex.Message}");
+                
             }
         }
 
