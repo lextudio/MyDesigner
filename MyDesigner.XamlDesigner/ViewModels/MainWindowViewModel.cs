@@ -31,6 +31,8 @@ namespace MyDesigner.XamlDesigner.ViewModels
         private IDock? layout;
 
         private DockFactory? _dockFactory;
+        [ObservableProperty]
+        private bool isServerMode;
 
         public MainWindowViewModel()
         {
@@ -43,6 +45,9 @@ namespace MyDesigner.XamlDesigner.ViewModels
             _dockFactory = new DockFactory(this);
             Layout = _dockFactory.CreateLayout();
             _dockFactory.InitLayout(Layout);
+
+            // Expose server mode to view bindings
+            IsServerMode = Program.IsServerMode;
 
             // Navigate to Home view like DockMvvmSample
             if (Layout is { } root)
@@ -180,13 +185,13 @@ namespace MyDesigner.XamlDesigner.ViewModels
                 //if (result == true)
                 //{
                   
-                //    await dialogService.ShowMessageAsync("Êã ÅäÔÇÁ ãÔÑæÚ ÌÏíÏ ÈäÌÇÍ!", "äÌÍ - Success");
+                //    await dialogService.ShowMessageAsync("ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½!", "ï¿½ï¿½ï¿½ - Success");
                 //}
             }
             catch (Exception ex)
             {
                 var dialogService = new Services.DialogService();
-                await dialogService.ShowErrorAsync($"ÎØÃ Ýí ÅäÔÇÁ ãÔÑæÚ ÌÏíÏ: {ex.Message}", "ÎØÃ - Error");
+                await dialogService.ShowErrorAsync($"ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: {ex.Message}", "ï¿½ï¿½ï¿½ - Error");
             }
         }
         [RelayCommand]
@@ -194,7 +199,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
         {
             try
             {
-                // ÚÑÖ äÇÝÐÉ ÇÎÊíÇÑ äæÚ ÇáÝÊÍ ÇáÌÏíÏÉ
+                // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 var dialog = new OpenProjectDialog();
                 var result = await dialogService.ShowDialogAsync<OpenProjectDialog>(dialog);
                
@@ -219,7 +224,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
             catch (Exception ex)
             {
                 var dialogService = new Services.DialogService();
-                await dialogService.ShowErrorAsync($"ÎØÃ Ýí ÝÊÍ ÇáãÔÑæÚ: {ex.Message}", "ÎØÃ - Error");
+                await dialogService.ShowErrorAsync($"ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: {ex.Message}", "ï¿½ï¿½ï¿½ - Error");
             }
         }
         partial void OnCurrentDocumentChanged(Document value)
