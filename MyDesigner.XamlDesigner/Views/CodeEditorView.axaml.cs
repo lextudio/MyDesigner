@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
@@ -75,8 +76,9 @@ namespace MyDesigner.XamlDesigner.Views
                 CSharpEditor.CachedMetadataReference.CreateFromFile(systemRuntime),
                 CSharpEditor.CachedMetadataReference.CreateFromFile(typeof(object).Assembly.Location),
                 CSharpEditor.CachedMetadataReference.CreateFromFile(typeof(Button).Assembly.Location),
-                  CSharpEditor.CachedMetadataReference.CreateFromFile(typeof(ColorPicker).Assembly.Location),
-                    
+                CSharpEditor.CachedMetadataReference.CreateFromFile(typeof(ColorPicker).Assembly.Location),
+                CSharpEditor.CachedMetadataReference.CreateFromFile(typeof(AvaloniaObject).Assembly.Location),
+
             };
 
             try
