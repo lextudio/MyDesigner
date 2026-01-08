@@ -133,23 +133,7 @@
             </StackPanel>
         </StackPanel>
 
-        <!--  Template Selection  -->
-        <StackPanel Grid.Row="4" Margin="0,0,0,15">
-            <TextBlock
-                FontSize="13"
-                FontWeight="SemiBold"
-                Foreground="#FF333333"
-                Margin="0,0,0,8"
-                Text="Template " />
-            <ComboBox
-                FontSize="13"
-                SelectedIndex="0"
-                x:Name="TemplateComboBox">
-                <ComboBoxItem Content="Empty Application" />
-                <ComboBoxItem Content="MVVM Application " />
-                <ComboBoxItem Content="User Control Library" />
-            </ComboBox>
-        </StackPanel>
+       
 
         <!--  Preview Area  -->
         <Border

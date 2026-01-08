@@ -26,13 +26,13 @@ namespace MyDesigner.XamlDesigner
             }
             return data switch
             {
-                ProjectExplorerDock vm5 => new ProjectExplorerView (),
+                ProjectExplorerDock vm => new ProjectExplorerView (),
                 PropertyGridDock vm => new Views.Tools.PropertyGridToolView(),
-                ToolboxDock vm1 => new FromToolboxView { DataContext = Toolbox.Instance },
-                ErrorsToolDock vm2 => new Views.Tools.ErrorListToolView(),
-                OutlineDock vm3 => new Views.Tools.OutlineToolView(),
-                ThumbnailDock vm4 => new Views.Tools.ThumbnailToolView(),
-                DocumentDock vm5 => new DocumentView(),
+                ToolboxDock vm => new FromToolboxView { DataContext = Toolbox.Instance },
+                ErrorsToolDock vm => new Views.Tools.ErrorListToolView(),
+                OutlineDock vm => new Views.Tools.OutlineToolView(),
+                ThumbnailDock vm => new Views.Tools.ThumbnailToolView(),
+                DocumentDock vm => new DocumentView(),
             
                 _ => new TextBlock { Text = $"View not found for {data.GetType().Name}" }
             };

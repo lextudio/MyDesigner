@@ -26,15 +26,15 @@ public class ProjectLoader
         {
             ProjectPath = projectPath;
 
-            // البحث عن ملف .csproj أو .sln
+          
             var csprojFiles = Directory.GetFiles(projectPath, "*.csproj", SearchOption.TopDirectoryOnly);
             var slnFiles = Directory.GetFiles(projectPath, "*.sln", SearchOption.TopDirectoryOnly);
             
-            // إذا لم يتم العثور على أي ملف مشروع
+          
             if (csprojFiles.Length == 0 && slnFiles.Length == 0)
                 return false;
 
-            // تفضيل ملف .csproj إذا كان موجوداً
+          
             string projectFile;
             string actualProjectPath;
             
@@ -45,7 +45,7 @@ public class ProjectLoader
             }
             else
             {
-                // إذا كان هناك فقط .sln، نبحث عن .csproj في المجلدات الفرعية
+              
                 var allCsprojFiles = Directory.GetFiles(projectPath, "*.csproj", SearchOption.AllDirectories);
                 if (allCsprojFiles.Length > 0)
                 {
@@ -54,11 +54,11 @@ public class ProjectLoader
                 }
                 else
                 {
-                    // إذا لم نجد .csproj، نستخدم اسم .sln
+                   
                     ProjectName = Path.GetFileNameWithoutExtension(slnFiles[0]);
                     projectFile = slnFiles[0];
                     
-                    // في حالة .sln فقط، نحاول تحميل المشروع بشكل أساسي
+                   
                     return LoadFromSolutionFile(slnFiles[0], projectPath);
                 }
             }
@@ -66,13 +66,13 @@ public class ProjectLoader
             ProjectName = Path.GetFileNameWithoutExtension(projectFile);
             ProjectPath = actualProjectPath;
 
-            // تحليل ملف المشروع
+           
             var doc = XDocument.Load(projectFile);
 
-            // تحديد نوع المشروع
+          
             ProjectType = DetermineProjectType(doc, actualProjectPath);
 
-            // بناء بنية المشروع
+          
             Structure = BuildProjectStructure(doc, actualProjectPath);
 
       
@@ -83,7 +83,7 @@ public class ProjectLoader
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"خطأ في تحميل المشروع: {ex.Message}");
+           
             return false;
         }
     }
@@ -110,21 +110,21 @@ public class ProjectLoader
 
         if (packageRefs.Any(p => p.Contains("Microsoft.Maui")))
             return "Maui";
-        // فحص نوع المشروع من TargetFramework
+      
         if (targetFramework.Contains("net") && targetFramework.Contains("android"))
             return "Maui";
 
         if (targetFramework.Contains("net") && targetFramework.Contains("ios"))
             return "Maui";
 
-        // فحص SDK
+        // SDK
         var sdk = root.Attribute("Sdk")?.Value ?? "";
         if (sdk.Contains("Microsoft.NET.Sdk.Maui"))
             return "Maui";
 
       
 
-        // فحص ملفات XAML في المشروع
+     
         var xamlFiles = Directory.GetFiles(projectPath, "*.xaml", SearchOption.AllDirectories)
             .Where(f => !f.EndsWith(".xaml.cs", StringComparison.OrdinalIgnoreCase))
             .ToArray();
@@ -134,7 +134,7 @@ public class ProjectLoader
         if (axamlFiles.Any())
             return "Avalonia";
 
-        // فحص محتوى ملفات XAML
+      
         foreach (var xamlFile in xamlFiles.Take(3))
         {
             try
@@ -162,23 +162,23 @@ public class ProjectLoader
             Folders = new List<ProjectFolder>()
         };
 
-        // الحصول على جميع الملفات المضمنة في المشروع
+      
         var root = doc.Root;
         if (root == null) return structure;
 
-        // التحقق من نوع المشروع (SDK-style أم القديم)
+      
         var isSdkStyle = root.Attribute("Sdk") != null;
 
-        Console.WriteLine($"نوع المشروع: {(isSdkStyle ? "SDK-style" : "Legacy")}");
+     
 
-        // جمع الملفات من ItemGroup
+        //  ItemGroup
         var itemGroups = root.Descendants("ItemGroup");
         var includedFiles = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var excludedFiles = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         foreach (var itemGroup in itemGroups)
         {
-            // جمع الملفات المستبعدة (Remove)
+            //  (Remove)
             var removedItems = itemGroup.Elements()
                 .Where(e => e.Name.LocalName == "Compile" ||
                            e.Name.LocalName == "Page" ||
@@ -189,7 +189,7 @@ public class ProjectLoader
 
             foreach (var item in removedItems)
             {
-                // دعم wildcards مثل "Visual Studio\**\*.cs"
+                //  wildcards  "Visual Studio\**\*.cs"
                 if (item.Contains("**"))
                 {
                     var pattern = item.Replace("**\\", "").Replace("**", "");
@@ -201,7 +201,7 @@ public class ProjectLoader
                 }
             }
 
-            // جمع ملفات Page, Compile, None, Content المضمنة صراحةً
+            //   Page, Compile, None, Content  
             var items = itemGroup.Elements()
                 .Where(e => e.Name.LocalName == "Page" ||
                            e.Name.LocalName == "Compile" ||
@@ -214,7 +214,7 @@ public class ProjectLoader
 
             foreach (var item in items)
             {
-                // دعم wildcards مثل "View\**\*.cs"
+                //  wildcards  "View\**\*.cs"
                 if (item.Contains("**"))
                 {
                     var expandedFiles = ExpandWildcard(item, projectPath);
@@ -230,18 +230,17 @@ public class ProjectLoader
             }
         }
 
-        // في مشاريع SDK-style، يتم تضمين جميع الملفات تلقائياً
+        //  SDK-style، 
         if (isSdkStyle)
         {
-            Console.WriteLine("مشروع SDK-style: سيتم تضمين جميع الملفات تلقائياً...");
             var allFiles = GetAllProjectFiles(projectPath);
 
-            // إضافة جميع الملفات ما عدا المستبعدة
+          
             foreach (var file in allFiles)
             {
                 var shouldExclude = false;
 
-                // التحقق من الاستبعاد
+               
                 foreach (var excludePattern in excludedFiles)
                 {
                     if (file.Contains(excludePattern.Replace("\\", "/")))
@@ -259,18 +258,16 @@ public class ProjectLoader
         }
         else if (includedFiles.Count == 0)
         {
-            // مشاريع قديمة بدون ملفات محددة
-            Console.WriteLine("لم يتم العثور على ملفات في .csproj، سيتم البحث في المجلدات...");
+          
             includedFiles = GetAllProjectFiles(projectPath);
         }
 
-        Console.WriteLine($"عدد الملفات المضمنة: {includedFiles.Count}");
-        Console.WriteLine($"عدد الملفات المستبعدة: {excludedFiles.Count}");
+     
 
-        // بناء الهيكل الشجري
+     
         BuildFolderStructure(structure, includedFiles, projectPath);
 
-        Console.WriteLine($"تم بناء الهيكل: {structure.RootFiles?.Count ?? 0} ملفات جذرية، {structure.Folders?.Count ?? 0} مجلدات");
+       
 
         return structure;
     }
@@ -284,7 +281,7 @@ public class ProjectLoader
 
         try
         {
-            // استخراج المجلد والامتداد من النمط
+           
             var parts = pattern.Split(new[] { "**" }, StringSplitOptions.None);
             var baseFolder = parts[0].Replace("\\", "").Replace("/", "");
             var filePattern = parts.Length > 1 ? parts[1].Replace("\\", "") : "*.*";
@@ -303,7 +300,7 @@ public class ProjectLoader
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"خطأ في توسيع wildcard {pattern}: {ex.Message}");
+            Console.WriteLine($"wildcard {pattern}: {ex.Message}");
         }
 
         return files;
@@ -317,35 +314,35 @@ public class ProjectLoader
         var files = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var extensions = new[] { ".xaml", ".axaml", ".cs", ".config", ".json", ".xml", ".resx", ".settings" };
 
-        // استبعاد المجلدات
+     
         var excludeFolders = new[] { "bin", "obj", ".vs", "packages", "node_modules", ".git" };
 
-        // استبعاد ملفات generated فقط
+     
         var excludeFiles = new[] { "App.g.i.cs", "App.g.cs" };
 
-        Console.WriteLine($"البحث عن الملفات في: {projectPath}");
+      
 
         try
         {
-            // البحث عن جميع الملفات
+          
             var allFiles = Directory.GetFiles(projectPath, "*.*", SearchOption.AllDirectories)
                 .Where(f =>
                 {
-                    // استبعاد المجلدات المحددة
+                  
                     var relativePath = f.Substring(projectPath.Length + 1);
                     if (excludeFolders.Any(folder => relativePath.StartsWith(folder + "\\") || relativePath.Contains("\\" + folder + "\\")))
                         return false;
 
-                    // استبعاد الملفات المحددة
+                  
                     var fileName = Path.GetFileName(f);
                     if (excludeFiles.Any(ef => fileName.Equals(ef, StringComparison.OrdinalIgnoreCase)))
                         return false;
 
-                    // استبعاد ملفات generated
+                 
                     if (fileName.EndsWith(".g.cs") || fileName.EndsWith(".g.i.cs"))
                         return false;
 
-                    // قبول الامتدادات المحددة فقط
+                  
                     var ext = Path.GetExtension(f).ToLower();
                     return extensions.Contains(ext);
                 })
@@ -356,13 +353,13 @@ public class ProjectLoader
                 files.Add(file);
             }
 
-            Console.WriteLine($"إجمالي الملفات المكتشفة: {files.Count}");
+          
 
-            // عرض بعض الملفات للتشخيص
+         
             var sampleFiles = files.Take(10).ToList();
             if (sampleFiles.Any())
             {
-                Console.WriteLine("أمثلة على الملفات المكتشفة:");
+              
                 foreach (var file in sampleFiles)
                 {
                     Console.WriteLine($"  - {file}");
@@ -371,7 +368,7 @@ public class ProjectLoader
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"خطأ في البحث عن الملفات: {ex.Message}");
+          
             Console.WriteLine($"Stack Trace: {ex.StackTrace}");
         }
 
@@ -385,7 +382,7 @@ public class ProjectLoader
     {
         var folderDict = new Dictionary<string, ProjectFolder>(StringComparer.OrdinalIgnoreCase);
 
-        // إنشاء المجلد الجذر
+       
         var rootFolder = new ProjectFolder
         {
             Name = "",
@@ -395,12 +392,10 @@ public class ProjectLoader
         };
         folderDict[""] = rootFolder;
 
-        Console.WriteLine($"بناء بنية المجلدات من {files.Count} ملف...");
-
-        // تحديد ملفات code-behind التي يجب تخطيها (لأنها ستُضاف تحت ملفات XAML)
+      
         var codeBehindFiles = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        // البحث عن جميع ملفات XAML/AXAML وتحديد ملفات code-behind المرتبطة بها
+     
         foreach (var file in files)
         {
             var fileName = Path.GetFileName(file);
@@ -408,7 +403,7 @@ public class ProjectLoader
             if (fileName.EndsWith(".xaml", StringComparison.OrdinalIgnoreCase) &&
                 !fileName.EndsWith(".xaml.cs", StringComparison.OrdinalIgnoreCase))
             {
-                // البحث عن ملف .xaml.cs المقابل
+            
                 var csFile = file + ".cs";
                 if (files.Contains(csFile))
                 {
@@ -418,7 +413,7 @@ public class ProjectLoader
             else if (fileName.EndsWith(".axaml", StringComparison.OrdinalIgnoreCase) &&
                      !fileName.EndsWith(".axaml.cs", StringComparison.OrdinalIgnoreCase))
             {
-                // البحث عن ملف .axaml.cs المقابل
+              
                 var csFile = file + ".cs";
                 if (files.Contains(csFile))
                 {
@@ -427,7 +422,7 @@ public class ProjectLoader
             }
         }
 
-        Console.WriteLine($"تم تحديد {codeBehindFiles.Count} ملف code-behind");
+     
 
         var processedFiles = 0;
         var skippedFiles = 0;
@@ -436,10 +431,10 @@ public class ProjectLoader
         {
             var fullPath = Path.Combine(projectPath, file.Replace("/", "\\"));
 
-            // التحقق من وجود الملف
+         
             if (!File.Exists(fullPath))
             {
-                Console.WriteLine($"تحذير: الملف غير موجود: {fullPath}");
+             
                 skippedFiles++;
                 continue;
             }
@@ -447,24 +442,23 @@ public class ProjectLoader
             var fileName = Path.GetFileName(file);
             var directory = Path.GetDirectoryName(file)?.Replace("\\", "/") ?? "";
 
-            // تخطي ملفات معينة
+          
             if (ShouldSkipFile(fileName))
             {
                 skippedFiles++;
                 continue;
             }
 
-            // تخطي ملفات code-behind (ستُضاف تحت ملفات XAML)
+           
             if (codeBehindFiles.Contains(file))
             {
                 skippedFiles++;
                 continue;
             }
 
-            // إنشاء المجلدات إذا لم تكن موجودة
             EnsureFolderExists(folderDict, directory, projectPath);
 
-            // إضافة الملف
+         
             var folder = folderDict[directory];
             var projectFile = new ProjectFile
             {
@@ -474,7 +468,7 @@ public class ProjectLoader
                 Type = GetFileType(fileName)
             };
 
-            // إذا كان ملف XAML/AXAML، ابحث عن ملف code-behind وأضفه كملف فرعي
+          
             if (projectFile.Type == ProjectFileType.Xaml)
             {
                 var csFile = file + ".cs";
@@ -498,15 +492,11 @@ public class ProjectLoader
             processedFiles++;
         }
 
-        Console.WriteLine($"تمت معالجة {processedFiles} ملف، تم تخطي {skippedFiles} ملف");
-
-        // بناء الهيكل النهائي
+      
         structure.Folders = rootFolder.SubFolders;
         structure.RootFiles = rootFolder.Files;
 
-        // عرض إحصائيات
-        Console.WriteLine($"الملفات الجذرية: {structure.RootFiles?.Count ?? 0}");
-        Console.WriteLine($"المجلدات: {structure.Folders?.Count ?? 0}");
+     
     }
 
     /// <summary>
@@ -537,7 +527,7 @@ public class ProjectLoader
 
                 folderDict[currentPath] = folder;
 
-                // إضافة المجلد للمجلد الأب
+              
                 if (folderDict.ContainsKey(parentPath))
                 {
                     folderDict[parentPath].SubFolders.Add(folder);
@@ -570,12 +560,12 @@ public class ProjectLoader
     /// </summary>
     private bool ShouldSkipFile(string fileName)
     {
-        // تخطي ملفات generated
+      
         if (fileName.EndsWith(".g.cs", StringComparison.OrdinalIgnoreCase) ||
             fileName.EndsWith(".g.i.cs", StringComparison.OrdinalIgnoreCase))
             return true;
 
-        // تخطي ملفات .csproj و .sln
+      
         if (fileName.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase) ||
             fileName.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
             return true;
@@ -590,17 +580,17 @@ public class ProjectLoader
     {
         try
         {
-            // قراءة محتوى ملف .sln للبحث عن مشاريع .csproj
+           
             var slnContent = File.ReadAllText(slnPath);
             var lines = slnContent.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
-            // البحث عن سطور Project
+          
             foreach (var line in lines)
             {
                 if (line.StartsWith("Project("))
                 {
-                    // تحليل السطر للحصول على مسار .csproj
-                    // مثال: Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectName", "ProjectName\ProjectName.csproj", "{GUID}"
+                   
+                    //  Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectName", "ProjectName\ProjectName.csproj", "{GUID}"
                     var parts = line.Split(new[] { '"' }, StringSplitOptions.RemoveEmptyEntries);
                     if (parts.Length >= 5)
                     {
@@ -610,13 +600,13 @@ public class ProjectLoader
                             var csprojFullPath = Path.Combine(projectPath, csprojRelativePath);
                             if (File.Exists(csprojFullPath))
                             {
-                                // تحميل المشروع من ملف .csproj
+                            
                                 ProjectName = Path.GetFileNameWithoutExtension(csprojFullPath);
                                 var doc = XDocument.Load(csprojFullPath);
                                 ProjectType = DetermineProjectType(doc, Path.GetDirectoryName(csprojFullPath));
                                 Structure = BuildProjectStructure(doc, Path.GetDirectoryName(csprojFullPath));
 
-                                // حفظ الإعدادات
+                             
                                 Settings.Default.ProjectName = ProjectName;
                                 Settings.Default.ProjectPath = projectPath;
                                 Settings.Default.ProjectType = ProjectType;
@@ -629,7 +619,7 @@ public class ProjectLoader
                 }
             }
 
-            // إذا لم نجد أي مشروع، نحاول البحث في المجلدات الفرعية
+          
             var allCsprojFiles = Directory.GetFiles(projectPath, "*.csproj", SearchOption.AllDirectories);
             if (allCsprojFiles.Length > 0)
             {
@@ -652,55 +642,8 @@ public class ProjectLoader
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"خطأ في تحميل ملف .sln: {ex.Message}");
+          
             return false;
         }
     }
-}
-
-/// <summary>
-/// Project structure
-/// </summary>
-public class ProjectStructure
-{
-    public string Name { get; set; }
-    public string Type { get; set; }
-    public string RootPath { get; set; }
-    public List<ProjectFolder> Folders { get; set; }
-    public List<ProjectFile> RootFiles { get; set; }
-}
-
-/// <summary>
-/// Folder in project
-/// </summary>
-public class ProjectFolder
-{
-    public string Name { get; set; }
-    public string FullPath { get; set; }
-    public List<ProjectFile> Files { get; set; }
-    public List<ProjectFolder> SubFolders { get; set; }
-}
-
-/// <summary>
-/// File in project
-/// </summary>
-public class ProjectFile
-{
-    public string Name { get; set; }
-    public string FullPath { get; set; }
-    public string RelativePath { get; set; }
-    public ProjectFileType Type { get; set; }
-    public ProjectFile CodeBehindFile { get; set; } // ملف code-behind المرتبط (للملفات XAML/AXAML)
-}
-
-/// <summary>
-/// File types
-/// </summary>
-public enum ProjectFileType
-{
-    Xaml,
-    CSharp,
-    Config,
-    Json,
-    Other
 }

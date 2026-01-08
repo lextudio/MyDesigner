@@ -11,8 +11,7 @@ using static MyDesigner.XamlDesigner.ViewModels.ProjectExplorerViewViewModel;
 namespace MyDesigner.XamlDesigner.Converters
 {
     /// <summary>
-    /// محول لتحويل FileItem إلى أيقونة متجهية
-    /// يعمل مع كل من ItemType والمسار القديم للتوافق الكامل
+    ///FileItemToIconConverter
     /// </summary>
     public class FileItemToIconConverter : IValueConverter
     {
@@ -22,37 +21,37 @@ namespace MyDesigner.XamlDesigner.Converters
             {
                 if (value is FileItem fileItem)
                 {
-                    // أولاً: محاولة الحصول على الأيقونة بناءً على ItemType
+                    
                     IImage? icon = GetIconByItemType(fileItem.ItemType);
 
-                    // ثانياً: إذا لم نجد، حاول بناءً على اسم الملف
+                  
                     if (icon == null && !string.IsNullOrEmpty(fileItem.Name))
                     {
                         icon = FileIconHelper.GetVectorIconForFile(fileItem.Name);
                     }
 
-                    // ثالثاً: إذا لم نجد، حاول تحميل الصورة القديمة من المسار
+                   
                     if (icon == null && !string.IsNullOrEmpty(fileItem.Icon))
                     {
                         try
                         {
-                            // محاولة تحميل الصورة القديمة
+                           
                             var uri = new Uri(fileItem.Icon, UriKind.RelativeOrAbsolute);
                             icon = new Bitmap(uri.ToString());
                         }
                         catch
                         {
-                            // تجاهل الأخطاء
+                          
                         }
                     }
 
-                    // إرجاع الأيقونة أو null
+                  
                     return icon;
                 }
             }
             catch
             {
-                // في حالة أي خطأ، أرجع null
+               
             }
 
             return null;

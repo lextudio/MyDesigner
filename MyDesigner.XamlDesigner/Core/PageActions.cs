@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace MyDesigner.XamlDesigner.Core
 {
     /// <summary>
-    /// دوال مباشرة للوصول إلى دوال الصفحات المختلفة
+    ///
     /// Direct functions to access different page functions
     /// </summary>
     public static class PageActions
@@ -12,7 +12,7 @@ namespace MyDesigner.XamlDesigner.Core
         #region ProjectExplorer Actions 
 
         /// <summary>
-        /// فتح مجلد مشروع
+        /// OpenProjectFolder
         /// </summary>
         public static void OpenProjectFolder()
         {
@@ -26,26 +26,10 @@ namespace MyDesigner.XamlDesigner.Core
             }
         }
 
-        /// <summary>
-        /// تحميل ملفات إلى الحل
-        /// </summary>
-        public static void LoadFilesToSolution(string projectPath)
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(projectPath))
-                {
-                  //  PageRegistry.ProjectExplorer?.LoadFilesToSolution(projectPath);
-                }
-            }
-            catch (Exception ex)
-            {
-                Shell.ReportException(ex);
-            }
-        }
+
 
         /// <summary>
-        /// فتح مشروع موجود
+        /// OpenProject
         /// </summary>
         public static async Task OpenProject()
         {
@@ -63,7 +47,7 @@ namespace MyDesigner.XamlDesigner.Core
         }
 
         /// <summary>
-        /// فتح مجلد مشروع
+        /// OpenFolderDialog
         /// </summary>
         public static async Task OpenFolderDialog()
         {
@@ -81,7 +65,7 @@ namespace MyDesigner.XamlDesigner.Core
         }
 
         /// <summary>
-        /// فتح ملف واحد
+        /// OpenFile
         /// </summary>
         public static async Task OpenFile()
         {
@@ -89,7 +73,7 @@ namespace MyDesigner.XamlDesigner.Core
             {
                 if (PageRegistry.ProjectExplorer != null)
                 {
-                   // await PageRegistry.ProjectExplorer.OpenFile();
+                   await PageRegistry.ProjectExplorer.OpenFile();
                 }
             }
             catch (Exception ex)
@@ -98,83 +82,9 @@ namespace MyDesigner.XamlDesigner.Core
             }
         }
 
-        /// <summary>
-        /// إنشاء ملف جديد
-        /// </summary>
-        public static void CreateNewFile()
-        {
-            try
-            {
-              //  PageRegistry.ProjectExplorer?.NewFile();
-            }
-            catch (Exception ex)
-            {
-                Shell.ReportException(ex);
-            }
-        }
 
         /// <summary>
-        /// إنشاء مجلد جديد
-        /// </summary>
-        public static void CreateNewFolder()
-        {
-            try
-            {
-              //  PageRegistry.ProjectExplorer?.NewFolder();
-            }
-            catch (Exception ex)
-            {
-                Shell.ReportException(ex);
-            }
-        }
-
-        /// <summary>
-        /// حذف العنصر المحدد
-        /// </summary>
-        public static void DeleteSelectedItem()
-        {
-            try
-            {
-              //  PageRegistry.ProjectExplorer?.DeleteSelectedItem();
-            }
-            catch (Exception ex)
-            {
-                Shell.ReportException(ex);
-            }
-        }
-
-        /// <summary>
-        /// إعادة تسمية العنصر المحدد
-        /// </summary>
-        public static void RenameSelectedItem()
-        {
-            try
-            {
-              //  PageRegistry.ProjectExplorer?.RenameSelectedItem();
-            }
-            catch (Exception ex)
-            {
-                Shell.ReportException(ex);
-            }
-        }
-
-        /// <summary>
-        /// تحديث عرض المشروع
-        /// </summary>
-        public static void RefreshProjectView()
-        {
-            try
-            {
-              //  PageRegistry.ProjectExplorer?.RefreshView();
-            }
-            catch (Exception ex)
-            {
-                Shell.ReportException(ex);
-            }
-        }
-
-        /// <summary>
-        /// إغلاق جميع المستندات
+        /// CloseAllDocuments
         /// </summary>
         public static void CloseAllDocuments()
         {
@@ -188,35 +98,7 @@ namespace MyDesigner.XamlDesigner.Core
             }
         }
 
-        /// <summary>
-        /// بناء المشروع
-        /// </summary>
-        public static void BuildProject()
-        {
-            try
-            {
-              //  PageRegistry.ProjectExplorer?.BuildProject();
-            }
-            catch (Exception ex)
-            {
-                Shell.ReportException(ex);
-            }
-        }
-
-        /// <summary>
-        /// تشغيل المشروع
-        /// </summary>
-        public static void RunProject()
-        {
-            try
-            {
-               // PageRegistry.ProjectExplorer?.RunProject();
-            }
-            catch (Exception ex)
-            {
-                Shell.ReportException(ex);
-            }
-        }
+      
 
         #endregion
 
@@ -238,7 +120,7 @@ namespace MyDesigner.XamlDesigner.Core
         }
 
         /// <summary>
-        /// مسح شبكة الخصائص
+        /// ClearPropertyGrid
         /// </summary>
         public static void ClearPropertyGrid()
         {
@@ -254,16 +136,16 @@ namespace MyDesigner.XamlDesigner.Core
 
         #endregion
 
-        #region ErrorList Actions - دوال قائمة الأخطاء
+        #region ErrorList Actions - 
 
         /// <summary>
-        /// تحديث قائمة الأخطاء
+        /// RefreshErrorList
         /// </summary>
         public static void RefreshErrorList()
         {
             try
             {
-              //  PageRegistry.ErrorList?.RefreshErrors();
+               // PageRegistry.ErrorList?.RefreshErrors();
             }
             catch (Exception ex)
             {
@@ -272,7 +154,7 @@ namespace MyDesigner.XamlDesigner.Core
         }
 
         /// <summary>
-        /// مسح قائمة الأخطاء
+        /// ClearErrorList
         /// </summary>
         public static void ClearErrorList()
         {
@@ -287,7 +169,7 @@ namespace MyDesigner.XamlDesigner.Core
         }
 
         /// <summary>
-        /// الانتقال إلى الخطأ المحدد
+        /// GoToError
         /// </summary>
         public static void GoToError(int errorIndex)
         {
@@ -303,10 +185,10 @@ namespace MyDesigner.XamlDesigner.Core
 
         #endregion
 
-        #region Toolbox Actions - دوال صندوق الأدوات
+        #region Toolbox Actions 
 
         /// <summary>
-        /// تحديث صندوق الأدوات
+        /// RefreshToolbox
         /// </summary>
         public static void RefreshToolbox()
         {
@@ -321,7 +203,7 @@ namespace MyDesigner.XamlDesigner.Core
         }
 
         /// <summary>
-        /// إضافة تجميعة إلى صندوق الأدوات
+        /// AddAssemblyToToolbox
         /// </summary>
         public static void AddAssemblyToToolbox(string assemblyPath)
         {
@@ -340,10 +222,10 @@ namespace MyDesigner.XamlDesigner.Core
 
         #endregion
 
-        #region Outline Actions - دوال المخطط التفصيلي
+        #region Outline Actions 
 
         /// <summary>
-        /// تحديث المخطط التفصيلي
+        /// RefreshOutline
         /// </summary>
         public static void RefreshOutline()
         {
@@ -358,7 +240,7 @@ namespace MyDesigner.XamlDesigner.Core
         }
 
         /// <summary>
-        /// توسيع جميع العقد في المخطط
+        /// ExpandAllOutlineNodes
         /// </summary>
         public static void ExpandAllOutlineNodes()
         {
@@ -373,7 +255,7 @@ namespace MyDesigner.XamlDesigner.Core
         }
 
         /// <summary>
-        /// طي جميع العقد في المخطط
+        /// CollapseAllOutlineNodes
         /// </summary>
         public static void CollapseAllOutlineNodes()
         {
@@ -389,10 +271,10 @@ namespace MyDesigner.XamlDesigner.Core
 
         #endregion
 
-        #region MainView Actions - دوال العرض الرئيسي
+        #region MainView Actions 
 
         /// <summary>
-        /// تحديث المستند الحالي
+        /// RefreshCurrentDocument
         /// </summary>
         public static void RefreshCurrentDocument()
         {
@@ -407,7 +289,7 @@ namespace MyDesigner.XamlDesigner.Core
         }
 
         /// <summary>
-        /// تطبيق التغييرات على المستند
+        /// ApplyDocumentChanges
         /// </summary>
         public static void ApplyDocumentChanges()
         {
@@ -422,7 +304,7 @@ namespace MyDesigner.XamlDesigner.Core
         }
 
         /// <summary>
-        /// التراجع في المستند
+        /// UndoDocumentChange
         /// </summary>
         public static void UndoDocumentChange()
         {
@@ -437,7 +319,7 @@ namespace MyDesigner.XamlDesigner.Core
         }
 
         /// <summary>
-        /// الإعادة في المستند
+        /// RedoDocumentChange
         /// </summary>
         public static void RedoDocumentChange()
         {
@@ -453,10 +335,10 @@ namespace MyDesigner.XamlDesigner.Core
 
         #endregion
 
-        #region Utility Actions - دوال مساعدة
+        #region Utility Actions  
 
         /// <summary>
-        /// التحقق من توفر صفحة معينة
+        /// IsPageAvailable
         /// </summary>
         public static bool IsPageAvailable(string pageName)
         {
@@ -464,7 +346,7 @@ namespace MyDesigner.XamlDesigner.Core
         }
 
         /// <summary>
-        /// تنفيذ دالة آمنة على صفحة معينة
+        /// SafeExecute
         /// </summary>
         public static void SafeExecute(Action action, string actionName = "Unknown")
         {
@@ -474,12 +356,12 @@ namespace MyDesigner.XamlDesigner.Core
             }
             catch (Exception ex)
             {
-                Shell.ReportException(new Exception($"خطأ في تنفيذ {actionName}: {ex.Message}", ex));
+                Shell.ReportException(new Exception($"{actionName}: {ex.Message}", ex));
             }
         }
 
         /// <summary>
-        /// تنفيذ دالة غير متزامنة آمنة
+        /// SafeExecuteAsync
         /// </summary>
         public static async Task SafeExecuteAsync(Func<Task> action, string actionName = "Unknown")
         {
@@ -492,12 +374,12 @@ namespace MyDesigner.XamlDesigner.Core
             }
             catch (Exception ex)
             {
-                Shell.ReportException(new Exception($"خطأ في تنفيذ {actionName}: {ex.Message}", ex));
+                Shell.ReportException(new Exception($" {actionName}: {ex.Message}", ex));
             }
         }
 
         /// <summary>
-        /// معالج الخيارات المختلفة للفتح
+        /// HandleOpenChoice
         /// </summary>
         public static async Task HandleOpenChoice(string choice)
         {

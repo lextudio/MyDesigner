@@ -973,19 +973,19 @@ namespace MyDesigner.XamlDesigner.ViewModels
 
 
 
-        #region Project Management Functions - دوال إدارة المشروع
+        #region Project Management Functions 
 
 
 
         /// <summary>
-        /// إنشاء ملف جديد
+        /// NewFile
         /// </summary>
         public void NewFile()
         {
             try
             {
-                // سيتم تنفيذها لاحقاً - إنشاء ملف جديد
-                Console.WriteLine("إنشاء ملف جديد");
+               
+                
             }
             catch (Exception ex)
             {
@@ -994,14 +994,13 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// إنشاء مجلد جديد
+        /// NewFolder
         /// </summary>
         public void NewFolder()
         {
             try
             {
-                // سيتم تنفيذها لاحقاً - إنشاء مجلد جديد
-                Console.WriteLine("إنشاء مجلد جديد");
+                
             }
             catch (Exception ex)
             {
@@ -1010,14 +1009,13 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// حذف العنصر المحدد
+        /// DeleteSelectedItem
         /// </summary>
         public void DeleteSelectedItem()
         {
             try
             {
-                // سيتم تنفيذها لاحقاً - حذف العنصر المحدد
-                Console.WriteLine("حذف العنصر المحدد");
+                
             }
             catch (Exception ex)
             {
@@ -1026,14 +1024,13 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// إعادة تسمية العنصر المحدد
+        /// RenameSelectedItem
         /// </summary>
         public void RenameSelectedItem()
         {
             try
             {
-                // سيتم تنفيذها لاحقاً - إعادة تسمية العنصر المحدد
-                Console.WriteLine("إعادة تسمية العنصر المحدد");
+                 
             }
             catch (Exception ex)
             {
@@ -1042,15 +1039,15 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// تحديث عرض المشروع
+        /// RefreshView
         /// </summary>
         public void RefreshView()
         {
             try
             {
-                // تحديث الشجرة
+               
                 SolutionItems.Clear();
-                Console.WriteLine("تم تحديث عرض المشروع");
+               
             }
             catch (Exception ex)
             {
@@ -1059,14 +1056,13 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// بناء المشروع
+        /// BuildProject
         /// </summary>
         public void BuildProject()
         {
             try
             {
-                // سيتم تنفيذها لاحقاً - بناء المشروع
-                Console.WriteLine("بناء المشروع");
+                
             }
             catch (Exception ex)
             {
@@ -1075,14 +1071,13 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
 
         /// <summary>
-        /// تشغيل المشروع
+        /// RunProject
         /// </summary>
         public void RunProject()
         {
             try
             {
-                // سيتم تنفيذها لاحقاً - تشغيل المشروع
-                Console.WriteLine("تشغيل المشروع");
+                
             }
             catch (Exception ex)
             {

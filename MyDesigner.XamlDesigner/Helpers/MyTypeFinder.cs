@@ -32,28 +32,28 @@ public class MyTypeFinder : XamlTypeFinder
 
     public override Assembly LoadAssembly(string name)
     {
-        // البحث في التجميعات المسجلة
+       
         foreach (var registeredAssembly in RegisteredAssemblies)
         {
             if (registeredAssembly.GetName().Name == name)
                 return registeredAssembly;
         }
 
-        // البحث في صندوق الأدوات
+        
         foreach (var assemblyNode in Toolbox.Instance.AssemblyNodes)
         {
             if (assemblyNode.Name == name)
                 return assemblyNode.Assembly;
         }
 
-        // محاولة تحميل التجميع من النظام
+      
         try
         {
             return Assembly.Load(name);
         }
         catch
         {
-            // محاولة تحميل من المسار الحالي
+            
             try
             {
                 var currentDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -65,7 +65,7 @@ public class MyTypeFinder : XamlTypeFinder
             }
             catch
             {
-                // تجاهل الأخطاء
+                
             }
         }
 
@@ -121,7 +121,7 @@ public class MyTypeFinder : XamlTypeFinder
                 }
             }
 
-            // تسجيل تجميعات .NET الأساسية
+            
             var systemAssemblies = new[]
             {
                 "System.Runtime",
@@ -140,14 +140,14 @@ public class MyTypeFinder : XamlTypeFinder
                 }
                 catch
                 {
-                    // تجاهل الأخطاء للتجميعات الاختيارية
+                    
                 }
             }
 
-            // تسجيل التجميع الحالي
+           
             typeFinder.RegisterAssembly(Assembly.GetExecutingAssembly());
 
-            // تسجيل تجميعات المشروع
+            
             var projectAssemblies = new[]
             {
                 "MyDesigner.Design",
@@ -184,7 +184,7 @@ public class MyTypeFinder : XamlTypeFinder
     {
         try
         {
-            // إعادة تحميل التجميعات من صندوق الأدوات
+            
             foreach (var assemblyNode in Toolbox.Instance.AssemblyNodes)
             {
                 if (!RegisteredAssemblies.Contains(assemblyNode.Assembly))
@@ -207,7 +207,7 @@ public class MyTypeFinder : XamlTypeFinder
     {
         try
         {
-            // البحث في جميع التجميعات المسجلة
+            
             foreach (var assembly in RegisteredAssemblies)
             {
                 try
@@ -220,7 +220,7 @@ public class MyTypeFinder : XamlTypeFinder
                     if (type != null)
                         return type;
 
-                    // البحث في جميع الأنواع إذا لم يتم العثور على النوع بالاسم الكامل
+                    
                     var types = assembly.GetTypes();
                     var matchingType = types.FirstOrDefault(t => t.Name == typeName);
                     if (matchingType != null)
@@ -228,7 +228,7 @@ public class MyTypeFinder : XamlTypeFinder
                 }
                 catch
                 {
-                    // تجاهل أخطاء التجميعات التي لا يمكن الوصول إليها
+                   
                 }
             }
         }
@@ -261,7 +261,7 @@ public class MyTypeFinder : XamlTypeFinder
                 }
                 catch
                 {
-                    // تجاهل أخطاء التجميعات
+                   
                 }
             }
         }

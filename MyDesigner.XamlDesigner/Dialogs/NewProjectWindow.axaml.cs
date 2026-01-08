@@ -42,7 +42,7 @@ public partial class NewProjectWindow : UserControl
             var projectLocation = projectLocationTextBox.Text ?? "C:\\Projects";
             var fullPath = Path.Combine(projectLocation, projectName);
 
-            previewTextBlock.Text = $"Project will be created at: {fullPath}\n”Ì „ ≈‰‘«¡ «·„‘—Ê⁄ ›Ì: {fullPath}";
+            previewTextBlock.Text = $"Project will be created at: {fullPath}\n: {fullPath}";
         }
     }
 

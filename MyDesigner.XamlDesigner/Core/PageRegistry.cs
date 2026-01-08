@@ -6,12 +6,12 @@ using MyDesigner.XamlDesigner.Views.Tools;
 namespace MyDesigner.XamlDesigner.Core
 {
     /// <summary>
-    /// سجل بسيط للصفحات للوصول المباشر إلى دوالها
+    ///  
     /// Simple page registry for direct access to page functions
     /// </summary>
     public static class PageRegistry
     {
-        // مراجع مباشرة للصفحات
+     
         public static ProjectExplorerView? ProjectExplorer { get; set; }
         public static MainView? MainView { get; set; }
         public static PropertyGridToolView? PropertyGrid { get; set; }
@@ -19,12 +19,12 @@ namespace MyDesigner.XamlDesigner.Core
         public static FromToolboxView? Toolbox { get; set; }
         public static OutlineToolView? Outline { get; set; }
 
-        // أحداث للإشعار بالتغييرات
+       
         public static event Action<string>? PageRegistered;
         public static event Action<string>? PageUnregistered;
 
         /// <summary>
-        /// تسجيل صفحة ProjectExplorer
+        /// RegisterProjectExplorer
         /// </summary>
         public static void RegisterProjectExplorer(ProjectExplorerView view)
         {
@@ -33,7 +33,7 @@ namespace MyDesigner.XamlDesigner.Core
         }
 
         /// <summary>
-        /// تسجيل صفحة MainView
+        /// RegisterMainView
         /// </summary>
         public static void RegisterMainView(MainView view)
         {
@@ -42,7 +42,7 @@ namespace MyDesigner.XamlDesigner.Core
         }
 
         /// <summary>
-        /// تسجيل صفحة PropertyGrid
+        /// RegisterPropertyGrid
         /// </summary>
         public static void RegisterPropertyGrid(PropertyGridToolView view)
         {
@@ -51,7 +51,7 @@ namespace MyDesigner.XamlDesigner.Core
         }
 
         /// <summary>
-        /// تسجيل صفحة ErrorList
+        /// RegisterErrorList
         /// </summary>
         public static void RegisterErrorList(ErrorListToolView view)
         {
@@ -60,7 +60,7 @@ namespace MyDesigner.XamlDesigner.Core
         }
 
         /// <summary>
-        /// تسجيل صفحة Toolbox
+        /// RegisterToolbox
         /// </summary>
         public static void RegisterToolbox(FromToolboxView view)
         {
@@ -69,7 +69,7 @@ namespace MyDesigner.XamlDesigner.Core
         }
 
         /// <summary>
-        /// تسجيل صفحة Outline
+        /// RegisterOutline
         /// </summary>
         public static void RegisterOutline(OutlineToolView view)
         {
@@ -78,7 +78,7 @@ namespace MyDesigner.XamlDesigner.Core
         }
 
         /// <summary>
-        /// إلغاء تسجيل جميع الصفحات
+        /// UnregisterAll
         /// </summary>
         public static void UnregisterAll()
         {
@@ -93,7 +93,7 @@ namespace MyDesigner.XamlDesigner.Core
         }
 
         /// <summary>
-        /// التحقق من توفر صفحة معينة
+        /// IsPageAvailable
         /// </summary>
         public static bool IsPageAvailable(string pageName)
         {

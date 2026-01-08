@@ -46,11 +46,7 @@
                 FontWeight="Bold"
                 Foreground="#FF007ACC"
                 Text="Open Project" />
-            <TextBlock
-                FontSize="14"
-                Foreground="#FF666666"
-                Margin="0,5,0,0"
-                Text="ماذا تريد أن تفتح؟" />
+         
         </StackPanel>
 
         <!--  Separator  -->
@@ -103,7 +99,7 @@
                             FontSize="11"
                             Foreground="#FF666666"
                             Margin="0,2,0,0"
-                            Text="فتح ملف Solution (.sln) أو Project (.csproj)" />
+                            />
                         <TextBlock
                             FontSize="10"
                             Foreground="#FF999999"
@@ -152,12 +148,12 @@
                             FontSize="11"
                             Foreground="#FF666666"
                             Margin="0,2,0,0"
-                            Text="فتح مجلد يحتوي على ملفات المشروع" />
+                             />
                         <TextBlock
                             FontSize="10"
                             Foreground="#FF999999"
                             Margin="0,2,0,0"
-                            Text="Browse and open a folder containing project files"
+                            Text="Browse and open a folder containing project files"                       
                             TextWrapping="Wrap" />
                     </StackPanel>
                 </Grid>
@@ -201,7 +197,7 @@
                             FontSize="11"
                             Foreground="#FF666666"
                             Margin="0,2,0,0"
-                            Text="فتح ملف XAML واحد فقط" />
+                             />
                         <TextBlock
                             FontSize="10"
                             Foreground="#FF999999"
@@ -224,7 +220,7 @@
                 BorderBrush="#FFCCCCCC"
                 BorderThickness="1"
                 Click="BtnCancel_Click"
-                Content="Cancel - إلغاء"
+                Content="Cancel"
                 CornerRadius="3"
                 Cursor="Hand"
                 Height="35"

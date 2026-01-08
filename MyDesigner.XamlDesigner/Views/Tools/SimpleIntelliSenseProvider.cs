@@ -64,13 +64,12 @@ public class SimpleIntelliSenseProvider
 
         try
         {
-            // الحصول على السياق قبل المؤشر
-            var textBeforeCursor = code.Substring(0, Math.Min(position, code.Length));
             
-            // التحقق من وجود نقطة قبل المؤشر مباشرة
+            var textBeforeCursor = code.Substring(0, Math.Min(position, code.Length));
+         
             if (textBeforeCursor.EndsWith("."))
             {
-                // محاولة الحصول على النوع قبل النقطة
+                
                 var match = Regex.Match(textBeforeCursor, @"(\w+)\.$");
                 if (match.Success)
                 {
@@ -80,14 +79,14 @@ public class SimpleIntelliSenseProvider
             }
             else
             {
-                // عرض الكلمات المفتاحية والأنواع الشائعة
+                
                 completions.AddRange(GetKeywords());
                 completions.AddRange(GetCommonTypes());
             }
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"[SimpleIntelliSense] خطأ: {ex.Message}");
+            
         }
 
         return completions;
@@ -99,10 +98,10 @@ public class SimpleIntelliSenseProvider
 
         try
         {
-            // محاولة تحديد نوع المتغير
+            
             Type? type = null;
 
-            // البحث عن تعريف المتغير في الكود
+           
             var varPattern = $@"(?:var|string|int|double|bool|object|List<\w+>|Dictionary<\w+,\s*\w+>)\s+{identifier}\s*=";
             var varMatch = Regex.Match(code, varPattern);
             
@@ -110,7 +109,7 @@ public class SimpleIntelliSenseProvider
             {
                 var typeStr = varMatch.Value.Split(' ')[0];
                 
-                // تحديد النوع
+              
                 type = typeStr switch
                 {
                     "string" => typeof(string),
@@ -122,16 +121,16 @@ public class SimpleIntelliSenseProvider
                 };
             }
 
-            // إذا لم نجد النوع، جرب الأنواع الشائعة
+            
             if (type == null && _commonTypes.ContainsKey(identifier))
             {
                 type = _commonTypes[identifier];
             }
 
-            // إذا وجدنا النوع، احصل على أعضائه
+           
             if (type != null)
             {
-                // الحصول على Methods
+                
                 var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)
                     .Where(m => !m.IsSpecialName)
                     .Take(50);
@@ -148,7 +147,7 @@ public class SimpleIntelliSenseProvider
                     });
                 }
 
-                // الحصول على Properties
+               
                 var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)
                     .Take(50);
 
@@ -163,7 +162,7 @@ public class SimpleIntelliSenseProvider
                     });
                 }
 
-                // الحصول على Fields
+             
                 var fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)
                     .Take(20);
 
@@ -181,7 +180,7 @@ public class SimpleIntelliSenseProvider
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"[SimpleIntelliSense] خطأ في GetMembers: {ex.Message}");
+         
         }
 
         return members.OrderBy(m => m.Text).ToList();

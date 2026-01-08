@@ -24,7 +24,7 @@ public class EventBindingHelper
     {
         try
         {
-            // تحديد اسم Handler إذا لم يتم تحديده
+          
             if (string.IsNullOrEmpty(handlerName))
             {
                 handlerName = string.IsNullOrEmpty(controlName)
@@ -32,23 +32,21 @@ public class EventBindingHelper
                     : $"{controlName}_{eventName}";
             }
 
-            // البحث عن ملف code-behind
+          
             var csFilePath = axamlFilePath + ".cs";
             if (!File.Exists(csFilePath))
             {
-                Console.WriteLine($"ملف code-behind غير موجود: {csFilePath}");
+               
                 return (false, null, 0);
             }
 
-            // قراءة محتوى الملف
+           
             var content = File.ReadAllText(csFilePath);
 
-            // التحقق من وجود Handler مسبقاً
+            
             if (content.Contains($"void {handlerName}("))
             {
-                Console.WriteLine($"Event Handler موجود مسبقاً: {handlerName}");
-
-                // البحث عن رقم السطر
+                 
                 var lines = content.Split('\n');
                 for (int i = 0; i < lines.Length; i++)
                 {
@@ -61,33 +59,32 @@ public class EventBindingHelper
                 return (true, csFilePath, 1);
             }
 
-            // استخراج معلومات الـ class
+          
             var classInfo = ExtractClassInfo(content);
             if (classInfo == null)
             {
-                Console.WriteLine("فشل في استخراج معلومات الـ class");
+               
                 return (false, null, 0);
             }
 
-            // إنشاء Event Handler
+           
             var eventHandler = GenerateEventHandler(handlerName, eventName);
 
-            // إدراج Handler في نهاية الـ class
+           
             var insertPosition = FindInsertPosition(content, classInfo.Value.closingBracePosition);
             var newContent = content.Insert(insertPosition, eventHandler);
 
-            // حفظ الملف
+            
             File.WriteAllText(csFilePath, newContent);
 
-            // حساب رقم السطر الجديد
+          
             var lineNumber = content.Substring(0, insertPosition).Count(c => c == '\n') + 2;
-
-            Console.WriteLine($"✓ تم إنشاء Event Handler: {handlerName} في السطر {lineNumber}");
+              
             return (true, csFilePath, lineNumber);
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"خطأ في إنشاء Event Handler: {ex.Message}");
+          
             return (false, null, 0);
         }
     }
@@ -97,7 +94,7 @@ public class EventBindingHelper
     /// </summary>
     private static (int closingBracePosition, string className)? ExtractClassInfo(string content)
     {
-        // البحث عن class definition
+       
         var classMatch = Regex.Match(content, @"class\s+(\w+)\s*(?::\s*\w+)?");
         if (!classMatch.Success)
             return null;
@@ -105,12 +102,12 @@ public class EventBindingHelper
         var className = classMatch.Groups[1].Value;
         var classStartIndex = classMatch.Index;
 
-        // البحث عن opening brace للـ class
+        
         var openBraceIndex = content.IndexOf('{', classStartIndex);
         if (openBraceIndex == -1)
             return null;
 
-        // البحث عن closing brace المطابق باستخدام عداد
+        
         int braceCount = 1;
         int closingBraceIndex = openBraceIndex + 1;
 
@@ -138,16 +135,16 @@ public class EventBindingHelper
     /// </summary>
     private static int FindInsertPosition(string content, int closingBracePosition)
     {
-        // البحث عن آخر method قبل closing brace
+       
         var beforeBrace = content.Substring(0, closingBracePosition);
 
-        // البحث عن آخر } لـ method (وليس للـ class)
+   
         var lastMethodEnd = beforeBrace.LastIndexOf('}');
 
-        // التأكد من أن هذه ليست closing brace للـ class نفسها
+      
         if (lastMethodEnd != -1 && lastMethodEnd < closingBracePosition - 10)
         {
-            // التحقق من وجود سطر جديد بعد }
+          
             var afterBrace = lastMethodEnd + 1;
             while (afterBrace < content.Length && (content[afterBrace] == '\r' || content[afterBrace] == '\n'))
             {
@@ -156,7 +153,7 @@ public class EventBindingHelper
             return afterBrace;
         }
 
-        // إذا لم يتم العثور على methods، أدرج قبل closing brace للـ class مباشرة
+        
         var lineStart = closingBracePosition;
         while (lineStart > 0 && content[lineStart - 1] != '\n')
         {
@@ -177,7 +174,7 @@ public class EventBindingHelper
         sb.AppendLine($"    /// Event handler for {eventName}");
         sb.AppendLine("    /// </summary>");
 
-        // تحديد signature بناءً على نوع Event في Avalonia
+        
         var signature = GetAvaloniaEventSignature(eventName);
         sb.AppendLine($"    private void {handlerName}({signature})");
         sb.AppendLine("    {");
@@ -192,7 +189,7 @@ public class EventBindingHelper
     /// </summary>
     private static string GetAvaloniaEventSignature(string eventName)
     {
-        // Events شائعة في Avalonia
+       
         var avaloniaEvents = new Dictionary<string, string>
         {
             { "Click", "object sender, Avalonia.Interactivity.RoutedEventArgs e" },
@@ -229,24 +226,24 @@ public class EventBindingHelper
     {
         try
         {
-            // البحث عن Control في AXAML
+           
             var pattern = $@"<(\w+)[^>]*x:Name\s*=\s*""{controlName}""[^>]*>";
             var match = Regex.Match(axamlContent, pattern);
 
             if (!match.Success)
             {
-                Console.WriteLine($"لم يتم العثور على Control: {controlName}");
+            
                 return false;
             }
 
-            // التحقق من وجود Event مسبقاً
+          
             if (match.Value.Contains($"{eventName}="))
             {
-                Console.WriteLine($"Event موجود مسبقاً في AXAML: {eventName}");
+              
                 return true;
             }
 
-            // إضافة Event إلى Control
+          
             var updatedTag = match.Value.TrimEnd('>') + $" {eventName}=\"{handlerName}\">";
             var updatedAxaml = axamlContent.Replace(match.Value, updatedTag);
 
@@ -254,7 +251,7 @@ public class EventBindingHelper
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"خطأ في تحديث AXAML: {ex.Message}");
+          
             return false;
         }
     }
@@ -270,7 +267,7 @@ public class EventBindingHelper
         {
             var allEvents = controlType.GetEvents(BindingFlags.Public | BindingFlags.Instance);
 
-            // تصفية Events الشائعة في Avalonia
+           
             var commonAvaloniaEventNames = new[]
             {
                 "Click", "PointerPressed", "PointerReleased", "PointerEntered", "PointerExited", "PointerMoved",
@@ -287,7 +284,7 @@ public class EventBindingHelper
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"خطأ في الحصول على Events: {ex.Message}");
+           
         }
 
         return events;

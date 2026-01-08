@@ -9,7 +9,7 @@ namespace MyDesigner.XamlDesigner.Views;
 
 public partial class MainView : UserControl
 {  
-    // ÕﬁÊ· «·„Ì“«  «·„Õ”‰…
+    
     private MyDesigner.XamlDom.XamlTypeFinder _typeFinder;
     private MyDesigner.XamlDesigner.Intellisense.XamlCompletionProvider _xamlCompletionProvider;
     private MyDesigner.Common.Controls.SimpleIntelliSenseProvider _simpleIntelliSenseProvider;
@@ -40,26 +40,26 @@ public partial class MainView : UserControl
     {
         try
         {
-            //  ÂÌ∆… „“Êœ IntelliSense ··‹ XAML
+          
             var xamlCompletionProvider = new MyDesigner.XamlDesigner.Intellisense.XamlCompletionProvider(_typeFinder ?? CreateDefaultTypeFinder());
 
-            //  ÂÌ∆… „“Êœ IntelliSense «·»”Ìÿ ··‹ C#
+           
             var simpleProvider = new MyDesigner.Common.Controls.SimpleIntelliSenseProvider();
 
-            // Õ›Ÿ «·„—«Ã⁄ ··«” Œœ«„ ·«Õﬁ«
+            
             _xamlCompletionProvider = xamlCompletionProvider;
             _simpleIntelliSenseProvider = simpleProvider;
 
-            System.Diagnostics.Debug.WriteLine(" „  ÂÌ∆… IntelliSense »‰Ã«Õ");
+          
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Œÿ√ ›Ì  ÂÌ∆… IntelliSense: {ex.Message}");
+            
         }
     }
     private MyDesigner.XamlDom.XamlTypeFinder CreateDefaultTypeFinder()
     {
-        // ≈‰‘«¡ TypeFinder «› —«÷Ì
+       
         try
         {
             return new MyDesigner.XamlDom.XamlTypeFinder();
@@ -69,10 +69,10 @@ public partial class MainView : UserControl
             return null;
         }
     }
-    // œ«·… „”«⁄œ… ··Õ’Ê· ⁄·Ï «·‰«›–… «·√’·
+    
     private Window GetParentWindow()
     {
-        // TopLevel ÂÊ «·ﬂ·«” «·√”«”Ì ··‰Ê«›–° GetTopLevel  »ÕÀ ›Ì «·‘Ã—… «·„—∆Ì…
+        
         return TopLevel.GetTopLevel(this) as Window;
     }
 
@@ -90,7 +90,7 @@ public partial class MainView : UserControl
         var window = GetParentWindow();
         if (window != null)
         {
-            //  »œÌ· »Ì‰ Ê÷⁄ «· ﬂ»Ì— (Maximized) Ê«·Ê÷⁄ «·ÿ»Ì⁄Ì (Normal)
+            
             if (window.WindowState == WindowState.Maximized)
             {
                 window.WindowState = WindowState.Normal;
@@ -105,7 +105,7 @@ public partial class MainView : UserControl
     private void Close_Click(object sender, RoutedEventArgs e)
     {
         var window = GetParentWindow();
-        // ������� ���� ������� ��� ������� �����
+       
         window?.Close();
     }
 

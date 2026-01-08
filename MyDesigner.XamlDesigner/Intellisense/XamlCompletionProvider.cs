@@ -40,7 +40,7 @@ namespace MyDesigner.XamlDesigner.Intellisense
         {
             try
             {
-                // Avalonia Controls الأساسية
+                
                 var avaloniaTypes = new[]
                 {
                     typeof(Window), typeof(UserControl), typeof(ContentControl),
@@ -59,27 +59,15 @@ namespace MyDesigner.XamlDesigner.Intellisense
                     _xamlTypes[type.Name] = type;
                 }
 
-                // إضافة أنواع إضافية من التجميعات المحملة
+               
                 LoadAdditionalTypes();
                
-                // إضافة تجميعات HMI إذا كانت متوفرة
-                try
-                {
-                    var hmiCore = Assembly.Load("HMIControl.Core");
-                    AddAssembly(hmiCore);
-                }
-                catch { }
-
-                try
-                {
-                    var hmiHmi = Assembly.Load("HMIControl.HMI");
-                    AddAssembly(hmiHmi);
-                }
-                catch { }
+               
+               
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"خطأ في تهيئة أنواع XAML: {ex.Message}");
+                
             }
         }
 
@@ -89,7 +77,7 @@ namespace MyDesigner.XamlDesigner.Intellisense
             {
                 if (_typeFinder != null)
                 {
-                    // استخدام MyTypeFinder للحصول على أنواع إضافية من التجميعات المسجلة
+                    
                     foreach (var assembly in _typeFinder.RegisteredAssemblies.Take(10))
                     {
                         try
@@ -108,14 +96,14 @@ namespace MyDesigner.XamlDesigner.Intellisense
                         }
                         catch (Exception)
                         {
-                            // تجاهل الأخطاء في تحميل أنواع التجميع
+                           
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"خطأ في تحميل الأنواع الإضافية: {ex.Message}");
+              
             }
         }
 
@@ -191,7 +179,7 @@ namespace MyDesigner.XamlDesigner.Intellisense
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"خطأ في الحصول على اقتراحات XAML: {ex.Message}");
+                
             }
 
             return completions.OrderBy(c => c.Text).ToList();
@@ -205,7 +193,7 @@ namespace MyDesigner.XamlDesigner.Intellisense
             
             var textBeforePosition = xaml.Substring(0, position);
 
-            // تحليل السياق
+         
             if (IsInElementName(textBeforePosition))
             {
                 context.Type = XamlContextType.ElementName;
@@ -317,7 +305,7 @@ namespace MyDesigner.XamlDesigner.Intellisense
             {
                 var elementType = _xamlTypes[elementName];
                 
-                // الحصول على خصائص العنصر
+              
                 var properties = elementType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                     .Where(p => p.CanWrite)
                     .Take(50);
@@ -330,7 +318,7 @@ namespace MyDesigner.XamlDesigner.Intellisense
                     }
                 }
 
-                // إضافة الأحداث
+              
                 var events = elementType.GetEvents(BindingFlags.Public | BindingFlags.Instance)
                     .Take(30);
 
@@ -342,7 +330,7 @@ namespace MyDesigner.XamlDesigner.Intellisense
                     }
                 }
 
-                // إضافة الخصائص الشائعة
+              
                 AddCommonProperties(completions, elementType, prefix);
             }
 
@@ -524,7 +512,7 @@ namespace MyDesigner.XamlDesigner.Intellisense
                     }
                 }
             }
-            catch { /* تجاهل أي خطأ في التحميل */ }
+            catch { }
         }
     }
 

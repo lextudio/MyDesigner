@@ -15,7 +15,7 @@ public class ProjectReferencesLoader
 {
     private string _projectPath;
     private string _csprojPath;
-    private HashSet<string> _loadedAssemblies = new HashSet<string>(StringComparer.OrdinalIgnoreCase); // يحتوي على أسماء المكتبات المحملة في هذه الجلسة
+    private HashSet<string> _loadedAssemblies = new HashSet<string>(StringComparer.OrdinalIgnoreCase); 
 
     /// <summary>
     /// Load all references from project
@@ -27,44 +27,37 @@ public class ProjectReferencesLoader
             _projectPath = projectPath;
             _loadedAssemblies.Clear();
 
-            // البحث عن ملف .csproj
+           
             var csprojFiles = Directory.GetFiles(projectPath, "*.csproj", SearchOption.TopDirectoryOnly);
             if (csprojFiles.Length == 0)
             {
-                Console.WriteLine("لم يتم العثور على ملف .csproj");
+              
                 return;
             }
 
             _csprojPath = csprojFiles[0];
             var doc = XDocument.Load(_csprojPath);
 
-            Console.WriteLine("========================================");
-            Console.WriteLine($"تحميل مراجع المشروع: {Path.GetFileNameWithoutExtension(_csprojPath)}");
-            Console.WriteLine("========================================");
-
-            // 1. تحميل DLL من مجلد bin المشروع المفتوح نفسه (أولاً لضمان تحميل Controls الخاصة به)
+         
             LoadProjectOutput();
 
-            // 2. فحص ملفات XAML واستخراج namespaces المستخدمة
+    
             ScanXamlFilesForNamespaces();
 
-            // 3. تحميل مراجع المشاريع (ProjectReference)
+        
             LoadProjectReferences(doc);
 
-            // 4. تحميل مراجع الحزم (PackageReference)
+          
             LoadPackageReferences(doc);
 
-            // 5. تحميل المراجع المباشرة (Reference)
+         
             LoadDirectReferences(doc);
 
-            Console.WriteLine("========================================");
-            Console.WriteLine($"✓ تم تحميل {_loadedAssemblies.Count} مكتبة بنجاح");
-            Console.WriteLine("========================================");
+         
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"خطأ في تحميل المراجع: {ex.Message}");
-            Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+         
         }
     }
 
@@ -75,14 +68,14 @@ public class ProjectReferencesLoader
     {
         try
         {
-            Console.WriteLine("\n[1.5] فحص ملفات XAML للبحث عن namespaces مخصصة:");
+           
 
-            // البحث عن جميع ملفات XAML في المشروع
+            
             var xamlFiles = Directory.GetFiles(_projectPath, "*.xaml", SearchOption.AllDirectories)
                 .Where(f => !f.Contains("\\bin\\") && !f.Contains("\\obj\\"))
                 .ToList();
 
-            Console.WriteLine($"   وجد {xamlFiles.Count} ملف XAML");
+    
 
             var customNamespaces = new HashSet<string>();
             var projectName = Path.GetFileNameWithoutExtension(_csprojPath);
@@ -93,7 +86,7 @@ public class ProjectReferencesLoader
                 {
                     var content = File.ReadAllText(xamlFile);
 
-                    // البحث عن xmlns:prefix="clr-namespace:..."
+                  
                     var namespacePattern = @"xmlns:(\w+)\s*=\s*""clr-namespace:([^""]+)""";
                     var matches = System.Text.RegularExpressions.Regex.Matches(content, namespacePattern);
 
@@ -102,7 +95,7 @@ public class ProjectReferencesLoader
                         var prefix = match.Groups[1].Value;
                         var clrNamespace = match.Groups[2].Value;
 
-                        // تجاهل namespaces النظام
+                      
                         if (!clrNamespace.StartsWith("System.") &&
                             !clrNamespace.StartsWith("Microsoft."))
                         {
@@ -112,29 +105,29 @@ public class ProjectReferencesLoader
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"   ⚠ خطأ في قراءة {Path.GetFileName(xamlFile)}: {ex.Message}");
+                  
                 }
             }
 
             if (customNamespaces.Count > 0)
             {
-                Console.WriteLine($"   ✓ وجد {customNamespaces.Count} namespace مخصص:");
+             
                 foreach (var ns in customNamespaces)
                 {
                     Console.WriteLine($"      - {ns}");
                 }
 
-                // تحميل Controls من هذه الـ namespaces
+             
                 LoadControlsFromNamespaces(customNamespaces, projectName);
             }
             else
             {
-                Console.WriteLine($"   ℹ لم يتم العثور على namespaces مخصصة");
+               
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"   ❌ خطأ في فحص ملفات XAML: {ex.Message}");
+           
         }
     }
 
@@ -145,18 +138,17 @@ public class ProjectReferencesLoader
     {
         try
         {
-            Console.WriteLine($"\n   محاولة تحميل Controls من {namespaces.Count} namespace:");
+           
 
-            // البحث عن Assembly المشروع
+        
             var binFolder = Path.Combine(_projectPath, "bin");
             if (!Directory.Exists(binFolder))
             {
-                Console.WriteLine($"   ⚠ مجلد bin غير موجود: {binFolder}");
-                Console.WriteLine($"   ℹ قم ببناء المشروع أولاً (Build → Build Solution)");
+              
                 return;
             }
 
-            // البحث عن DLL/EXE في جميع المجلدات الفرعية
+          
             var outputFiles = new List<string>();
 
             try
@@ -171,22 +163,21 @@ public class ProjectReferencesLoader
                 outputFiles.AddRange(dllFiles);
                 outputFiles.AddRange(exeFiles);
 
-                Console.WriteLine($"   📁 وجد {dllFiles.Count} DLL و {exeFiles.Count} EXE في bin");
+                
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"   ⚠ خطأ في البحث عن الملفات: {ex.Message}");
+              
                 return;
             }
 
             if (outputFiles.Count == 0)
             {
-                Console.WriteLine($"   ⚠ لم يتم العثور على مخرجات في bin");
-                Console.WriteLine($"   ℹ قم ببناء المشروع أولاً");
+               
                 return;
             }
 
-            // محاولة تحميل كل ملف والبحث عن Controls
+           
             var totalControlsLoaded = 0;
 
             foreach (var outputFile in outputFiles.OrderByDescending(f => File.GetLastWriteTime(f)))
@@ -195,15 +186,15 @@ public class ProjectReferencesLoader
                 {
                     var fileName = Path.GetFileNameWithoutExtension(outputFile);
 
-                    // تخطي المكتبات المحملة مسبقاً
+                  
                     if (_loadedAssemblies.Contains(fileName))
                         continue;
 
-                    // تحميل Assembly
+                  
                     var assembly = System.Reflection.Assembly.LoadFrom(outputFile);
                     var assemblyName = assembly.GetName().Name;
 
-                    // التحقق من عدم التكرار في Toolbox
+                 
                     var alreadyExists = Toolbox.Instance.AssemblyNodes.Any(node =>
                         string.Equals(node.Assembly.GetName().Name, assemblyName, StringComparison.OrdinalIgnoreCase)
                     );
@@ -211,13 +202,13 @@ public class ProjectReferencesLoader
                     if (alreadyExists)
                         continue;
 
-                    // البحث عن Controls في الـ namespaces المحددة
+                 
                     var types = assembly.GetExportedTypes();
                     var controlTypes = new List<Type>();
 
                     foreach (var type in types)
                     {
-                        // التحقق من أن النوع في أحد الـ namespaces المطلوبة
+                       
                         if (!string.IsNullOrEmpty(type.Namespace) && namespaces.Contains(type.Namespace))
                         {
                             if (!type.IsAbstract &&
@@ -234,10 +225,10 @@ public class ProjectReferencesLoader
 
                     if (controlTypes.Count > 0)
                     {
-                        // تسجيل Assembly
+                       
                         MyTypeFinder.Instance.RegisterAssembly(assembly);
 
-                        // إضافة إلى Toolbox
+                       
                         var node = new AssemblyNode
                         {
                             Assembly = assembly,
@@ -252,11 +243,8 @@ public class ProjectReferencesLoader
                         node.Controls.Sort((c1, c2) => c1.Name.CompareTo(c2.Name));
                         Toolbox.Instance.AssemblyNodes.Add(node);
 
-                        Console.WriteLine($"   ✓ تم تحميل {controlTypes.Count} Control من {assemblyName}:");
-                        foreach (var ctrl in controlTypes)
-                        {
-                            Console.WriteLine($"      - {ctrl.Name} ({ctrl.Namespace})");
-                        }
+                      
+                       
 
                         _loadedAssemblies.Add(assemblyName);
                         totalControlsLoaded += controlTypes.Count;
@@ -264,23 +252,19 @@ public class ProjectReferencesLoader
                 }
                 catch (Exception ex)
                 {
-                    // تجاهل الأخطاء في تحميل ملفات معينة
+                   
                     Console.WriteLine($"   ⚠ تخطي {Path.GetFileName(outputFile)}: {ex.Message}");
                 }
             }
 
             if (totalControlsLoaded == 0)
             {
-                Console.WriteLine($"   ⚠ لم يتم العثور على Controls في الـ namespaces المحددة");
-                Console.WriteLine($"   ℹ تأكد من:");
-                Console.WriteLine($"      1. بناء المشروع (Build Solution)");
-                Console.WriteLine($"      2. Controls ترث من UIElement");
-                Console.WriteLine($"      3. Controls لها Constructor عام بدون معاملات");
+            
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"   ❌ خطأ في تحميل Controls: {ex.Message}");
+          
             Console.WriteLine($"   Stack: {ex.StackTrace}");
         }
     }
@@ -297,11 +281,11 @@ public class ProjectReferencesLoader
 
         if (projectReferences.Count == 0)
         {
-            Console.WriteLine("\n[2] لا توجد مراجع مشاريع (ProjectReference)");
+          
             return;
         }
 
-        Console.WriteLine($"\n[2] تحميل {projectReferences.Count} مرجع مشروع (ProjectReference):");
+     
 
         foreach (var reference in projectReferences)
         {
@@ -312,31 +296,31 @@ public class ProjectReferencesLoader
 
                 if (!File.Exists(referencedCsprojPath))
                 {
-                    Console.WriteLine($"   ⚠ ملف المشروع غير موجود: {reference}");
+                   
                     continue;
                 }
 
                 var referencedProjectFolder = Path.GetDirectoryName(referencedCsprojPath);
                 var referencedProjectName = Path.GetFileNameWithoutExtension(referencedCsprojPath);
 
-                // التحقق من عدم تحميل المشروع مسبقاً
+              
                 if (_loadedAssemblies.Contains(referencedProjectName))
                 {
-                    Console.WriteLine($"   ℹ تم تجاهل (محمل مسبقاً): {referencedProjectName}");
+                  
                     continue;
                 }
 
-                // البحث في مجلد bin
+            
                 var binDirectory = Path.Combine(referencedProjectFolder, "bin");
                 if (Directory.Exists(binDirectory))
                 {
-                    // البحث عن DLL في جميع المجلدات الفرعية (تجنب ref و resources)
+                   
                     var dllFiles = Directory.GetFiles(binDirectory, $"{referencedProjectName}.dll",
                         SearchOption.AllDirectories)
                         .Where(f => !f.Contains("\\ref\\") && !f.Contains("\\resources\\"))
                         .ToList();
 
-                    // اختيار أحدث DLL
+                    
                     var latestDll = dllFiles
                         .OrderByDescending(f => File.GetLastWriteTime(f))
                         .FirstOrDefault();
@@ -347,20 +331,20 @@ public class ProjectReferencesLoader
                     }
                     else
                     {
-                        Console.WriteLine($"   ⚠ لم يتم العثور على DLL: {referencedProjectName}");
+                       
                     }
                 }
                 else
                 {
-                    Console.WriteLine($"   ⚠ مجلد bin غير موجود: {binDirectory}");
+                    
                 }
 
-                // تحميل مراجع المشروع المرجعي بشكل تكراري
+                
                 LoadReferencedProjectDependencies(referencedCsprojPath);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"   ❌ خطأ في تحميل مرجع المشروع {reference}: {ex.Message}");
+                
             }
         }
     }
@@ -375,7 +359,7 @@ public class ProjectReferencesLoader
             var doc = XDocument.Load(csprojPath);
             var projectFolder = Path.GetDirectoryName(csprojPath);
 
-            // تحميل PackageReference من المشروع المرجعي
+           
             var packages = doc.Descendants("PackageReference")
                 .Select(x => new
                 {
@@ -391,7 +375,7 @@ public class ProjectReferencesLoader
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"خطأ في تحميل تبعيات المشروع: {ex.Message}");
+           
         }
     }
 
@@ -411,22 +395,22 @@ public class ProjectReferencesLoader
 
         if (packageReferences.Count == 0)
         {
-            Console.WriteLine("\n[3] لا توجد مراجع حزم (PackageReference)");
+           
             return;
         }
 
-        Console.WriteLine($"\n[3] تحميل {packageReferences.Count} مرجع حزمة (PackageReference):");
+      
 
         foreach (var package in packageReferences)
         {
             try
             {
-                Console.WriteLine($"   📦 معالجة: {package.Name} ({package.Version ?? "latest"})");
+               
                 LoadPackageFromNuGet(package.Name, package.Version, _projectPath);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"   ❌ خطأ في تحميل الحزمة {package.Name}: {ex.Message}");
+                
             }
         }
     }
@@ -436,14 +420,14 @@ public class ProjectReferencesLoader
     /// </summary>
     private void LoadPackageFromNuGet(string packageName, string version, string projectPath)
     {
-        // تجاهل مكتبات النظام
+       
         if (IsSystemAssembly(packageName))
         {
-            Console.WriteLine($"تم تجاهل حزمة النظام: {packageName}");
+            
             return;
         }
 
-        // البحث في مجلد packages المحلي
+      
         var packagesFolder = FindPackagesFolder(projectPath);
         if (packagesFolder != null)
         {
@@ -458,7 +442,7 @@ public class ProjectReferencesLoader
             }
         }
 
-        // البحث في مجلد NuGet العام
+       
         var userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         var nugetCache = Path.Combine(userProfile, ".nuget", "packages", packageName.ToLower());
 
@@ -500,12 +484,12 @@ public class ProjectReferencesLoader
     /// </summary>
     private void LoadDllsFromPackage(string packageFolder)
     {
-        // البحث في مجلد lib
+      
         var libFolder = Path.Combine(packageFolder, "lib");
         if (!Directory.Exists(libFolder))
             return;
 
-        // البحث عن أفضل framework متوافق
+      
         var frameworks = new[] {"net10.0-windows", "net8.0-windows", "net7.0-windows", "net6.0-windows",
                                 "net5.0-windows", "netcoreapp3.1", "net48", "net472",
                                 "net471", "net47", "net462", "net461", "net46", "net45" };
@@ -521,7 +505,7 @@ public class ProjectReferencesLoader
             }
         }
 
-        // إذا لم يتم العثور على framework محدد، استخدم أي مجلد متاح
+      
         if (targetFolder == null)
         {
             targetFolder = Directory.GetDirectories(libFolder)
@@ -531,8 +515,7 @@ public class ProjectReferencesLoader
 
         if (targetFolder != null && Directory.Exists(targetFolder))
         {
-            // تحميل DLL files فقط من المجلد الرئيسي (بدون المجلدات الفرعية)
-            // وتجاهل ملفات resources و ref
+            
             var dllFiles = Directory.GetFiles(targetFolder, "*.dll", SearchOption.TopDirectoryOnly)
                 .Where(f => !f.Contains("\\ref\\") && 
                            !f.Contains("\\resources\\") &&
@@ -559,11 +542,11 @@ public class ProjectReferencesLoader
 
         if (references.Count == 0)
         {
-            Console.WriteLine("\n[4] لا توجد مراجع مباشرة (Reference)");
+           
             return;
         }
 
-        Console.WriteLine($"\n[4] تحميل {references.Count} مرجع مباشر (Reference):");
+      
 
         foreach (var reference in references)
         {
@@ -579,18 +562,18 @@ public class ProjectReferencesLoader
 
                     if (File.Exists(fullPath))
                     {
-                        Console.WriteLine($"   📚 معالجة: {includeName}");
+                      
                         LoadAssembly(fullPath);
                     }
                     else
                     {
-                        Console.WriteLine($"   ⚠ ملف غير موجود: {includeName}");
+                       
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"   ❌ خطأ في تحميل المرجع المباشر: {ex.Message}");
+               
             }
         }
     }
@@ -603,14 +586,14 @@ public class ProjectReferencesLoader
         try
         {
             var projectName = Path.GetFileNameWithoutExtension(_csprojPath);
-            Console.WriteLine($"\n[1] تحميل مخرجات المشروع: {projectName}");
+           
 
             var binFolder = Path.Combine(_projectPath, "bin");
             bool loadedFromBin = false;
 
             if (Directory.Exists(binFolder))
             {
-                // البحث عن DLL أو EXE
+              
                 var outputFiles = new List<string>();
                 var dllFiles = Directory.GetFiles(binFolder, $"{projectName}.dll", SearchOption.AllDirectories);
                 var exeFiles = Directory.GetFiles(binFolder, $"{projectName}.exe", SearchOption.AllDirectories);
@@ -618,37 +601,34 @@ public class ProjectReferencesLoader
                 outputFiles.AddRange(dllFiles);
                 outputFiles.AddRange(exeFiles);
 
-                Console.WriteLine($"   وجد {dllFiles.Length} DLL و {exeFiles.Length} EXE");
+             
 
                 if (outputFiles.Count > 0)
                 {
-                    // اختيار أحدث ملف
+                  
                     var latestOutput = outputFiles
                         .OrderByDescending(f => File.GetLastWriteTime(f))
                         .FirstOrDefault();
 
                     if (latestOutput != null)
                     {
-                        Console.WriteLine($"   📁 الملف: {Path.GetFileName(latestOutput)}");
-                        Console.WriteLine($"   📅 آخر تعديل: {File.GetLastWriteTime(latestOutput)}");
-
+                      
                         LoadAssembly(latestOutput);
                         loadedFromBin = true;
                     }
                 }
             }
 
-            // إذا لم يتم التحميل من bin، حاول تحميل من Assembly الحالي
+          
             if (!loadedFromBin)
             {
-                Console.WriteLine($"   ⚠ لم يتم العثور على مخرجات مبنية");
-                Console.WriteLine($"   ℹ محاولة تحميل Controls من Assembly الحالي...");
+               
                 LoadCurrentAssemblyControls(projectName);
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"   ❌ خطأ في تحميل مخرجات المشروع: {ex.Message}");
+           
         }
     }
 
@@ -659,17 +639,17 @@ public class ProjectReferencesLoader
     {
         try
         {
-            // الحصول على جميع Assemblies المحملة
+          
             var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
 
-            // البحث عن Assembly المشروع المفتوح
+          
             var targetAssembly = loadedAssemblies.FirstOrDefault(a =>
                 !a.IsDynamic &&
                 string.Equals(a.GetName().Name, projectName, StringComparison.OrdinalIgnoreCase));
 
             if (targetAssembly == null)
             {
-                // محاولة تحميل من المسار
+              
                 var possiblePaths = new[]
                 {
                     Path.Combine(_projectPath, "bin", "Debug", $"{projectName}.dll"),
@@ -682,32 +662,30 @@ public class ProjectReferencesLoader
                 {
                     if (File.Exists(path))
                     {
-                        Console.WriteLine($"   📁 وجد ملف: {path}");
+                      
                         LoadAssembly(path);
                         return;
                     }
                 }
 
-                Console.WriteLine($"   ⚠ لم يتم العثور على Assembly: {projectName}");
-                Console.WriteLine($"   ℹ قم ببناء المشروع أولاً (Build Solution)");
+               
                 return;
             }
 
             var assemblyName = targetAssembly.GetName().Name;
-            Console.WriteLine($"   ✓ وجد Assembly محمل: {assemblyName}");
+         
 
-            // التحقق من عدم وجودها في Toolbox
+        
             var alreadyExists = Toolbox.Instance.AssemblyNodes.Any(node =>
                 string.Equals(node.Assembly.GetName().Name, assemblyName, StringComparison.OrdinalIgnoreCase)
             );
 
             if (alreadyExists)
             {
-                Console.WriteLine($"   ℹ تم تجاهل (موجود في Toolbox): {assemblyName}");
+               
                 return;
             }
 
-            // البحث عن Controls في Assembly
             var types = targetAssembly.GetExportedTypes();
             var controlTypes = new List<Type>();
 
@@ -726,14 +704,14 @@ public class ProjectReferencesLoader
 
             if (controlTypes.Count == 0)
             {
-                Console.WriteLine($"   ℹ لا توجد Controls في المشروع");
+              
                 return;
             }
 
-            // تسجيل Assembly في TypeFinder
+          
             MyTypeFinder.Instance.RegisterAssembly(targetAssembly);
 
-            // إضافة إلى Toolbox
+          
             var node = new AssemblyNode
             {
                 Assembly = targetAssembly,
@@ -748,21 +726,21 @@ public class ProjectReferencesLoader
             node.Controls.Sort((c1, c2) => c1.Name.CompareTo(c2.Name));
             Toolbox.Instance.AssemblyNodes.Add(node);
 
-            Console.WriteLine($"   ✓ تم تحميل {node.Controls.Count} Control من المشروع:");
+         
             foreach (var ctrl in node.Controls.Take(5))
             {
-                Console.WriteLine($"      - {ctrl.Name}");
+                
             }
             if (node.Controls.Count > 5)
             {
-                Console.WriteLine($"      ... و {node.Controls.Count - 5} آخرين");
+               
             }
 
             _loadedAssemblies.Add(assemblyName);
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"   ❌ خطأ في تحميل Controls: {ex.Message}");
+            
         }
     }
 
@@ -777,60 +755,59 @@ public class ProjectReferencesLoader
         {
             var fileName = Path.GetFileNameWithoutExtension(dllPath);
 
-            // تجاهل مكتبات النظام
+         
             if (IsSystemAssembly(fileName))
             {
-                Console.WriteLine($"   ℹ تم تجاهل (مكتبة نظام): {fileName}");
+                
                 return;
             }
 
-            // تجاهل ملفات ref و resources
+          
             if (dllPath.Contains("\\ref\\") || dllPath.Contains("\\resources\\") || dllPath.Contains("\\runtimes\\"))
             {
-                Console.WriteLine($"   ℹ تم تجاهل (ملف مرجعي): {fileName}");
+              
                 return;
             }
 
             if (!File.Exists(dllPath))
             {
-                Console.WriteLine($"   ⚠ تحذير: الملف غير موجود: {dllPath}");
+               
                 return;
             }
 
-            // التحقق من عدم وجودها في Toolbox باستخدام اسم Assembly
+           
             var alreadyExists = Toolbox.Instance.AssemblyNodes.Any(node =>
                 string.Equals(node.Assembly.GetName().Name, fileName, StringComparison.OrdinalIgnoreCase)
             );
 
             if (alreadyExists)
             {
-                Console.WriteLine($"   ℹ تم تجاهل (موجود في Toolbox): {fileName}");
+                
                 return;
             }
 
-            // التحقق من عدم تحميل المكتبة مسبقاً في هذه الجلسة
+           
             if (_loadedAssemblies.Contains(fileName))
             {
-                Console.WriteLine($"   ℹ تم تجاهل (محمل في هذه الجلسة): {fileName}");
+                
                 return;
             }
 
-            // التحقق من وجود Controls في المكتبة قبل إضافتها
+           
             if (!HasUIControls(dllPath))
             {
-                Console.WriteLine($"   ℹ تم تجاهل (لا يحتوي على Controls): {fileName}");
                 _loadedAssemblies.Add(fileName);
                 return;
             }
 
-            // إضافة المكتبة إلى Toolbox
+        
             Toolbox.Instance.AddAssembly(dllPath);
             _loadedAssemblies.Add(fileName);
-            Console.WriteLine($"   ✓ تم تحميل: {fileName}");
+           
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"   ❌ خطأ في تحميل {Path.GetFileName(dllPath)}: {ex.Message}");
+           
         }
     }
 
@@ -844,7 +821,7 @@ public class ProjectReferencesLoader
             var assembly = System.Reflection.Assembly.LoadFrom(dllPath);
             var types = assembly.GetExportedTypes();
 
-            // البحث عن أي نوع يرث من UIElement
+         
             foreach (var type in types)
             {
                 if (!type.IsAbstract &&
@@ -862,7 +839,7 @@ public class ProjectReferencesLoader
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"خطأ في فحص Controls في {Path.GetFileName(dllPath)}: {ex.Message}");
+            
             return false;
         }
     }
@@ -893,11 +870,11 @@ public class ProjectReferencesLoader
             "System.Windows.Forms", "System.Configuration", "System.Net.Http"
         };
 
-        // تحقق من المطابقة الكاملة
+       
         if (exactMatches.Contains(assemblyName, StringComparer.OrdinalIgnoreCase))
             return true;
 
-        // تحقق من البادئات
+      
         return systemPrefixes.Any(prefix =>
             assemblyName.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
     }

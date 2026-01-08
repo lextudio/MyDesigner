@@ -42,17 +42,16 @@ namespace MyDesigner.Common.Controls
 
             try
             {
-                // التأكد من أن النص صحيح
+                
                 var replacementText = _completionItem.CompletionText ?? _completionItem.Text;
                 if (string.IsNullOrEmpty(replacementText))
                     return;
-
-                // استبدال النص في المنطقة المحددة
+ 
                 textArea.Document.Replace(completionSegment.Offset, completionSegment.Length, replacementText);
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"خطأ في إكمال النص: {ex.Message}");
+                
             }
         }
     }

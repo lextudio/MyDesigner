@@ -105,7 +105,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
 
         partial void OnModeChanged(DocumentMode value)
         {
-            System.Diagnostics.Debug.WriteLine($"DocumentViewModel.OnModeChanged: {value}");
+             
             
             // Update the underlying document's mode
             if (document.Mode != value)
@@ -119,7 +119,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
                 case DocumentMode.Design:
                     if (!InDesignMode)
                     {
-                        System.Diagnostics.Debug.WriteLine("Setting InDesignMode = true, InXamlMode = false");
+                       
                         InDesignMode = true;
                         InXamlMode = false;
                     }
@@ -127,7 +127,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
                 case DocumentMode.Xaml:
                     if (!InXamlMode)
                     {
-                        System.Diagnostics.Debug.WriteLine("Setting InDesignMode = false, InXamlMode = true");
+                         
                         InDesignMode = false;
                         InXamlMode = true;
                     }
@@ -135,7 +135,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
                 case DocumentMode.Code:
                     if (InDesignMode || InXamlMode)
                     {
-                        System.Diagnostics.Debug.WriteLine("Setting InDesignMode = false, InXamlMode = false");
+                        
                         InDesignMode = false;
                         InXamlMode = false;
                     }

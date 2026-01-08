@@ -11,12 +11,12 @@ namespace MyDesigner.XamlDesigner.Services
         private static ProjectService? _instance;
         public static ProjectService Instance => _instance ??= new ProjectService();
 
-        // Event للإشعار بتحميل مشروع جديد
+     
         public event Action<string>? ProjectLoaded;
         public event Action<string>? ProjectOpened;
         public event Action? ProjectClosed;
         
-        // Reference إلى ProjectExplorerView الحالي
+     
         private ProjectExplorerView? _projectExplorerView;
 
         public void RegisterProjectExplorer(ProjectExplorerView projectExplorer)
@@ -33,10 +33,10 @@ namespace MyDesigner.XamlDesigner.Services
                     throw new InvalidOperationException("ProjectExplorerView is not registered");
                 }
 
-                // استخدام دالة OpenFolder الموجودة في ProjectExplorerView
+            
                 _projectExplorerView.OpenFolder();
                 
-                // إشعار بفتح المشروع
+         
                 var currentPath = Configuration.Settings.Default.ProjectPath;
                 if (!string.IsNullOrEmpty(currentPath))
                 {
@@ -47,7 +47,7 @@ namespace MyDesigner.XamlDesigner.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"خطأ في فتح المشروع: {ex.Message}");
+           
                 return false;
             }
         }
@@ -63,19 +63,16 @@ namespace MyDesigner.XamlDesigner.Services
 
                 if (!Directory.Exists(projectPath))
                 {
-                    throw new DirectoryNotFoundException($"مسار المشروع غير موجود: {projectPath}");
+                   
                 }
 
-                // استخدام دالة LoadFilesToSolution الموجودة
-              //  _projectExplorerView.LoadFilesToSolution(projectPath);
-                
-                // إشعار المكونات الأخرى بتحميل المشروع
+             
                 ProjectLoaded?.Invoke(projectPath);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"خطأ في تحميل المشروع: {ex.Message}");
-                throw; // إعادة رمي الاستثناء للتعامل معه في الطبقة العليا
+              
+                throw; 
             }
         }
 
@@ -85,7 +82,7 @@ namespace MyDesigner.XamlDesigner.Services
             {
                 if (_projectExplorerView == null) return;
 
-                // إعادة تحميل المشروع الحالي
+            
                 var currentPath = Configuration.Settings.Default.ProjectPath;
                 if (!string.IsNullOrEmpty(currentPath))
                 {
@@ -94,7 +91,7 @@ namespace MyDesigner.XamlDesigner.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"خطأ في تحديث المشروع: {ex.Message}");
+               
                 throw;
             }
         }
@@ -105,20 +102,20 @@ namespace MyDesigner.XamlDesigner.Services
             {
                 if (_projectExplorerView == null) return;
 
-                // إغلاق جميع المستندات
+             
                 _projectExplorerView.CloseAllDocuments();
                 
-                // مسح إعدادات المشروع
+              
                 Configuration.Settings.Default.ProjectPath = string.Empty;
                 Configuration.Settings.Default.ProjectName = string.Empty;
                 Configuration.Settings.Default.Save();
                 
-                // إشعار بإغلاق المشروع
+              
                 ProjectClosed?.Invoke();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"خطأ في إغلاق المشروع: {ex.Message}");
+               
             }
         }
 

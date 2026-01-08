@@ -23,14 +23,13 @@ namespace MyDesigner.XamlDesigner.ViewModels
 
         public FromToolboxViewModel()
         {
-            System.Diagnostics.Debug.WriteLine("=== TOOLBOX VIEWMODEL CONSTRUCTOR CALLED ===");
+           
             
             AssemblyNodes = new ObservableCollection<AssemblyNodeViewModel>();
-            System.Diagnostics.Debug.WriteLine($"=== ASSEMBLY NODES COLLECTION CREATED ===");
-            
+          
             // Initialize with default Avalonia assemblies
             LoadDefaultAssemblies();
-            System.Diagnostics.Debug.WriteLine($"=== DEFAULT ASSEMBLIES LOADED, COUNT: {AssemblyNodes.Count} ===");
+            
         }
 
         private void LoadDefaultAssemblies()
@@ -149,12 +148,11 @@ namespace MyDesigner.XamlDesigner.ViewModels
             {
                 if (controlNode?.Type != null && Shell.Instance.CurrentDocument?.DesignContext != null)
                 {
-                    // TODO: Implement tool creation for Avalonia
-                    System.Diagnostics.Debug.WriteLine($"Tool prepared: {controlNode.Type.Name}");
+                    
                     
                     if (activate)
                     {
-                        System.Diagnostics.Debug.WriteLine($"Tool activated: {controlNode.Type.Name}");
+                         
                     }
                 }
             }

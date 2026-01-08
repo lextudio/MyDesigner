@@ -9,15 +9,14 @@ using Avalonia.Media;
 
 namespace MyDesigner.XamlDesigner.Converters;
 
- /// <summary>
-    /// Converter لعرض الكنترول بشكل مصغر
-    /// </summary>
-    public class ControlToThumbnailConverter : IValueConverter
+/// <summary>
+/// ControlToThumbnailConverter
+/// </summary>
+public class ControlToThumbnailConverter : IValueConverter
     {
-        // Cache للكنترولات المنشأة لتجنب إنشائها مرات متعددة
+      
         private static readonly Dictionary<Type, Control> _cache = new Dictionary<Type, Control>();
 
-        // قائمة بالكنترولات الآمنة التي يمكن إنشاؤها
         private static readonly HashSet<string> _safeControls = new HashSet<string>
         {
             "Button", "TextBox", "TextBlock", "Label", "CheckBox", "RadioButton",
@@ -33,7 +32,7 @@ namespace MyDesigner.XamlDesigner.Converters;
         {
             if (value is Type controlType)
             {
-                // التحقق من الـ Cache أولاً
+               
                 if (_cache.TryGetValue(controlType, out var cachedElement))
                 {
                     return cachedElement;
@@ -41,10 +40,10 @@ namespace MyDesigner.XamlDesigner.Converters;
 
                 Control result;
 
-                // التحقق من أن الكنترول آمن للإنشاء
+              
                 if (!_safeControls.Contains(controlType.Name))
                 {
-                    // الكنترول غير موجود في القائمة الآمنة، نستخدم أيقونة افتراضية
+                  
                     result = CreateDefaultIcon(controlType);
                     _cache[controlType] = result;
                     return result;
@@ -52,36 +51,36 @@ namespace MyDesigner.XamlDesigner.Converters;
 
                 try
                 {
-                    // محاولة إنشاء الكنترول الفعلي باستخدام Activator.CreateInstance
+                   
                     result = CreateRealControlThumbnail(controlType);
                     _cache[controlType] = result;
                     return result;
                 }
                 catch
                 {
-                    // أي خطأ، نعرض أيقونة افتراضية
+                   
                     result = CreateDefaultIcon(controlType);
                     _cache[controlType] = result;
                     return result;
                 }
             }
 
-            // إرجاع أيقونة افتراضية
+           
             return CreateDefaultIcon(value as Type);
         }
 
         private Control CreateRealControlThumbnail(Type controlType)
         {
-            // إنشاء instance حقيقي من الكنترول باستخدام Activator.CreateInstance
+          
             var control = Activator.CreateInstance(controlType) as Control;
 
             if (control != null)
             {
-                // تطبيق إعدادات أساسية
+               
                 control.IsHitTestVisible = false;
                 control.Focusable = false;
 
-                // إعدادات خاصة حسب نوع الكنترول
+                
                 if (control is Button button)
                 {
                     button.Content = "Button";
@@ -179,12 +178,12 @@ namespace MyDesigner.XamlDesigner.Converters;
                 }
                 else
                 {
-                    // للكنترولات الأخرى، نطبق حجم افتراضي
+                   
                     control.MinWidth = 60;
                     control.MinHeight = 30;
                 }
 
-                // وضع الكنترول في Viewbox للتحجيم
+               
                 var viewbox = new Viewbox
                 {
                     Width = 36,
@@ -197,7 +196,7 @@ namespace MyDesigner.XamlDesigner.Converters;
                 return viewbox;
             }
 
-            // إذا فشل التحويل إلى Control، نرجع أيقونة افتراضية
+           
             return CreateDefaultIcon(controlType);
         }
 

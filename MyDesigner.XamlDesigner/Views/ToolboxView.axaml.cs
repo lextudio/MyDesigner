@@ -39,7 +39,7 @@ namespace MyDesigner.XamlDesigner.Views
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine("=== ERROR: TOOLBOX TREEVIEW NOT FOUND ===");
+               
             }
         }
 

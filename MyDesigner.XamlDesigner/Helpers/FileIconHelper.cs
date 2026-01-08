@@ -81,7 +81,7 @@ public static class FileIconHelper
     }
 
     /// <summary>
-    /// الحصول على أيقونة المجلد
+    /// GetFolderIcon
     /// </summary>
     public static string GetFolderIcon(bool isExpanded = false)
     {
@@ -89,7 +89,7 @@ public static class FileIconHelper
     }
 
     /// <summary>
-    /// الحصول على أيقونة المجلد المتجهية
+    /// GetVectorFolderIcon
     /// </summary>
     public static IImage? GetVectorFolderIcon(bool isExpanded = false)
     {
@@ -97,7 +97,7 @@ public static class FileIconHelper
     }
 
     /// <summary>
-    /// الحصول على أيقونة المشروع
+    /// GetProjectIcon
     /// </summary>
     public static string GetProjectIcon()
     {
@@ -105,7 +105,7 @@ public static class FileIconHelper
     }
 
     /// <summary>
-    /// الحصول على أيقونة المشروع المتجهية
+    /// GetVectorProjectIcon
     /// </summary>
     public static IImage? GetVectorProjectIcon()
     {
@@ -143,7 +143,7 @@ public static class FileIconHelper
     }
 
     /// <summary>
-    /// الحصول على أيقونة Packages المتجهية
+    /// GetVectorPackageIcon
     /// </summary>
     public static IImage? GetVectorPackageIcon()
     {
@@ -151,7 +151,7 @@ public static class FileIconHelper
     }
 
     /// <summary>
-    /// الحصول على أيقونة Assemblies
+    /// GetAssemblyIcon
     /// </summary>
     public static string GetAssemblyIcon()
     {
@@ -159,7 +159,7 @@ public static class FileIconHelper
     }
 
     /// <summary>
-    /// الحصول على أيقونة Assemblies المتجهية
+    /// GetVectorAssemblyIcon
     /// </summary>
     public static IImage? GetVectorAssemblyIcon()
     {
@@ -167,7 +167,7 @@ public static class FileIconHelper
     }
 
     /// <summary>
-    /// الحصول على أيقونة Projects (مشاريع مرجعية)
+    /// GetProjectReferenceIcon
     /// </summary>
     public static string GetProjectReferenceIcon()
     {
@@ -175,7 +175,7 @@ public static class FileIconHelper
     }
 
     /// <summary>
-    /// الحصول على أيقونة Projects المتجهية
+    /// GetVectorProjectReferenceIcon
     /// </summary>
     public static IImage? GetVectorProjectReferenceIcon()
     {
@@ -183,7 +183,7 @@ public static class FileIconHelper
     }
 
     /// <summary>
-    /// الحصول على أيقونة Analyzers المتجهية
+    /// GetVectorAnalyzerIcon
     /// </summary>
     public static IImage? GetVectorAnalyzerIcon()
     {
@@ -191,7 +191,7 @@ public static class FileIconHelper
     }
 
     /// <summary>
-    /// الحصول على أيقونة Properties المتجهية
+    /// GetVectorPropertiesIcon
     /// </summary>
     public static IImage? GetVectorPropertiesIcon()
     {

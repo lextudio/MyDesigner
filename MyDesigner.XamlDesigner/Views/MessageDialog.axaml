@@ -86,7 +86,7 @@
                     <Button Background="#FF007ACC"
                             BorderThickness="0"
                             Click="OkButton_Click"
-                            Content="موافق - OK"
+                            Content="OK"
                             CornerRadius="4"
                             Cursor="Hand"
                             FontSize="13"

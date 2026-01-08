@@ -209,7 +209,7 @@ public static class TreeViewIconHelper
         }
         else
         {
-            // إنشاء FileItem جديد إذا لم يكن موجوداً
+           
             var headerText = item.Header?.ToString() ?? "";
             item.Header = new FileItem
             {
@@ -232,7 +232,7 @@ public static class TreeViewIconHelper
         if (item.Tag is FileItem tagFileItem)
             return tagFileItem;
 
-        // إنشاء FileItem افتراضي
+      
         return new FileItem
         {
             Name = item.Header?.ToString() ?? "",

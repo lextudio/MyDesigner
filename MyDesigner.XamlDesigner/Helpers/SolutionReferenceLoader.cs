@@ -22,22 +22,21 @@ public static class SolutionReferenceLoader
         {
             if (!File.Exists(solutionPath))
             {
-                Console.WriteLine($"[SolutionReferenceLoader] ملف Solution غير موجود: {solutionPath}");
+             
                 return references;
             }
             
-            Console.WriteLine($"[SolutionReferenceLoader] قراءة Solution: {Path.GetFileName(solutionPath)}");
+        
             
-            // قراءة ملف Solution
+          
             var solutionContent = File.ReadAllText(solutionPath);
             var solutionDir = Path.GetDirectoryName(solutionPath);
             
-            // استخراج مسارات المشاريع من ملف Solution
-            // نمط: Project("{...}") = "ProjectName", "Path\To\Project.csproj", "{...}"
+          
             var projectPattern = @"Project\(""\{[^}]+\}""\)\s*=\s*""[^""]+"",\s*""([^""]+\.csproj)""";
             var matches = Regex.Matches(solutionContent, projectPattern);
             
-            Console.WriteLine($"[SolutionReferenceLoader] تم العثور على {matches.Count} مشروع في Solution");
+          
             
             foreach (Match match in matches)
             {
@@ -46,9 +45,9 @@ public static class SolutionReferenceLoader
                 
                 if (File.Exists(projectFullPath))
                 {
-                    Console.WriteLine($"[SolutionReferenceLoader] معالجة مشروع: {Path.GetFileName(projectFullPath)}");
+                  
                     
-                    // تحميل المراجع من هذا المشروع
+                  
                     ProjectReferenceLoader.LoadProjectReferencesRecursivePublic(
                         projectFullPath, 
                         references, 
@@ -57,17 +56,15 @@ public static class SolutionReferenceLoader
                 }
                 else
                 {
-                    Console.WriteLine($"[SolutionReferenceLoader] مشروع غير موجود: {projectFullPath}");
+                  
                 }
             }
             
-            Console.WriteLine($"[SolutionReferenceLoader] ========================================");
-            Console.WriteLine($"[SolutionReferenceLoader] إجمالي المراجع: {references.Count}");
-            Console.WriteLine($"[SolutionReferenceLoader] ========================================");
+          
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[SolutionReferenceLoader] خطأ: {ex.Message}");
+            Console.WriteLine($"[SolutionReferenceLoader] : {ex.Message}");
         }
         
         return references;
@@ -95,7 +92,7 @@ public static class SolutionReferenceLoader
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[SolutionReferenceLoader] خطأ في البحث عن Solution: {ex.Message}");
+            Console.WriteLine($"[SolutionReferenceLoader] Solution: {ex.Message}");
         }
         
         return null;

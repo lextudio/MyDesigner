@@ -282,59 +282,16 @@ namespace MyDesigner.XamlDesigner.ViewModels
 
         #region Page Actions - دوال الصفحات
 
-        /// <summary>
-        /// CreateNewFile
-        /// </summary>
-        [RelayCommand]
-        private void CreateNewFile()
-        {
-            Core.PageActions.CreateNewFile();
-        }
+       
 
-        /// <summary>
-        /// CreateNewFolder
-        /// </summary>
-        [RelayCommand]
-        private void CreateNewFolder()
-        {
-            Core.PageActions.CreateNewFolder();
-        }
+      
 
-        /// <summary>
-        /// DeleteSelectedItem
-        /// </summary>
-        [RelayCommand]
-        private void DeleteSelectedItem()
-        {
-            Core.PageActions.DeleteSelectedItem();
-        }
+       
 
-        /// <summary>
-        /// RenameSelectedItem
-        /// </summary>
-        [RelayCommand]
-        private void RenameSelectedItem()
-        {
-            Core.PageActions.RenameSelectedItem();
-        }
+        
 
-        /// <summary>
-        /// BuildProjectFromMain
-        /// </summary>
-        [RelayCommand]
-        private void BuildProjectFromMain()
-        {
-            Core.PageActions.BuildProject();
-        }
-
-        /// <summary>
-        /// RunProjectFromMain
-        /// </summary>
-        [RelayCommand]
-        private void RunProjectFromMain()
-        {
-            Core.PageActions.RunProject();
-        }
+        
+       
 
         /// <summary>
         /// OpenProjectFromMain
@@ -392,23 +349,9 @@ namespace MyDesigner.XamlDesigner.ViewModels
             }
         }
 
-        /// <summary>
-        /// RefreshProjectView
-        /// </summary>
-        [RelayCommand]
-        private void RefreshProjectView()
-        {
-            Core.PageActions.RefreshProjectView();
-        }
+       
 
-        /// <summary>
-        /// LoadProjectFiles
-        /// </summary>
-        [RelayCommand]
-        private void LoadProjectFiles(string projectPath)
-        {
-            Core.PageActions.LoadFilesToSolution(projectPath);
-        }
+      
 
         /// <summary>
         /// CloseAllDocuments

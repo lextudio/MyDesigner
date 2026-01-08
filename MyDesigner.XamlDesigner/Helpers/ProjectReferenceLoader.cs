@@ -21,25 +21,20 @@ public static class ProjectReferenceLoader
         
         try
         {
-            // البحث عن ملف .csproj
+           
             var projectFile = FindProjectFile(xamlFilePath);
             if (projectFile == null)
             {
-                Console.WriteLine($"[ProjectReferenceLoader] لم يتم العثور على ملف .csproj لـ: {xamlFilePath}");
+               
                 return references;
             }
-            
-            Console.WriteLine($"[ProjectReferenceLoader] تم العثور على ملف المشروع: {Path.GetFileName(projectFile)}");
-            Console.WriteLine($"[ProjectReferenceLoader] المسار الكامل: {projectFile}");
-            
-            // تحميل المراجع بشكل متداخل
+
             LoadProjectReferencesRecursive(projectFile, references, processedProjects);
             
-            Console.WriteLine($"[ProjectReferenceLoader] ========================================");
-            Console.WriteLine($"[ProjectReferenceLoader] إجمالي المراجع المحملة: {references.Count}");
+          
             if (references.Count > 0)
             {
-                Console.WriteLine($"[ProjectReferenceLoader] قائمة المراجع:");
+                
                 foreach (var r in references)
                 {
                     Console.WriteLine($"[ProjectReferenceLoader]   - {Path.GetFileName(r)}");
@@ -49,7 +44,7 @@ public static class ProjectReferenceLoader
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[ProjectReferenceLoader] خطأ: {ex.Message}");
+            Console.WriteLine($"[ProjectReferenceLoader] : {ex.Message}");
         }
         
         return references;
@@ -68,7 +63,7 @@ public static class ProjectReferenceLoader
     /// </summary>
     private static void LoadProjectReferencesRecursive(string projectFile, List<string> references, HashSet<string> processedProjects)
     {
-        // تجنب المعالجة المتكررة لنفس المشروع
+       
         var normalizedPath = Path.GetFullPath(projectFile);
         if (processedProjects.Contains(normalizedPath))
         {
@@ -79,45 +74,43 @@ public static class ProjectReferenceLoader
         
         try
         {
-            // قراءة ملف .csproj
+           
             var doc = XDocument.Load(projectFile);
             var projectDir = Path.GetDirectoryName(projectFile);
             
-            // البحث عن ProjectReference
+            
             var projectReferences = doc.Descendants("ProjectReference")
                 .Select(pr => pr.Attribute("Include")?.Value)
                 .Where(path => !string.IsNullOrEmpty(path))
                 .ToList();
             
-            Console.WriteLine($"[ProjectReferenceLoader] {Path.GetFileName(projectFile)}: تم العثور على {projectReferences.Count} مرجع");
-            
-            // معالجة كل مرجع
+
             foreach (var projectRef in projectReferences)
             {
-                // تحويل المسار النسبي إلى مسار مطلق
+              
                 var fullProjectPath = Path.GetFullPath(Path.Combine(projectDir, projectRef));
                 
                 if (!File.Exists(fullProjectPath))
                 {
-                    Console.WriteLine($"[ProjectReferenceLoader] ملف المشروع غير موجود: {fullProjectPath}");
+                 
                     continue;
                 }
                 
-                // تحميل المراجع من المشروع الفرعي أولاً (recursive)
+              
                 LoadProjectReferencesRecursive(fullProjectPath, references, processedProjects);
                 
-                // ثم إضافة DLL الخاص بهذا المشروع
+              
                 var dllPath = ResolveProjectReferenceToDll(projectRef, projectDir);
                 if (dllPath != null && File.Exists(dllPath) && !references.Contains(dllPath))
                 {
                     references.Add(dllPath);
-                    Console.WriteLine($"[ProjectReferenceLoader] ✓ تم إضافة: {Path.GetFileName(dllPath)}");
+                  
                 }
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[ProjectReferenceLoader] خطأ في معالجة {Path.GetFileName(projectFile)}: {ex.Message}");
+            Console.WriteLine($"[ProjectReferenceLoader]{Path.GetFileName(projectFile)}: {ex.Message}");
         }
     }
     
@@ -149,20 +142,20 @@ public static class ProjectReferenceLoader
     {
         try
         {
-            // تحويل المسار النسبي إلى مسار مطلق
+          
             var fullProjectPath = Path.GetFullPath(Path.Combine(projectDir, projectRefPath));
             
             if (!File.Exists(fullProjectPath))
             {
-                Console.WriteLine($"[ProjectReferenceLoader] ملف المشروع غير موجود: {fullProjectPath}");
+                Console.WriteLine($"[ProjectReferenceLoader] : {fullProjectPath}");
                 return null;
             }
             
-            // قراءة اسم المشروع من ملف .csproj
+          
             var projectName = Path.GetFileNameWithoutExtension(fullProjectPath);
             var projectRefDir = Path.GetDirectoryName(fullProjectPath);
             
-            // البحث عن DLL في مجلدات bin (updated for .NET 10)
+          
             var possiblePaths = new[]
             {
                 Path.Combine(projectRefDir, "bin", "Debug", "net10.0", $"{projectName}.dll"),
@@ -189,11 +182,11 @@ public static class ProjectReferenceLoader
                 }
             }
             
-            Console.WriteLine($"[ProjectReferenceLoader] لم يتم العثور على DLL لـ: {projectName}");
+            Console.WriteLine($"[ProjectReferenceLoader]: {projectName}");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[ProjectReferenceLoader] خطأ في تحويل المسار: {ex.Message}");
+            Console.WriteLine($"[ProjectReferenceLoader] : {ex.Message}");
         }
         
         return null;

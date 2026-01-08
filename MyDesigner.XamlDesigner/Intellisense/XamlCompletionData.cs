@@ -45,12 +45,12 @@ public class XamlCompletionData : ICompletionData
         {
             return kind switch
             {
-                CompletionKind.Class => GetBitmapImage("avares://MyDesigner.XamlDesigner.Avalonia/Assets/Icons/Class.png"),
-                CompletionKind.Property => GetBitmapImage("avares://MyDesigner.XamlDesigner.Avalonia/Assets/Icons/Property.png"),
-                CompletionKind.Method => GetBitmapImage("avares://MyDesigner.XamlDesigner.Avalonia/Assets/Icons/Method.png"),
-                CompletionKind.Keyword => GetBitmapImage("avares://MyDesigner.XamlDesigner.Avalonia/Assets/Icons/Enum.png"),
-                CompletionKind.Field => GetBitmapImage("avares://MyDesigner.XamlDesigner.Avalonia/Assets/Icons/Field.png"),
-                CompletionKind.Variable => GetBitmapImage("avares://MyDesigner.XamlDesigner.Avalonia/Assets/Icons/Literal.png"),
+                CompletionKind.Class => GetBitmapImage("avares://MyDesigner.XamlDesigner/Images/Class.png"),
+                CompletionKind.Property => GetBitmapImage("avares://MyDesigner.XamlDesigner/Images/Property.png"),
+                CompletionKind.Method => GetBitmapImage("avares://MyDesigner.XamlDesigner/Images/Method.png"),
+                CompletionKind.Keyword => GetBitmapImage("avares://MyDesigner.XamlDesigner/Images/Enum.png"),
+                CompletionKind.Field => GetBitmapImage("avares://MyDesigner.XamlDesigner/Images/Field.png"),
+                CompletionKind.Variable => GetBitmapImage("avares://MyDesigner.XamlDesigner/Images/Literal.png"),
                 _ => null
             };
         }
