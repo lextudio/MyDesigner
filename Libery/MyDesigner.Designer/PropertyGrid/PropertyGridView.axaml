@@ -244,7 +244,7 @@
                                                     Background="{TemplateBinding Border.Background}"
                                                     BorderBrush="{TemplateBinding Border.BorderBrush}"
                                                     BorderThickness="{TemplateBinding Border.BorderThickness}"
-                                                    Padding="20">
+                                                    Padding="{TemplateBinding TemplatedControl.Padding}">
                                                     <ItemsPresenter />
                                                 </Border>
                                             </ControlTemplate>
@@ -263,7 +263,7 @@
                                                         Background="{TemplateBinding Panel.Background}"
                                                         BorderBrush="{TemplateBinding Border.BorderBrush}"
                                                         BorderThickness="{TemplateBinding Border.BorderThickness}"
-                                                        Padding="20">
+                                                        Padding="{TemplateBinding TemplatedControl.Padding}">
                                                         <ScrollViewer Focusable="False" Padding="{TemplateBinding TemplatedControl.Padding}">
                                                             <ItemsPresenter />
                                                         </ScrollViewer>

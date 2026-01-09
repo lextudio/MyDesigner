@@ -24,7 +24,7 @@ public class OutlineTreeView : DragTreeView
 {
     // Need to do this through a seperate List since previously LINQ queries apparently disconnected DataContext;bug in .NET 4.0
     private List<IOutlineNode> _customOutlineNodes;
-
+    protected override Type StyleKeyOverride => typeof(OutlineTreeView);
     protected override bool CanInsert(DragTreeViewItem target, DragTreeViewItem[] items, DragTreeViewItem after,
         bool copy)
     {

@@ -28,6 +28,10 @@ namespace MyDesigner.Designer.OutlineView;
 // - Do not use Items (use Root)
 public class DragTreeView : TreeView
 {
+    
+    
+    protected override Type StyleKeyOverride => typeof(DragTreeView);
+    
     public static readonly StyledProperty<object> RootProperty =
         AvaloniaProperty.Register<DragTreeView, object>(nameof(Root));
 

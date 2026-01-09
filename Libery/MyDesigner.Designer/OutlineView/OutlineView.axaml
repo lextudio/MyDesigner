@@ -5,18 +5,21 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Converters:LevelConverter x:Key="LevelConverter" />
 
-    <!-- IconItem Template -->
-    <ControlTheme x:Key="{x:Type Default:IconItem}" TargetType="Default:IconItem">
+    <!--  IconItem Template  -->
+    <ControlTheme TargetType="Default:IconItem" x:Key="{x:Type Default:IconItem}">
         <Setter Property="Template">
             <ControlTemplate TargetType="Default:IconItem">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="{TemplateBinding Icon}" Stretch="None" />
-                    <TextBlock Text="{TemplateBinding Text}" VerticalAlignment="Center" Margin="5,0,0,0" />
+                    <TextBlock
+                        Margin="5,0,0,0"
+                        Text="{TemplateBinding Text}"
+                        VerticalAlignment="Center" />
                 </StackPanel>
             </ControlTemplate>
         </Setter>
     </ControlTheme>
-    <ControlTheme x:Key="ExpandButtonStyle" TargetType="ToggleButton">
+    <ControlTheme TargetType="ToggleButton" x:Key="ExpandButtonStyle">
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Template">
             <ControlTemplate TargetType="ToggleButton">
@@ -49,7 +52,7 @@
 
     <SolidColorBrush Color="#FFC73C" x:Key="InsertBrush" />
 
-    <ControlTheme x:Key="{x:Type Default:DragTreeView}" TargetType="Default:DragTreeView">
+    <ControlTheme TargetType="Default:DragTreeView" x:Key="{x:Type Default:DragTreeView}">
         <Setter Property="Template">
             <ControlTemplate TargetType="Default:DragTreeView">
                 <Grid Background="White">
@@ -70,21 +73,21 @@
         </Setter>
     </ControlTheme>
 
-    <ControlTheme x:Key="{x:Type Default:DragTreeViewItem}" TargetType="Default:DragTreeViewItem">
+    <ControlTheme TargetType="Default:DragTreeViewItem" x:Key="{x:Type Default:DragTreeViewItem}">
         <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}" />
         <Setter Property="Template">
             <ControlTemplate TargetType="Default:DragTreeViewItem">
-                <DockPanel  Background="White" ContextMenu="{Binding DesignItem.Services.DesignPanel.ContextMenu}">
-                    <Grid x:DataType="Default:DragTreeViewItem"
+                <DockPanel Background="White" ContextMenu="{Binding DesignItem.Services.DesignPanel.ContextMenu}">
+                    <Grid
                         Background="{TemplateBinding Background}"
                         DockPanel.Dock="Top"
-                        Margin="{Binding Level,Converter={StaticResource LevelConverter}}"
-                                               
+                        Margin="{Binding Level, Converter={StaticResource LevelConverter}}"
+                        x:DataType="Default:DragTreeViewItem"
                         x:Name="bg">
                         <ToggleButton
-                            Theme="{StaticResource ExpandButtonStyle}"
                             HorizontalAlignment="Left"
                             IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
+                            Theme="{StaticResource ExpandButtonStyle}"
                             x:Name="expandButton" />
                         <Border
                             HorizontalAlignment="Stretch"
@@ -123,7 +126,7 @@
         </Style>
     </ControlTheme>
 
-    <ControlTheme x:Key="eyeStyle" TargetType="ToggleButton">
+    <ControlTheme TargetType="ToggleButton" x:Key="eyeStyle">
         <Setter Property="Template">
             <ControlTemplate TargetType="ToggleButton">
                 <Grid Background="Transparent" IsHitTestVisible="True">
@@ -147,7 +150,7 @@
         </Style>
     </ControlTheme>
 
-    <ControlTheme x:Key="lockedStyle" TargetType="ToggleButton">
+    <ControlTheme TargetType="ToggleButton" x:Key="lockedStyle">
         <Setter Property="Template">
             <ControlTemplate TargetType="ToggleButton">
                 <Grid Background="Transparent" IsHitTestVisible="True">
@@ -186,22 +189,19 @@
 
     <DataTemplate DataType="Default:OutlineNode" x:Key="OutlineNodeTemplate">
         <DockPanel>
-            <ToggleButton Classes="lockedStyle"
-                Theme="{StaticResource lockedStyle}"
+            <ToggleButton
                 DockPanel.Dock="Right"
                 IsChecked="{Binding IsDesignTimeLocked}"
                 IsVisible="{Binding IsVisualNode}"
                 Margin="0,0,5,0"
-                Width="20" >
-           
-            
-            </ToggleButton>
-            <ToggleButton Classes="eyeStyle"
-                Theme="{StaticResource eyeStyle}"
+                Theme="{StaticResource lockedStyle}"
+                Width="20" />
+            <ToggleButton
                 DockPanel.Dock="Right"
                 IsChecked="{Binding IsDesignTimeVisible}"
                 IsVisible="{Binding IsVisualNode}"
                 Margin="0,0,5,0"
+                Theme="{StaticResource eyeStyle}"
                 Width="20" />
             <Default:IconItem Icon="avares://MyDesigner.Designer/Images/Tag.png" Text="{Binding Name}" />
         </DockPanel>
