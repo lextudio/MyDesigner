@@ -3,154 +3,152 @@
     xmlns:Controls="clr-namespace:MyDesigner.Designer.Controls"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <ControlTheme x:Key="{x:Type Controls:ZoomScrollViewer}" TargetType="Controls:ZoomScrollViewer">
+    <ControlTheme TargetType="Controls:ZoomScrollViewer" x:Key="{x:Type Controls:ZoomScrollViewer}">
         <Setter Property="Template">
             <ControlTemplate TargetType="Controls:ZoomScrollViewer">
-                    <Grid Background="{TemplateBinding Background}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+                <Grid Background="{TemplateBinding Background}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                        <StackPanel
-                            Grid.Column="0"
-                            Grid.Row="1"
-                            IsVisible="{Binding !ComputedZoomButtonCollapsed, RelativeSource={RelativeSource TemplatedParent}}"
-                            Orientation="Horizontal">
-                            <Controls:ZoomButtons
-                                Maximum="{TemplateBinding MaximumZoom}"
-                                Minimum="{TemplateBinding MinimumZoom}"
-                                Name="zoomButtons"
-                                Value="{Binding CurrentZoom, RelativeSource={RelativeSource TemplatedParent}}" />
-                        </StackPanel>
+                    <StackPanel
+                        Grid.Column="0"
+                        Grid.Row="1"
+                        IsVisible="{Binding !ComputedZoomButtonCollapsed, RelativeSource={RelativeSource TemplatedParent}}"
+                        Orientation="Horizontal">
+                        <Controls:ZoomButtons
+                            Maximum="{TemplateBinding MaximumZoom}"
+                            Minimum="{TemplateBinding MinimumZoom}"
+                            Name="zoomButtons"
+                            Value="{Binding CurrentZoom, RelativeSource={RelativeSource TemplatedParent}}" />
+                    </StackPanel>
 
-                        <Rectangle
-                            Fill="{DynamicResource SystemControlBackgroundBaseLowBrush}"
-                            Grid.Column="2"
-                            Grid.Row="1" />
+                    <Rectangle
+                        Fill="{DynamicResource SystemControlBackgroundBaseLowBrush}"
+                        Grid.Column="2"
+                        Grid.Row="1" />
 
-                        <ContentPresenter
-                            Content="{TemplateBinding Content}"
-                            ContentTemplate="{TemplateBinding ContentTemplate}"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Grid.Row="0"
-                            Margin="{TemplateBinding Padding}"
-                            Name="PART_Presenter">
-                            <ContentPresenter.RenderTransform>
-                                <ScaleTransform ScaleX="{Binding CurrentZoom, RelativeSource={RelativeSource TemplatedParent}}" ScaleY="{Binding CurrentZoom, RelativeSource={RelativeSource TemplatedParent}}" />
-                            </ContentPresenter.RenderTransform>
-                        </ContentPresenter>
+                    <ContentPresenter
+                        Content="{TemplateBinding Content}"
+                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Grid.Row="0"
+                        Margin="{TemplateBinding Padding}"
+                        Name="PART_Presenter">
+                        <ContentPresenter.RenderTransform>
+                            <ScaleTransform ScaleX="{Binding CurrentZoom, RelativeSource={RelativeSource TemplatedParent}}" ScaleY="{Binding CurrentZoom, RelativeSource={RelativeSource TemplatedParent}}" />
+                        </ContentPresenter.RenderTransform>
+                    </ContentPresenter>
 
-                        <ScrollBar
-                            Grid.Column="2"
-                            Grid.Row="0"
-                            Maximum="100"
-                            Minimum="0"
-                            Name="PART_VerticalScrollBar"
-                            Value="0"
-                            ViewportSize="10"
-                            Visibility="Auto" />
+                    <ScrollBar
+                        Grid.Column="2"
+                        Grid.Row="0"
+                        Maximum="100"
+                        Minimum="0"
+                        Name="PART_VerticalScrollBar"
+                        Value="0"
+                        ViewportSize="10"
+                        Visibility="Auto" />
 
-                        <ScrollBar
-                            Grid.Column="1"
-                            Grid.Row="1"
-                            Maximum="100"
-                            Minimum="0"
-                            Name="PART_HorizontalScrollBar"
-                            Orientation="Horizontal"
-                            Value="0"
-                            ViewportSize="10"
-                            Visibility="Auto" />
-                    </Grid>
-                </ControlTemplate>
+                    <ScrollBar
+                        Grid.Column="1"
+                        Grid.Row="1"
+                        Maximum="100"
+                        Minimum="0"
+                        Name="PART_HorizontalScrollBar"
+                        Orientation="Horizontal"
+                        Value="0"
+                        ViewportSize="10"
+                        Visibility="Auto" />
+                </Grid>
+            </ControlTemplate>
         </Setter>
     </ControlTheme>
 
-    <ControlTheme x:Key="ZoomButtonStyle" TargetType="RepeatButton">
+    <ControlTheme TargetType="RepeatButton" x:Key="ZoomButtonStyle">
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Opacity" Value="0.5" />
-        <Setter Property="Template">
-            <ControlTemplate TargetType="RepeatButton">
-                <ContentPresenter />
-            </ControlTemplate>
-        </Setter>
         <Style Selector="^:pointerover /template/ ContentPresenter">
-            <Setter Property="Opacity" Value="1" />
+            <Setter Property="Opacity" Value="100" />
+        </Style>
+        <Style Selector="^:pressed /template/ ContentPresenter">
+            <Setter Property="Opacity" Value="100" />
         </Style>
     </ControlTheme>
 
-    <ControlTheme x:Key="{x:Type Controls:ZoomButtons}" TargetType="Controls:ZoomButtons">
+    <ControlTheme TargetType="Controls:ZoomButtons" x:Key="{x:Type Controls:ZoomButtons}">
         <Setter Property="Minimum" Value="0.2" />
         <Setter Property="Maximum" Value="10" />
         <Setter Property="Value" Value="1" />
         <Setter Property="Template">
             <ControlTemplate TargetType="Controls:ZoomButtons">
-                    <Border
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}">
-                        <StackPanel Background="#30000000" Orientation="Horizontal">
-                            <RepeatButton
-                                BorderThickness="0"
-                                Classes="ZoomButtonStyle"
-                                Height="16"
-                                Name="uxPlus"
-                                Padding="0"
-                                Width="16">
-                                <Image Source="avares://MyDesigner.Designer/Images/ZoomIn.png" Stretch="Uniform" />
-                            </RepeatButton>
-                            <RepeatButton
-                                BorderThickness="0"
-                                Classes="ZoomButtonStyle"
-                                Height="16"
-                                Name="uxMinus"
-                                Padding="0"
-                                Width="16">
-                                <Image Source="avares://MyDesigner.Designer/Images/ZoomOut.png" Stretch="Uniform" />
-                            </RepeatButton>
-                            <RepeatButton
-                                BorderThickness="0"
-                                Classes="ZoomButtonStyle"
-                                Height="16"
-                                Name="uxReset"
-                                Padding="0"
-                                Width="16">
-                                <Border Background="#50000000">
+                <Border
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+                    <StackPanel Background="#30000000" Orientation="Horizontal">
+                        <RepeatButton
+                            BorderThickness="0"
+                            Height="16"
+                            Padding="0"
+                            Theme="{StaticResource ZoomButtonStyle}"
+                            Width="16"
+                            x:Name="uxPlus">
+                            <Image Source="avares://MyDesigner.Designer/Images/ZoomIn.png" Stretch="Uniform" />
+                        </RepeatButton>
+                        <RepeatButton
+                            BorderThickness="0"
+                            Height="16"
+                            Padding="0"
+                            Theme="{StaticResource ZoomButtonStyle}"
+                            Width="16"
+                            x:Name="uxMinus">
+                            <Image Source="avares://MyDesigner.Designer/Images/ZoomOut.png" Stretch="Uniform" />
+                        </RepeatButton>
+                        <RepeatButton
+                            BorderThickness="0"
+                            Height="16"
+                            Padding="0"
+                            Theme="{StaticResource ZoomButtonStyle}"
+                            Width="16"
+                            x:Name="uxReset">
+                            <Border Background="#50000000">
+                                <TextBlock
+                                    Foreground="White"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                                    1
+                                </TextBlock>
+                            </Border>
+                        </RepeatButton>
+                        <RepeatButton
+                            BorderThickness="0"
+                            Height="16"
+                            Padding="0"
+                            Theme="{StaticResource ZoomButtonStyle}"
+                            Width="16"
+                            x:Name="ux100Percent">
+                            <Border Background="#50000000">
+                                <Viewbox Stretch="Uniform">
                                     <TextBlock
                                         Foreground="White"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center">
-                                        1
+                                        100%
                                     </TextBlock>
-                                </Border>
-                            </RepeatButton>
-                            <RepeatButton
-                                BorderThickness="0"
-                                Classes="ZoomButtonStyle"
-                                Height="16"
-                                Name="ux100Percent"
-                                Padding="0"
-                                Width="16">
-                                <Border Background="#50000000">
-                                    <Viewbox Stretch="Uniform">
-                                        <TextBlock
-                                            Foreground="White"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center">
-                                            100%
-                                        </TextBlock>
-                                    </Viewbox>
-                                </Border>
-                            </RepeatButton>
-                        </StackPanel>
-                    </Border>
-                </ControlTemplate>
+                                </Viewbox>
+                            </Border>
+                        </RepeatButton>
+                    </StackPanel>
+                </Border>
+            </ControlTemplate>
         </Setter>
     </ControlTheme>
 </ResourceDictionary>
