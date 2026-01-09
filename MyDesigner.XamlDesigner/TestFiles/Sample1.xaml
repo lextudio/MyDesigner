@@ -5,8 +5,19 @@
                FontWeight="Bold"
                Text="Hello Avalonia!" />
     <Button Content="Click Me" Width="0" Height="0" Margin="0,10,0,0" />
-    <TextBox Height="0"
+    <TextBox Width="390"
+             Height="26"
              Margin="0,10,0,0"
+             VerticalAlignment="Center"
+             HorizontalContentAlignment="Center"
+             VerticalContentAlignment="Center"
+             CaretBlinkInterval="00:00:00.5000000"
+             ClipToBounds="True"
+             FlowDirection="RightToLeft"
+             IsReadOnly="False"
+             IsVisible="True"
+             MinWidth="86"
+             UndoLimit="10"
              Watermark="Enter text here..." />
   </StackPanel>
 </UserControl>

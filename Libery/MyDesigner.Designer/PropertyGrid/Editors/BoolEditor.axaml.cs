@@ -23,7 +23,7 @@ using MyDesigner.Design.PropertyGrid;
 namespace MyDesigner.Designer.PropertyGrid.Editors;
 
 [TypeEditor(typeof(bool))]
-public partial class BoolEditor : CheckBox
+public partial class BoolEditor : UserControl
 {
     public BoolEditor()
     {

@@ -1,6 +1,12 @@
-<CheckBox
-    Focusable="False"
-    IsChecked="{Binding DesignerValue}"
+<UserControl
     x:Class="MyDesigner.Designer.PropertyGrid.Editors.BoolEditor"
     xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" />
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:xaml="clr-namespace:MyDesigner.Designer.Xaml">
+
+
+    <CheckBox Focusable="False" IsChecked="{Binding DesignerValue}" />
+
+
+
+</UserControl>

@@ -27,6 +27,7 @@ namespace MyDesigner.Designer.PropertyGrid.Editors;
 /// Simplified OpenHMICollectionsEditor for Avalonia
 /// Note: This is a simplified version without HMI-specific dependencies
 /// </summary>
+
 public partial class OpenHMICollectionsEditor : UserControl
 {
     public OpenHMICollectionsEditor()

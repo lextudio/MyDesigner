@@ -1,36 +1,41 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Grid RowDefinitions="Auto,*,Auto" ColumnDefinitions="*,*">
-        <TextBlock Grid.Row="0" Grid.ColumnSpan="2" 
-                   Text="Grid Layout Example" 
-                   HorizontalAlignment="Center" 
-                   FontSize="18" 
-                   Margin="10" />
-        
-        <Border Grid.Row="1" Grid.Column="0" 
-                Background="LightBlue" 
-                Margin="5" 
-                CornerRadius="5">
-            <TextBlock Text="Left Panel" 
-                       HorizontalAlignment="Center" 
-                       VerticalAlignment="Center" />
-        </Border>
-        
-        <Border Grid.Row="1" Grid.Column="1" 
-                Background="LightGreen" 
-                Margin="5" 
-                CornerRadius="5">
-            <TextBlock Text="Right Panel" 
-                       HorizontalAlignment="Center" 
-                       VerticalAlignment="Center" />
-        </Border>
-        
-        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" 
-                    Orientation="Horizontal" 
-                    HorizontalAlignment="Center" 
-                    Margin="10">
-            <Button Content="OK" Margin="5" />
-            <Button Content="Cancel" Margin="5" />
-        </StackPanel>
-    </Grid>
+<UserControl xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns="https://github.com/avaloniaui">
+  <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,*,Auto">
+    <TextBlock Margin="10"
+               HorizontalAlignment="Center"
+               FontSize="18"
+               Text="Grid Layout Example"
+               Grid.ColumnSpan="2"
+               Grid.Row="0" />
+    <Border Margin="5"
+            Background="LightBlue"
+            CornerRadius="5"
+            Grid.Column="0"
+            Grid.Row="1">
+      <TextBlock HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Text="Left Panel" />
+    </Border>
+    <Border HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Background="LightGreen"
+            CornerRadius="5"
+            Grid.Column="0"
+            Grid.Row="0">
+      <Border.Margin>
+        <Thickness />
+      </Border.Margin>
+      <TextBlock HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Text="Right Panel" />
+    </Border>
+    <StackPanel Margin="10"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal"
+                Grid.ColumnSpan="2"
+                Grid.Row="2">
+      <Button Content="OK" Margin="5" />
+      <Button Content="Cancel" Margin="5" />
+    </StackPanel>
+  </Grid>
 </UserControl>
