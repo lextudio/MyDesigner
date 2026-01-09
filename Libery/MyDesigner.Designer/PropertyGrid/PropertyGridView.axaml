@@ -60,20 +60,20 @@
         </Style>
     </ControlTheme>
 
-   <ControlTheme TargetType="ToggleButton" x:Key="CategoryToggleStyle">
+    <ControlTheme TargetType="ToggleButton" x:Key="CategoryToggleStyle">
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Template">
             <ControlTemplate TargetType="ToggleButton">
                 <Border BorderBrush="#ECE9D8" BorderThickness="0,1,0,0">
                     <StackPanel Background="{DynamicResource SystemControlBackgroundBaseLowBrush}" Orientation="Horizontal">
                         <Border
-                            Width="9"
+                            BorderBrush="#FF7898B5"
+                            BorderThickness="1"
+                            CornerRadius="1"
                             Height="9"
                             Margin="3,0,7,0"
                             VerticalAlignment="Center"
-                            BorderBrush="#FF7898B5"
-                            BorderThickness="1"
-                            CornerRadius="1">
+                            Width="9">
                             <Border.Background>
                                 <LinearGradientBrush EndPoint="100%,100%" StartPoint="0%,0%">
                                     <GradientStop Color="White" Offset=".2" />
@@ -81,10 +81,10 @@
                                 </LinearGradientBrush>
                             </Border.Background>
                             <Path
-                                x:Name="ExpandPath"
                                 Data="M 0 2 L 0 3 L 2 3 L 2 5 L 3 5 L 3 3 L 5 3 L 5 2 L 3 2 L 3 0 L 2 0 L 2 2 Z"
                                 Fill="Black"
-                                Margin="1,1,1,1" />
+                                Margin="1,1,1,1"
+                                x:Name="ExpandPath" />
                         </Border>
                         <TextBlock
                             FontWeight="Bold"
@@ -109,10 +109,10 @@
                         Height="17"
                         IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                         Theme="{StaticResource CategoryToggleStyle}" />
-                    <ContentPresenter 
-                        x:Name="ExpandSite" 
+                    <ContentPresenter
                         Content="{TemplateBinding Content}"
-                        IsVisible="False" />
+                        IsVisible="False"
+                        x:Name="ExpandSite" />
                 </DockPanel>
             </ControlTemplate>
         </Setter>
@@ -170,15 +170,16 @@
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.Template>
-											<ControlTemplate>
-												<Border BorderThickness="{TemplateBinding Border.BorderThickness}" 
-                                                        Padding="{TemplateBinding Border.Padding}" 
-                                                        BorderBrush="{TemplateBinding Border.BorderBrush}" 
-                                                        Background="{TemplateBinding Border.Background}" >
-													<ItemsPresenter  />
-												</Border>
-											</ControlTemplate>
-										</ItemsControl.Template>
+                                        <ControlTemplate>
+                                            <Border
+                                                Background="{TemplateBinding Border.Background}"
+                                                BorderBrush="{TemplateBinding Border.BorderBrush}"
+                                                BorderThickness="{TemplateBinding Border.BorderThickness}"
+                                                Padding="20">
+                                                <ItemsPresenter />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </ItemsControl.Template>
                                 </ItemsControl>
                             </Expander>
                         </DataTemplate>
@@ -238,15 +239,16 @@
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.Template>
-											<ControlTemplate>
-												<Border BorderThickness="{TemplateBinding Border.BorderThickness}" 
-                                                        Padding="{TemplateBinding Border.Padding}" 
-                                                        BorderBrush="{TemplateBinding Border.BorderBrush}" 
-                                                        Background="{TemplateBinding Border.Background}" >
-													<ItemsPresenter  />
-												</Border>
-											</ControlTemplate>
-										</ItemsControl.Template>
+                                            <ControlTemplate>
+                                                <Border
+                                                    Background="{TemplateBinding Border.Background}"
+                                                    BorderBrush="{TemplateBinding Border.BorderBrush}"
+                                                    BorderThickness="{TemplateBinding Border.BorderThickness}"
+                                                    Padding="20">
+                                                    <ItemsPresenter />
+                                                </Border>
+                                            </ControlTemplate>
+                                        </ItemsControl.Template>
                                     </ItemsControl>
                                     <Expander IsVisible="{Binding MoreChildren.Count, Converter={x:Static Converters:CollapsedWhenZero.Instance}}" Theme="{StaticResource MoreExpanderStyle}">
                                         <ItemsControl Background="#F9F9F4" ItemsSource="{Binding MoreChildren}">
@@ -256,15 +258,19 @@
                                                 </ItemsPanelTemplate>
                                             </ItemsControl.ItemsPanel>
                                             <ItemsControl.Template>
-											<ControlTemplate>
-												<Border BorderThickness="{TemplateBinding Border.BorderThickness}" 
-                                                        Padding="{TemplateBinding Border.Padding}" 
-                                                        BorderBrush="{TemplateBinding Border.BorderBrush}" 
-                                                        Background="{TemplateBinding Border.Background}" >
-													<ItemsPresenter  />
-												</Border>
-											</ControlTemplate>
-										</ItemsControl.Template>
+                                                <ControlTemplate>
+                                                    <Border
+                                                        Background="{TemplateBinding Panel.Background}"
+                                                        BorderBrush="{TemplateBinding Border.BorderBrush}"
+                                                        BorderThickness="{TemplateBinding Border.BorderThickness}"
+                                                        Padding="20">
+                                                        <ScrollViewer Focusable="False" Padding="{TemplateBinding TemplatedControl.Padding}">
+                                                            <ItemsPresenter />
+                                                        </ScrollViewer>
+                                                    </Border>
+
+                                                </ControlTemplate>
+                                            </ItemsControl.Template>
                                         </ItemsControl>
                                     </Expander>
                                 </StackPanel>
@@ -330,9 +336,7 @@
                             Margin="44,28,6,0"
                             Text="{Binding Name}"
                             VerticalAlignment="Top"
-                            x:Name="NameTextBox">
-                          
-                        </Controls:EnterTextBox>
+                            x:Name="NameTextBox" />
                         <TextBlock
                             Grid.Column="1"
                             Height="13.277"

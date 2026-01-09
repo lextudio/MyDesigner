@@ -28,6 +28,12 @@
                 </Border>
             </ControlTemplate>
         </Setter>
+        <Style Selector="^:pointerover">
+            <Setter Property="Opacity" Value="100" />
+        </Style>
+        <Style Selector="^:pressed">
+            <Setter Property="Opacity" Value="100" />
+        </Style>
     </ControlTheme>
 
     <ControlTheme TargetType="RepeatButton" x:Key="DownButton">
@@ -46,6 +52,12 @@
                 </Border>
             </ControlTemplate>
         </Setter>
+        <Style Selector="^:pointerover">
+            <Setter Property="Opacity" Value="100" />
+        </Style>
+        <Style Selector="^:pressed">
+            <Setter Property="Opacity" Value="100" />
+        </Style>
     </ControlTheme>
 
     <ControlTheme TargetType="Controls:NumericUpDown" x:Key="{x:Type Controls:NumericUpDown}">
