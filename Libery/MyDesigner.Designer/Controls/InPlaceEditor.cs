@@ -20,6 +20,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
+using AvaloniaEdit;
 using MyDesigner.Designer.PropertyGrid.Editors.FormatedTextEditor;
 
 namespace MyDesigner.Designer.Controls;
@@ -46,8 +47,7 @@ public class InPlaceEditor : TemplatedControl
     {
         this.designItem = designItem;
 
-        // In Avalonia, key bindings are handled differently
-        // We'll handle them in OnKeyDown
+     
     }
 
     public string Bind

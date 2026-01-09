@@ -21,6 +21,7 @@ using System.Reflection;
 using System.Resources;
 using Avalonia;
 using Avalonia.Input;
+using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 
 namespace MyDesigner.Designer.Controls;
@@ -45,8 +46,8 @@ public class ZoomControl : ZoomScrollViewer
 
     static ZoomControl()
     {
-        PanToolCursor = GetCursor("Images/PanToolCursor.cur");
-        PanToolCursorMouseDown = GetCursor("Images/PanToolCursorMouseDown.cur");
+        PanToolCursor = GetCursor("avares://MyDesigner.Designer/Images/PanToolCursor.cur");
+        PanToolCursorMouseDown = GetCursor("avares://MyDesigner.Designer/Images/PanToolCursorMouseDown.cur");
     }
 
     public object AdditionalControls
@@ -59,16 +60,13 @@ public class ZoomControl : ZoomScrollViewer
     {
         try
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = $"{assembly.GetName().Name}.{path.Replace('/', '.')}";
             
-            using (var stream = assembly.GetManifestResourceStream(resourceName))
+            var bitmap = new Bitmap(AssetLoader.Open(new Uri(path)));
             {
-                if (stream != null)
+                if (bitmap != null)
                 {
-                    // In Avalonia 11.x, Cursor constructor expects StandardCursorType or platform-specific data
-                    // For now, return a standard cursor as fallback
-                    return new Cursor(StandardCursorType.Hand);
+                    
+                    return new Cursor(bitmap,PixelPoint .Origin);
                 }
             }
         }

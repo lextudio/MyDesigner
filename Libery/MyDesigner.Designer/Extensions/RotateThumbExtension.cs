@@ -59,7 +59,7 @@ public sealed class RotateThumbExtension : SelectionAdornerProvider
     private DesignerThumb CreateRotateThumb()
     {
         DesignerThumb rotateThumb = new RotateThumb();
-        rotateThumb.Cursor = new Cursor(StandardCursorType.Hand);
+        rotateThumb.Cursor = ZoomControl.GetCursor("avares://MyDesigner.Designer/Images/rotate.cur");
         // In Avalonia, we'll use a standard cursor instead of custom cursor file
         rotateThumb.Alignment = PlacementAlignment.Top;
         AdornerPanel.SetPlacement(rotateThumb,

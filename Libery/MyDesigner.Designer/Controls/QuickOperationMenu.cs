@@ -32,14 +32,19 @@ public class QuickOperationMenu : TemplatedControl
     ///     value.
     /// </summary>
     private readonly Dictionary<MenuItem, MenuItem> _defaults = new();
+    public QuickOperationMenu()
+    { }
 
+    private MenuItem _mainHeader;
     /// <summary>
-    ///     Is the main header menu which brings up all the menus.
+    /// Is the main header menu which brings up all the menus.
     /// </summary>
-    public MenuItem MainHeader { get; private set; }
+    public MenuItem MainHeader {
+        get { return _mainHeader; }
+    }
 
     /// <summary>
-    ///     Add a submenu with checkable values.
+    /// Add a submenu with checkable values.
     /// </summary>
     /// <param name="parent">The parent menu under which to add.</param>
     /// <param name="enumValues">All the values of an enum to be showed in the menu</param>
@@ -47,36 +52,36 @@ public class QuickOperationMenu : TemplatedControl
     /// <param name="setValue">The presently set value out of the enums</param>
     public void AddSubMenuCheckable(MenuItem parent, Array enumValues, string defaultValue, string setValue)
     {
-        foreach (var enumValue in enumValues)
-        {
-            var menuItem = new MenuItem { Header = enumValue.ToString() };
-            // Note: Avalonia doesn't have IsCheckable property, we'll need to handle this differently
+        foreach (var enumValue in enumValues) {
+            var menuItem = new MenuItem {Header = enumValue.ToString(), IsChecked = true};
             parent.Items.Add(menuItem);
             if (enumValue.ToString() == defaultValue)
                 _defaults.Add(parent, menuItem);
-            // Note: Avalonia doesn't have IsChecked property on MenuItem, we'll need to handle this differently
+            if (enumValue.ToString() == setValue)
+                menuItem.IsChecked = true;
         }
     }
-
+		
     /// <summary>
-    ///     Add a menu in the main header.
+    /// Add a menu in the main header.
     /// </summary>
     /// <param name="menuItem">The menu to add.</param>
     public void AddSubMenuInTheHeader(MenuItem menuItem)
     {
-        if (MainHeader != null)
-            MainHeader.Items.Add(menuItem);
+        if (_mainHeader != null)
+            _mainHeader.Items.Add(menuItem);
     }
-
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
         var mainHeader = e.NameScope.Find<MenuItem>("MainHeader");
-        if (mainHeader != null) MainHeader = mainHeader;
+        if (mainHeader != null) {
+            _mainHeader = mainHeader;
+        }
     }
 
     /// <summary>
-    ///     Checks a menu item and making it exclusive. If the check was toggled then the default menu item is selected.
+    /// Checks a menu item and making it exclusive. If the check was toggled then the default menu item is selected.
     /// </summary>
     /// <param name="parent">The parent item of the sub menu</param>
     /// <param name="clickedOn">The Item clicked on</param>
@@ -85,21 +90,37 @@ public class QuickOperationMenu : TemplatedControl
     {
         MenuItem defaultMenuItem;
         _defaults.TryGetValue(parent, out defaultMenuItem);
-        
-        // Note: In Avalonia, we'll need to implement custom logic for checkable menu items
-        // This is a simplified version that returns the header
-        return clickedOn.Header?.ToString();
+        if (IsAnyItemChecked(parent)) {
+            foreach (var item in parent.Items) {
+                var menuItem = item as MenuItem;
+                if (menuItem != null) menuItem.IsChecked = false;
+            }
+            clickedOn.IsChecked = true;
+            return (string) clickedOn.Header;
+        } else {
+            if (defaultMenuItem != null) {
+                defaultMenuItem.IsChecked = true;
+                return (string) defaultMenuItem.Header;
+            }
+        }
+        return null;
     }
-
+		
     /// <summary>
-    ///     Checks in the sub-menu whether any items has been checked or not
+    /// Checks in the sub-menu whether aby items has been checked or not
     /// </summary>
     /// <param name="parent"></param>
     /// <returns></returns>
     private bool IsAnyItemChecked(MenuItem parent)
     {
-        // Note: In Avalonia, we'll need to implement custom logic for checkable menu items
-        // This is a placeholder implementation
-        return false;
+        bool check = false;
+        if (parent.Items.Count >0) {
+            foreach (var item in parent.Items) {
+                var menuItem = item as MenuItem;
+                if (menuItem != null && menuItem.IsChecked)
+                    check = true;
+            }
+        }
+        return check;
     }
 }

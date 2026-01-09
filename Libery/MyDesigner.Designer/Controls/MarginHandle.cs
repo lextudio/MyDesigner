@@ -271,6 +271,7 @@ namespace MyDesigner.Designer.Controls
     /// </summary>
     public class MarginStub : TemplatedControl
     {
+        protected override Type StyleKeyOverride => typeof(MarginStub);
         public MarginStub(MarginHandle marginHandle)
         {
             Handle = marginHandle;

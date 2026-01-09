@@ -31,6 +31,10 @@ namespace MyDesigner.Designer.Controls;
 /// </summary>
 public class CanvasPositionHandle : MarginHandle
 {
+    
+    protected override Type StyleKeyOverride => typeof(CanvasPositionHandle);
+    
+    
     private readonly Control adornedControl;
     private readonly DesignItem adornedControlItem;
     private readonly AdornerPanel adornerPanel;

@@ -53,6 +53,7 @@ public class GridRailAdorner : Control
     static GridRailAdorner()
     {
         bgBrush = new SolidColorBrush(Color.FromArgb(0x35, 0x1E, 0x90, 0xff));
+         
     }
 
     public GridRailAdorner(DesignItem gridItem, AdornerPanel adornerPanel, Orientation orientation)
@@ -520,6 +521,9 @@ public class GridRailAdorner : Control
 
 public abstract class GridSplitterAdorner : TemplatedControl
 {
+    
+    protected override Type StyleKeyOverride => typeof(GridSplitterAdorner);
+    
     public static readonly StyledProperty<bool> IsPreviewProperty
         = AvaloniaProperty.Register<GridSplitterAdorner, bool>(nameof(IsPreview), false);
 
@@ -656,6 +660,7 @@ public abstract class GridSplitterAdorner : TemplatedControl
 
 public class GridRowSplitterAdorner : GridSplitterAdorner
 {
+    protected override Type StyleKeyOverride => typeof(GridRowSplitterAdorner);
     static GridRowSplitterAdorner()
     {
         CursorProperty.OverrideDefaultValue<GridRowSplitterAdorner>(new Cursor(StandardCursorType.SizeNorthSouth));
@@ -687,6 +692,7 @@ public class GridRowSplitterAdorner : GridSplitterAdorner
 
 public sealed class GridColumnSplitterAdorner : GridSplitterAdorner
 {
+    protected override Type StyleKeyOverride => typeof(GridColumnSplitterAdorner);
     static GridColumnSplitterAdorner()
     {
         CursorProperty.OverrideDefaultValue<GridColumnSplitterAdorner>(new Cursor(StandardCursorType.SizeWestEast));

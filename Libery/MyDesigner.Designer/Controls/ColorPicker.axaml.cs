@@ -206,15 +206,11 @@ internal class HexTextBox : TextBox
 {
     protected override void OnKeyDown(KeyEventArgs e)
     {
-        if (e.Key == Key.Enter)
-        {
-            // In Avalonia, we need to manually update the binding
-           // var binding = this.GetBindingExpression(TextProperty);
-            //if (binding != null)
-            //{
-            //    // Force update the binding source
-            //    this.GetBindingExpression(TextProperty)?.UpdateSource();
-            //}
+        if (e.Key == Key.Enter) {
+            var b = BindingOperations.GetBindingExpressionBase(this, TextProperty);
+            if (b != null) {
+                b.UpdateTarget();
+            }
             SelectAll();
         }
     }

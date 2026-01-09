@@ -1,28 +1,28 @@
 <ResourceDictionary
     xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Controls="clr-namespace:MyDesigner.Designer.Controls">
+    xmlns:Controls="clr-namespace:MyDesigner.Designer.Controls"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Controls:CollapsiblePanelProgressToVisibilityConverter x:Key="visibilityConverter" />
 
-    <ControlTheme x:Key="{x:Type Controls:CollapsiblePanel}" TargetType="Controls:CollapsiblePanel">
+    <ControlTheme TargetType="Controls:CollapsiblePanel" x:Key="{x:Type Controls:CollapsiblePanel}">
         <Setter Property="Template">
             <ControlTemplate>
                 <Border
-                    Name="PART_Border"
                     Background="{TemplateBinding Background}"
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
-                    IsVisible="{Binding $parent[Controls:CollapsiblePanel].AnimationProgress, Converter={StaticResource visibilityConverter}}">
+                    IsVisible="{Binding $parent[Controls:CollapsiblePanel].AnimationProgress, Converter={StaticResource visibilityConverter}}"
+                    x:Name="PART_Border">
                     <Border.RenderTransform>
                         <ScaleTransform ScaleX="{Binding $parent[Controls:CollapsiblePanel].AnimationProgressX}" ScaleY="{Binding $parent[Controls:CollapsiblePanel].AnimationProgressY}" />
                     </Border.RenderTransform>
                     <ContentPresenter
-                        Margin="{TemplateBinding Padding}"
-                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                         Content="{TemplateBinding Content}"
-                        ContentTemplate="{TemplateBinding ContentTemplate}" />
+                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        Margin="{TemplateBinding Padding}"
+                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                 </Border>
             </ControlTemplate>
         </Setter>
